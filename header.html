@@ -1,0 +1,51 @@
+<nav class="top-nav deep-orange darken-4">
+	<a id="title" class="brand-logo center"></a>
+	<a href="#!" data-activates="menu-nav" class="button-collapse show-on-large" style="transform: translateX(0px);"><i class="mdi mdi-menu mdi-48px"></i></a>
+	<ul id="menu-nav" class="side-nav orange lighten-5">
+		<li class="no-padding">
+			<ul class="collapsible collapsible-accordion league-picks">
+				<li id="league-picks-li">
+					<a class="collapsible-header waves-effect"><i class="mdi mdi-football"></i><b>League Picks</b></a>
+					<div class="collapsible-body white" style="display: block;">
+						<ul id="weeks-list"></ul>
+					</div>
+				</li>
+			</ul>
+		</li>
+		<li id="standings-li">
+			<a id="standings-link" class="waves-effect"><i class="mdi mdi-format-list-numbers left"></i><b>Standings</b></a>
+		</li>
+ 		<li class="no-padding">
+			<ul class="collapsible collapsible-accordion your-picks">
+				<li id="user-picks-li">
+					<a class="collapsible-header waves-effect"><i class="mdi mdi-checkbox-marked-circle left"></i><b>Your Picks</b></a>
+					<div class="collapsible-body white" style="display: block;">
+						<ul id="picks-weeks-list"></ul>
+					</div>
+				</li>
+			</ul>
+		</li>
+		<li id="change-password-li">
+			<a id="change-password-link" class="waves-effect"><i class="mdi mdi-key-variant left"></i><b>Change your password</b></a>
+		</li>
+		<li id="login-li">
+			<a id="login-logoff" class="waves-effect"><i class="mdi mdi-account left"></i><b>Logoff</b></a>
+		</li>
+	</ul>
+</nav>
+
+<script>
+	$(".button-collapse").sideNav({
+		menuWidth: 280, // Default is 240
+		edge: 'left', // Choose the horizontal origin
+	});
+	$(".collapsible").collapsible({
+		accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+	});
+
+	for(var i=1; i<=17; i++)
+	{
+		$("#weeks-list").append("<li><a id='week"+i+"-link' class='waves-effect week'>Week "+i+"</a></li>");
+		$("#picks-weeks-list").append("<li><a id='user-picks-week"+i+"-link' class='waves-effect user-pick'>Week "+i+"</a></li>");
+	}
+</script>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+    <meta name="description" content="Weekly Pick 'em">
+    <meta name="author" content="Eric Kurtzberg">
+    <title>Weekly Pick 'em Login Page</title>
+    <!--Import Google Icon Font and Custom Icons-->
+	<link href="https://rawgit.com/Templarian/MaterialDesign-Webfont/master/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
+</head>
+
+<body>
+	<div id="header">
+		<nav class="top-nav deep-orange darken-4">
+			<a id="title" class="brand-logo center"></a>
+			<a href="#!" data-activates="menu-nav" class="button-collapse show-on-large" style="transform: translateX(0px);"><i class="mdi mdi-menu"></i></a>
+			<ul id="menu-nav" class="side-nav orange lighten-5">
+				<li id="register-li" class="remove-me">
+					<a id="register-link" class="waves-effect deep-orange lighten-3"><i class="mdi mdi-pencil left"></i><b>Register</b></a>
+				</li>
+				<li id="login-li">
+					<a id="login-logoff" class="waves-effect"><i class="mdi mdi-account left"></i><b>Login</b></a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	
+	<!--Import jQuery before materialize.js-->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<!-- Compiled and minified JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+	<!--Firebase import-->
+	<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+	<script type="text/javascript" src="../js/init.js"></script>
+	<script type="text/javascript" src="../js/links.js"></script>
+	<script type="text/javascript" src="../js/functions.js"></script>
+	<script type="text/javascript" src="../js/register.js"></script>
+	
+	<div id="main-content" class="container">
+		<div id="register" style="padding-top:50px;">
+			<div class="row">
+				<div class="input-field col s6 push-s3">
+					<i class="mdi mdi-account-card-details prefix"></i>
+					<input id="display-name" type="text">
+					<label for="display-name">Display name, e.g., Superman</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6 push-s3"> 
+					<i class="mdi mdi-account-circle prefix"></i>
+					<input id="email" type="email">
+					<label for="email" data-error="Please enter a valid email address" data-success="Valid email">Email</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6 push-s3">
+					<i class="mdi mdi-dots-horizontal prefix"></i>
+					<input id="password" type="password">
+					<label for="password">Password</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6 push-s3">
+					<i class="mdi mdi-dots-horizontal prefix"></i>
+					<input id="retype-password" type="password">
+					<label for="retype-password">Retype Password</label>
+				</div>
+			</div>
+			<div class="row" id="register-div">
+				<a id="register-button" class="btn waves-effect waves-light blue-grey lighten-1 col s2 offset-s5">Register</a>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Modal Structure -->
+	<div id="confirmation" class="modal">
+		<div class="modal-content" id="modal-text">
+			<h4>Success!</h4>
+		</div>
+		<div class="modal-footer">
+			<a href="#!" id="modal-confirm" class="modal-action modal-close waves-effect waves-green btn-flat ">Back to Login</a>
+		</div>
+	</div>
+	
+</body>
+</html>
