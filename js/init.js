@@ -15,7 +15,6 @@ var config = {
 apiKey: "AIzaSyAOuHBEOKT9SIpsAChi7Z-gs6iJD5jp3jM",
 authDomain: "nfl-weekly-pick-app.firebaseapp.com",
 databaseURL: "https://nfl-weekly-pick-app.firebaseio.com",
-storageBucket: "nfl-weekly-pick-app.appspot.com",
 };
 firebase.initializeApp(config);
 var sPath = window.location.pathname;

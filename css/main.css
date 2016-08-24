@@ -10,3 +10,11 @@ div {
 	font-size: 18px;
 	font-weight: 400;
 }
+
+p {
+	font-weight: 300;
+}
+
+.tabs .indicator {
+	background-color:	#ffffff; 
+}
