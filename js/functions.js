@@ -134,7 +134,7 @@ function gameStartTime(day, time, weekday, short=true)
  */
 function xmlImport(xml)
 {
-	var xmlDoc = $(xml)
+	var xmlDoc = $(xml);
 	var g = xmlDoc.find('g');
 	var home, away, day, time, weekday, dateString;
     var week = xmlDoc.find('gms')[0].getAttribute('w');

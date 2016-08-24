@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+    <meta name="description" content="Weekly Pick 'em">
+    <meta name="author" content="Eric Kurtzberg">
+    <title>Rules & Information</title>
+    <!--Import Google Icon Font and Custom Icons-->
+	<link href="https://rawgit.com/Templarian/MaterialDesign-Webfont/master/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+<body>
+	<div id="header"></div>
+	
+	<!--Import jQuery before materialize.js-->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<!-- Compiled and minified JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+	<!--Firebase import-->
+	<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+	<script type="text/javascript" src="../js/init.js"></script>
+	<script type="text/javascript" src="../js/links.js"></script>
+	<script type="text/javascript" src="../js/rules.js"></script>
+	
+	<div class="row deep-orange darken-4">
+		<div class="col s12">
+			<ul class="tabs deep-orange darken-4">
+				<li class="tab s3"><a class="active white-text" href="#scoring-rules">Scoring Rules</a></li>
+				<li class="tab s3"><a class="white-text" href="#making-picks">Making Your Picks</a></li>
+				<li class="tab s3"><a class="white-text" href="#viewing-picks">Viewing Picks</a></li>
+				<li class="tab s3"><a class="white-text" href="#about">About</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div id="main-content" class="container" style="width:auto;">
+		<div id="scoring-rules" class="col s12">
+			<h4>Scoring</h4>
+			<p>
+				The scoring for this league will follow the "Ranked Pick 'em" format. That is, each week, along with picking each team you predict to win,
+				you'll also rank each game 1 to the number of games played that week. For example, if there are 16 games to be played for that week, you'll rank those games 1 
+				through 16. 
+			</p>
+			<p>
+				Upon completion of a game*, you will <b>receive</b> points equal to the rank that you assigned for the corresponding game if your prediction was correct;
+				however, if your prediction was in correct, you will <b>lose</b> those points. Because of this, it is recommended to rank games you're more confident with a higher
+				point value	and rank games you're either unsure of or attempting to pick an upset with a lower point value. Please note: your season starting score will be 0, 
+				but there is no minimum score, meaning it is possible for your score to drop below zero.
+			</p>
+			<h4>Tiebreaker</h4>
+			<p>
+				In the event that two or more players have the same amount of points, the tiebreaker will go to the player who has the higher win percentage
+				(i.e., superior point percentage). Win percentage is calculated by the player's number of games correctly predicted divided by the number of completed games.
+			</p>
+			<p>
+				$$ winPercent = {numberOfWins \over numberOfCompleteGames}$$
+			</p>
+		</div>
+		<div id="making-picks" class="col s12">
+			<h4>Making Your Picks</h4>
+			<p>Description</p>
+		</div>
+		<div id="viewing-picks" class="col s12">
+			<h4>Viewing Picks</h4>
+			<p>Description</p>
+		</div>
+		<div id="about" class="col s12">
+			<h4>About</h4>
+			<p></p>
+		</div>
+	</div>
+	
+</body>

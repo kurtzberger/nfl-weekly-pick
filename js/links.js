@@ -94,4 +94,13 @@ $(document).ready(function()
 		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
 		setTimeout(function() { window.location.href = "../user-picks?week="+week; }, 600);
 	});
+    
+	/**
+	 * Load rules webpage
+	 */
+	$("#header").on('click', '#rules-link', function()
+	{
+		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
+		setTimeout(function() { window.location.href = "../rules"; }, 600);
+	});
 });
