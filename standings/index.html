@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+    <meta name="description" content="Weekly Pick 'em">
+    <meta name="author" content="Eric Kurtzberg">
+    <title>League Standings</title>
+    <!--Import Google Icon Font and Custom Icons-->
+	<link href="https://rawgit.com/Templarian/MaterialDesign-Webfont/master/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
+</head>
+<body>
+	<div id="header"></div>
+	
+	<!--Import jQuery before materialize.js-->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<!-- Compiled and minified JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+	<!--Firebase import-->
+	<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+	<script type="text/javascript" src="../js/init.js"></script>
+	<script type="text/javascript" src="../js/links.js"></script>
+	<script type="text/javascript" src="../js/functions.js"></script>
+	<script type="text/javascript" src="../js/standings.js"></script>
+	
+	<div id="main-content" class="container" style="width:auto;">
+		<div class="row center show-me" style="display: none;">
+			<img alt="logo" src="NFLLogo.png" style="float: left; width: auto; max-height: 200px;">
+			<table id="standings-table" class="striped responsive-table centered">
+				<thead>
+					<tr id="headers">
+						<th data-field="name" style="width:100px;">Name</th>
+						<th data-field="points" style="width:100px;">Points</th>
+						<th data-field="win-pct" style="width:100px;">Win %</th>
+					</tr>
+				</thead>
+				<tbody id="body"></tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
