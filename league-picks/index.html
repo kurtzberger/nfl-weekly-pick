@@ -12,6 +12,15 @@
     <!--Import materialize.css-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
 	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<style>
+		td img {
+			width: 37px; 
+			height: auto;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	</style>
 </head>
 <body>
 	<div id="header"></div>
@@ -28,17 +37,31 @@
 	<script type="text/javascript" src="../js/league-picks.js"></script>
 	
 	<div id="main-content" class="container" style="width:auto;">
+		<div class="row center show-me" style="display: none">
+			<table id="nfl-games" class="centered">
+				<thead>
+					<tr id="nfl-games-headers">
+						<th style="width: 200px;"></th>
+					</tr>
+				</thead>
+				<tbody id="nfl-games-body">
+					<tr id="home-teams">
+						<td style="width: 200px;"></td>
+					</tr>
+					<tr id="at">
+						<td style="width: 200px;"></td>
+					</tr>
+					<tr id="away-teams">
+						<td style="width: 200px;"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<div class="row center show-me" style="display: none;">
-			<table id="league-picks-table" class="striped responsive-table centered">
+			<table id="league-picks-table" class="striped centered">
 				<thead>
 					<tr id="headers">
-						<th data-field="winner" style="width:100px;">Winner</th>
-						<th data-field="visitor-score" style="width:100px;">Visitor Score</th>
-						<th data-field="visitor" style="width:100px;">Visitor Team</th>
-						<th data-field="quarter" style="width:100px;">Quarter</th>
-						<th data-field="home-score" style="width:100px;">Home Score</th>
-						<th data-field="home" style="width:100px;">Home Team</th>
-						<th data-field="date" style="width:200px;">Date</th>
+						<th data-field="name" style="width: 200px;">Name</th>
 					</tr>
 				</thead>
 				<tbody id="body"></tbody>

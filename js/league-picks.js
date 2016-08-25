@@ -47,33 +47,42 @@ $(document).ready(function()
 					Names.push(data[i].displayName);
 				}
 				
-				// place the user's display name in the header
+				// span the length of number of games for the picks header
+				$("#headers").append('<th colspan="' + Games.length*2 + '" data-field="picks">Picks</th>');
+				
+				// place the user's display name in the table. each iteration is a new row in the table
 				for(var i=0; i<Names.length; i++)
 				{
 					var name = Names[i];
-					$("#headers").append('<th colspan="2" data-field="name-' + i + '" id="' + name + '-header"></th>');
-					//$("#headers").append('<th style="width:5px;" data-field="name-points-' + i + '" id="' + name + 'points-header"></th>');
+					var tag = Users[i].replace('@','').replace('_','');	// remove illegal characters
+					$("#body").append('<tr id=' + tag + '></tr>');
 					//player's name in the table
-					$("#" + name + "-header").text(name);
-				}
+					$("#" + tag).append('<td>'+name+'</td>');
 				
-				// write the current weeks' games and players' picks to the table. each loop iteration is a row in the table
-				for(var i=0; i<Games.length; i++)
-				{
-					$("#body").append('<tr id=' + i + '></tr>');
-					$("#" + i).append('<td id="winner-' + i + '"></td>');
-					$("#" + i).append('<td id="visitor-score-' + i + '">' + (Games[i].getAttribute('vs')=="" ? 0 : Games[i].getAttribute('vs')) + '</td>');
-					$("#" + i).append('<td id="visitor-' + i + '">' + teamLogo(Games[i].getAttribute('v')) + '</td>');
-					$("#" + i).append('<td id="quarter-' + i + '">' + Games[i].getAttribute('q') + '</td>');
-					$("#" + i).append('<td id="home-score-' + i + '">' + (Games[i].getAttribute('hs')=="" ? 0 : Games[i].getAttribute('hs')) + '</td>');
-					$("#" + i).append('<td id="home-' + i + '">' + teamLogo(Games[i].getAttribute('h')) + '</td>');
-					$("#" + i).append('<td id="date-' + i + '">' + gameStartTime(Games[i].getAttribute('eid'), Games[i].getAttribute('t'), Games[i].getAttribute('d')) + '</td>');
-					// mark each users' pick cell for easier access upon next database query
-					for(var j=0; j<Names.length; j++)
+					for(var j=0; j<Games.length; j++)
 					{
-						var tag = Users[j].replace('@','').replace('_','');	// remove illegal characters
-						$("#" + i).append('<td style="width:100px;" id="' + tag + '-' + i + '"></td>');
-						$("#" + i).append('<td style="width:10px;" id="' + tag + '-' + i + '-points"></td>');
+						/*$("#" + i).append('<td id="winner-' + i + '"></td>');
+						$("#" + i).append('<td id="visitor-score-' + i + '">' + (Games[i].getAttribute('vs')=="" ? 0 : Games[i].getAttribute('vs')) + '</td>');
+						$("#" + i).append('<td id="visitor-' + i + '">' + teamLogo(Games[i].getAttribute('v')) + '</td>');
+						$("#" + i).append('<td id="quarter-' + i + '">' + Games[i].getAttribute('q') + '</td>');
+						$("#" + i).append('<td id="home-score-' + i + '">' + (Games[i].getAttribute('hs')=="" ? 0 : Games[i].getAttribute('hs')) + '</td>');
+						$("#" + i).append('<td id="home-' + i + '">' + teamLogo(Games[i].getAttribute('h')) + '</td>');
+						$("#" + i).append('<td id="date-' + i + '">' + gameStartTime(Games[i].getAttribute('eid'), Games[i].getAttribute('t'), Games[i].getAttribute('d')) + '</td>');*/
+						
+						
+						// only do this the first time through the outer loop
+						if(i==0)
+						{
+							//place the game start time as a header of the game
+							$("#nfl-games-headers").append('<th style="font-size: 14px; font-weight: 400;" id="date-' + j +'">' + gameStartTime(Games[j].getAttribute('eid'), Games[j].getAttribute('t'), Games[j].getAttribute('d')) + '</th>');
+							$("#away-teams").append('<td id="visitor-' + j + '">' + teamLogo(Games[j].getAttribute('v')) + '</td>');
+							$("#at").append("<td>@</td>");
+							$("#home-teams").append('<td id="home-' + j + '">' + teamLogo(Games[j].getAttribute('h')) + '</td>');
+						}
+						
+						// mark each users' pick cell for easier access upon next database query
+						$("#" + tag).append('<td style="width:37px;" id="' + tag + '-' + j + '"></td>');
+						$("#" + tag).append('<td style="text-align: center; width:5px;" id="' + tag + '-' + j + '-points"></td>');
 					}
 				}
 				
@@ -81,8 +90,8 @@ $(document).ready(function()
 				database.ref(path).once('value').then(function(snapshot)
 				{
 					Picks = snapshot.val();
-					userPicks(Picks);	// put all users' picks into the table, and hide other users' picks of games that haven't started
-					determineWinners(Games);	// determine the winners of each game.
+					userPicks(Picks);			// put all users' picks into the table, and hide other users' picks of games that haven't started
+					//determineWinners(Games);	// determine the winners of each game.
 					
 					// remove loading animation
 					$(".loader").remove();
@@ -92,7 +101,7 @@ $(document).ready(function()
 					// call this function regularly to fill in other user's picks after the games start
 					setInterval(function()
 					{
-						userPicks(Picks); 
+						//userPicks(Picks); 
 					}, 1000);
 				});
 			});

@@ -62,38 +62,38 @@ function teamName(name)
  */
 function teamLogo(name)
 {
-	if(name=="ARI") 	return '<img alt="Arizona Cardinals" src="http://content.sportslogos.net/logos/7/177/full/kwth8f1cfa2sch5xhjjfaof90.gif" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="ATL")return '<img alt="Atlanta Falctions" src="http://prod.static.falcons.clubs.nfl.com/nfl-assets/img/gbl-ico-team/ATL/logos/home/large.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="BAL")return '<img alt="Baltimore Ravens" src="https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Baltimore_Ravens_logo.svg/415px-Baltimore_Ravens_logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="BUF")return '<img alt="Buffalo Bills" src="http://upload.wikimedia.org/wikipedia/en/thumb/7/77/Buffalo_Bills_logo.svg/279px-Buffalo_Bills_logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="CAR")return '<img alt="Carolina Panthers" src="http://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Carolina_Panthers_logo_2012.svg/100px-Carolina_Panthers_logo_2012.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="CHI")return '<img alt="Chicago Bears" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Chicago_Bears_logo.svg/400px-Chicago_Bears_logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="CIN")return '<img alt="Cincinnati Bengals" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Cincinnati_Bengals.svg/250px-Cincinnati_Bengals.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="CLE")return '<img alt="Cleveland Browns" src="https://upload.wikimedia.org/wikipedia/en/5/5a/Cleveland_Browns_Logo.svg" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="DAL")return '<img alt="Dallas Cowboys" src="http://content.sportslogos.net/logos/7/165/full/406.gif" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="DEN")return '<img alt="Denver Broncos" src="http://upload.wikimedia.org/wikipedia/en/thumb/4/44/Denver_Broncos_logo.svg/100px-Denver_Broncos_logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="DET")return '<img alt="Detroit Lions" src="http://content.sportslogos.net/logos/7/170/full/cwuyv0w15ruuk34j9qnfuoif9.gif" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="GB")	return '<img alt="Green Bay Packers" src="http://content.sportslogos.net/logos/7/171/full/dcy03myfhffbki5d7il3.gif" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="HOU")return '<img alt="Houston Texans" src="http://upload.wikimedia.org/wikipedia/en/thumb/2/28/Houston_Texans_logo.svg/100px-Houston_Texans_logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="IND")return '<img alt="Indianapolis Colts" src="http://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Indianapolis_Colts_logo.svg/100px-Indianapolis_Colts_logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="JAX")return '<img alt="Jacksonville Jaguars" src="http://upload.wikimedia.org/wikipedia/en/thumb/4/4e/Jacksonville_Jaguars_2013_logo.png/100px-Jacksonville_Jaguars_2013_logo.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="KC") return '<img alt="Kansas City Chiefs" src="http://content.sportslogos.net/logos/7/162/full/857.gif" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="LA") return '<img alt="Los Angeles Rams" src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8b/NFL_Rams_logo.svg/281px-NFL_Rams_logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="MIA")return '<img alt="Miami Dolphins" src="http://upload.wikimedia.org/wikipedia/en/thumb/8/81/Miami_Dolphins_2013_Logo.svg/100px-Miami_Dolphins_2013_Logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="MIN")return '<img alt="Minnesota Vikings" src="http://upload.wikimedia.org/wikipedia/en/thumb/b/b0/Minnesota_Vikings_Logo_2013.png/100px-Minnesota_Vikings_Logo_2013.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="NE")	return '<img alt="New England Patriots" src="http://upload.wikimedia.org/wikipedia/en/thumb/b/b9/New_England_Patriots_logo.svg/100px-New_England_Patriots_logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="NO")	return '<img alt="New Orleans Saints" src="http://content.sportslogos.net/logos/7/175/full/907.gif" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="NYG")return '<img alt="New York Giants" src="http://content.sportslogos.net/logos/7/166/full/919.gif" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="NYJ")return '<img alt="New York Jets" src="http://upload.wikimedia.org/wikipedia/en/thumb/6/6b/New_York_Jets_logo.svg/100px-New_York_Jets_logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="OAK")return '<img alt="Oakland Raiders" src="http://upload.wikimedia.org/wikipedia/en/thumb/9/9d/Oakland_Raiders.svg/100px-Oakland_Raiders.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="PHI")return '<img alt="Philadelphia Eagles" src="http://upload.wikimedia.org/wikipedia/en/thumb/7/7f/Philadelphia_Eagles_primary_logo.svg/100px-Philadelphia_Eagles_primary_logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="PIT")return '<img alt="Pittsburgh Steelers" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Pittsburgh_Steelers_logo.svg/135px-Pittsburgh_Steelers_logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="SD")	return '<img alt="San Diego Chargers" src="http://upload.wikimedia.org/wikipedia/en/thumb/0/06/San_Diego_Chargers_logo.svg/100px-San_Diego_Chargers_logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="SF")	return '<img alt="San Francisco 49ers" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/49ers_Logo.svg/460px-49ers_Logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="SEA")return '<img alt="Seattle Seahawks" src="http://upload.wikimedia.org/wikipedia/it/0/01/Seattle_Seahawks_Logo_2012.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="TB")	return '<img alt="Tampa Bay Buccaneers" src="http://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Tampa_Bay_Buccaneers_2014.png/100px-Tampa_Bay_Buccaneers_2014.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="TEN")return '<img alt="Tennessee Titans" src="http://upload.wikimedia.org/wikipedia/en/thumb/c/c1/Tennessee_Titans_logo.svg/100px-Tennessee_Titans_logo.svg.png" style="float: left; width: auto; max-height: 35px;">';
-	else if(name=="WAS")return '<img alt="Washington Redskins" src="http://content.sportslogos.net/logos/7/168/full/im5xz2q9bjbg44xep08bf5czq.gif" style="float: left; width: auto; max-height: 35px;">';
+	if(name=="ARI") 	return '<img alt="Arizona Cardinals" src="http://content.sportslogos.net/logos/7/177/full/kwth8f1cfa2sch5xhjjfaof90.gif">';
+	else if(name=="ATL")return '<img alt="Atlanta Falctions" src="http://prod.static.falcons.clubs.nfl.com/nfl-assets/img/gbl-ico-team/ATL/logos/home/large.png" >';
+	else if(name=="BAL")return '<img alt="Baltimore Ravens" src="https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Baltimore_Ravens_logo.svg/415px-Baltimore_Ravens_logo.svg.png" >';
+	else if(name=="BUF")return '<img alt="Buffalo Bills" src="http://upload.wikimedia.org/wikipedia/en/thumb/7/77/Buffalo_Bills_logo.svg/279px-Buffalo_Bills_logo.svg.png" >';
+	else if(name=="CAR")return '<img alt="Carolina Panthers" src="http://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Carolina_Panthers_logo_2012.svg/100px-Carolina_Panthers_logo_2012.svg.png" >';
+	else if(name=="CHI")return '<img alt="Chicago Bears" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Chicago_Bears_logo.svg/400px-Chicago_Bears_logo.svg.png" >';
+	else if(name=="CIN")return '<img alt="Cincinnati Bengals" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Cincinnati_Bengals.svg/250px-Cincinnati_Bengals.svg.png" >';
+	else if(name=="CLE")return '<img alt="Cleveland Browns" src="https://upload.wikimedia.org/wikipedia/en/5/5a/Cleveland_Browns_Logo.svg" >';
+	else if(name=="DAL")return '<img alt="Dallas Cowboys" src="http://content.sportslogos.net/logos/7/165/full/406.gif" >';
+	else if(name=="DEN")return '<img alt="Denver Broncos" src="http://upload.wikimedia.org/wikipedia/en/thumb/4/44/Denver_Broncos_logo.svg/100px-Denver_Broncos_logo.svg.png" >';
+	else if(name=="DET")return '<img alt="Detroit Lions" src="http://content.sportslogos.net/logos/7/170/full/cwuyv0w15ruuk34j9qnfuoif9.gif" >';
+	else if(name=="GB")	return '<img alt="Green Bay Packers" src="http://content.sportslogos.net/logos/7/171/full/dcy03myfhffbki5d7il3.gif" >';
+	else if(name=="HOU")return '<img alt="Houston Texans" src="http://upload.wikimedia.org/wikipedia/en/thumb/2/28/Houston_Texans_logo.svg/100px-Houston_Texans_logo.svg.png" >';
+	else if(name=="IND")return '<img alt="Indianapolis Colts" src="http://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Indianapolis_Colts_logo.svg/100px-Indianapolis_Colts_logo.svg.png" >';
+	else if(name=="JAX")return '<img alt="Jacksonville Jaguars" src="http://upload.wikimedia.org/wikipedia/en/thumb/4/4e/Jacksonville_Jaguars_2013_logo.png/100px-Jacksonville_Jaguars_2013_logo.png" >';
+	else if(name=="KC") return '<img alt="Kansas City Chiefs" src="http://content.sportslogos.net/logos/7/162/full/857.gif" >';
+	else if(name=="LA") return '<img alt="Los Angeles Rams" src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8b/NFL_Rams_logo.svg/281px-NFL_Rams_logo.svg.png" >';
+	else if(name=="MIA")return '<img alt="Miami Dolphins" src="http://upload.wikimedia.org/wikipedia/en/thumb/8/81/Miami_Dolphins_2013_Logo.svg/100px-Miami_Dolphins_2013_Logo.svg.png" >';
+	else if(name=="MIN")return '<img alt="Minnesota Vikings" src="http://upload.wikimedia.org/wikipedia/en/thumb/b/b0/Minnesota_Vikings_Logo_2013.png/100px-Minnesota_Vikings_Logo_2013.png" >';
+	else if(name=="NE")	return '<img alt="New England Patriots" src="http://upload.wikimedia.org/wikipedia/en/thumb/b/b9/New_England_Patriots_logo.svg/100px-New_England_Patriots_logo.svg.png" >';
+	else if(name=="NO")	return '<img alt="New Orleans Saints" src="http://content.sportslogos.net/logos/7/175/full/907.gif" >';
+	else if(name=="NYG")return '<img alt="New York Giants" src="http://content.sportslogos.net/logos/7/166/full/919.gif" >';
+	else if(name=="NYJ")return '<img alt="New York Jets" src="http://upload.wikimedia.org/wikipedia/en/thumb/6/6b/New_York_Jets_logo.svg/100px-New_York_Jets_logo.svg.png" >';
+	else if(name=="OAK")return '<img alt="Oakland Raiders" src="http://upload.wikimedia.org/wikipedia/en/thumb/9/9d/Oakland_Raiders.svg/100px-Oakland_Raiders.svg.png" >';
+	else if(name=="PHI")return '<img alt="Philadelphia Eagles" src="http://upload.wikimedia.org/wikipedia/en/thumb/7/7f/Philadelphia_Eagles_primary_logo.svg/100px-Philadelphia_Eagles_primary_logo.svg.png" >';
+	else if(name=="PIT")return '<img alt="Pittsburgh Steelers" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Pittsburgh_Steelers_logo.svg/135px-Pittsburgh_Steelers_logo.svg.png" >';
+	else if(name=="SD")	return '<img alt="San Diego Chargers" src="http://upload.wikimedia.org/wikipedia/en/thumb/0/06/San_Diego_Chargers_logo.svg/100px-San_Diego_Chargers_logo.svg.png" >';
+	else if(name=="SF")	return '<img alt="San Francisco 49ers" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/49ers_Logo.svg/460px-49ers_Logo.svg.png" >';
+	else if(name=="SEA")return '<img alt="Seattle Seahawks" src="http://upload.wikimedia.org/wikipedia/it/0/01/Seattle_Seahawks_Logo_2012.png" >';
+	else if(name=="TB")	return '<img alt="Tampa Bay Buccaneers" src="http://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Tampa_Bay_Buccaneers_2014.png/100px-Tampa_Bay_Buccaneers_2014.png" >';
+	else if(name=="TEN")return '<img alt="Tennessee Titans" src="http://upload.wikimedia.org/wikipedia/en/thumb/c/c1/Tennessee_Titans_logo.svg/100px-Tennessee_Titans_logo.svg.png" >';
+	else if(name=="WAS")return '<img alt="Washington Redskins" src="http://content.sportslogos.net/logos/7/168/full/im5xz2q9bjbg44xep08bf5czq.gif" >';
 	else				return '';
 
 };
@@ -124,8 +124,8 @@ function gameStartTime(day, time, weekday, short=true)
 		return date.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }) + " " +
 			date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short'});
 	else
-		return date.toLocaleString('en-US', { year: 'numeric', month: 'numeric', day: 'numeric' }) + " " +
-			date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short'});
+		return date.toLocaleString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' }) + " " +
+			date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric',});
 };
 
 /**
@@ -137,8 +137,8 @@ function xmlImport(xml)
 	var xmlDoc = $(xml);
 	var g = xmlDoc.find('g');
 	var home, away, day, time, weekday, dateString;
-    var week = xmlDoc.find('gms')[0].getAttribute('w');
-    var season = xmlDoc.find('gms')[0].getAttribute('y');
+    //var week = xmlDoc.find('gms')[0].getAttribute('w');
+    //var season = xmlDoc.find('gms')[0].getAttribute('y');
     
 	for(var i=0; i<g.length; i++)
 	{
@@ -183,12 +183,13 @@ function disableStartedGames()
 		{
 			$("input[name=game" + i + "]").prop('disabled', true);
 			$("#dropdown-" + i).prop('disabled', true);
+			$('select').material_select();	// update material select UI
 			$("#reset-" + i).prop('disabled', true);
 			$('#body tr').eq(i).css({ opacity: 0.5 });
 			startedGames++;
 		}
 	}
-	if(startedGames == numberOfGames) $("#submit-picks").hide();	// hide submit button if all games have started
+	if(startedGames === numberOfGames) $("#submit-picks").hide();	// hide submit button if all games have started
 };
 
 function pointAssignments()
@@ -397,6 +398,7 @@ function userPicks(Picks)
 	{
 		for(var j in Picks[i])
 		{
+			debugger;
 			gameTime = Date.parse($("#date-" + Picks[i][j].game).text());
 			var tag = (j + '-' + Picks[i][j].game).replace('@', '').replace('_','');	// remove illegal characters
 			if(gameTime > now && j != UID)

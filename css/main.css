@@ -2,10 +2,6 @@ body {
 	background-color: #e0e0e0;
 }
 
-td img{
-	padding-left: 20px;
-}
-
 div {
 	font-size: 18px;
 	font-weight: 400;
@@ -17,4 +13,8 @@ p {
 
 .tabs .indicator {
 	background-color:	#ffffff; 
+}
+
+h4 {
+	padding-top: 40px;
 }
