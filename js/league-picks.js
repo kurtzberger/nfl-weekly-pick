@@ -57,7 +57,7 @@ $(document).ready(function()
 					var tag = Users[i].replace('@','').replace('_','');	// remove illegal characters
 					$("#body").append('<tr id=' + tag + '></tr>');
 					//player's name in the table
-					$("#" + tag).append('<td>'+name+'</td>');
+					$("#" + tag).append('<td style="font-size: 14px">'+name+'</td>');
 				
 					for(var j=0; j<Games.length; j++)
 					{
