@@ -12,32 +12,10 @@ $(document).ready(function()
 	 */
 	$("#header").on("click", "#standings-link", function()
 	{
-		var user = firebase.auth().currentUser;	// current user
-		setTimeout(function() { $(".button-collapse").sideNav("hide") }, 400);
-		if(user==null)	// no user is logged in
-		{
-			Materialize.toast("Please log in first to access this page.", 4000, "red darken-1");
-		} else if(sPage != "standings")
+		if(sPage != "standings")
 		{
 			if(sPage == "") setTimeout(function() { window.location.href = "standings"; }, 600);
 			else if(sPage != "standings") setTimeout(function() { window.location.href = "../standings"; }, 600);
-		}
-	});
-	
-	/**
-	 *  Load user picks page.
-	 *	Only allow visit of this link if user is logged in.
-	 */
-	$("#header").on("click", "#user-picks-link", function()
-	{
-		var user = firebase.auth().currentUser;	// current user
-		setTimeout(function() { $(".button-collapse").sideNav("hide") }, 400);
-		if(user==null)	// no user is logged in
-		{
-			Materialize.toast("Please log in first to access this page.", 4000, "red darken-1");
-		} else if(sPage != "user-picks")
-		{
-			if(sPage != "user-picks") setTimeout(function() { window.location.href = "../user-picks"; }, 600);
 		}
 	});
 	
@@ -80,7 +58,10 @@ $(document).ready(function()
 	 */
 	$("#header").on('click', '.week', function()
 	{
-		var week = $(this).text().substr($(this).text().indexOf(" ") + 1);
+		debugger;
+		var START = 5; // starting index to search for space because 'Week' has 4 characters
+		var secondSpace = $(this).text().indexOf(" ", 5); // find second space if there is one. This is to delete the 'Current Week' part of the link if applicable.
+		var week = $(this).text().substring(START, (secondSpace==-1) ? START+1 : secondSpace);
 		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
 		setTimeout(function() { window.location.href = "../league-picks?week="+week; }, 600);
 	});
@@ -90,7 +71,9 @@ $(document).ready(function()
 	 */
 	$("#header").on('click', '.user-pick', function()
 	{
-		var week = $(this).text().substr($(this).text().indexOf(" ") + 1);
+		var START = 5; // starting index to search for space because 'Week' has 4 characters
+		var secondSpace = $(this).text().indexOf(" ", 5); // find second space if there is one. This is to delete the 'Current Week' part of the link if applicable.
+		var week = $(this).text().substring(START, (secondSpace==-1) ? START+1 : secondSpace);
 		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
 		setTimeout(function() { window.location.href = "../user-picks?week="+week; }, 600);
 	});

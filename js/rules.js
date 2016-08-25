@@ -6,7 +6,12 @@ $(document).ready(function()
 		$("#title").text("League Rules & Information");
 		
 		// initialize tabs
-		$('ul.tabs').tabs();		
+		$('ul.tabs').tabs();
 	});
+});
+
+$(window).on('beforeunload', function()
+{
+	$(window).scrollTop(0);	// scroll to top before unload
 });
 

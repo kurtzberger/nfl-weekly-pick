@@ -79,14 +79,15 @@ $(document).ready(function()
 						for(var i=0; i<Sorted.length; i++)
 						{
 							var name = Sorted[i].name;
+							var tag = Users[i].replace('@','').replace('_','');	// remove illegal characters
 							var winPct = (Sorted[i].wins * 100.0 / completedGames).toFixed(2);
-							$("#body").append('<tr id="' + name + '"></tr>');
+							$("#body").append('<tr id="' + tag + '"></tr>');
 							//player's name in the table
-							$("#" + name).append('<td>' + name + '</td>');
+							$("#" + tag).append('<td>' + name + '</td>');
 							//player's score
-							$("#" + name).append('<td>' + Sorted[i].points + '</td>');
+							$("#" + tag).append('<td>' + Sorted[i].points + '</td>');
 							//player's win %
-							$("#" + name).append('<td>' + (isNaN(winPct) ? '0.00' : winPct) + '%</td>');
+							$("#" + tag).append('<td>' + (isNaN(winPct) ? '0.00' : winPct) + '%</td>');
 						}
 						
 						// remove loading animation

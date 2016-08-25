@@ -38,6 +38,7 @@
 </nav>
 
 <script>
+	var week;
 	$(".button-collapse").sideNav({
 		menuWidth: 280, // Default is 240
 		edge: 'left' // Choose the horizontal origin
@@ -45,10 +46,27 @@
 	$(".collapsible").collapsible({
 		accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
 	});
-
-	for(var i=1; i<=17; i++)
+	$.get('http://www.nfl.com/liveupdate/scorestrip/ss.xml', function ( data )
 	{
-		$("#weeks-list").append("<li><a id='week"+i+"-link' class='waves-effect week'>Week "+i+"</a></li>");
-		$("#picks-weeks-list").append("<li><a id='user-picks-week"+i+"-link' class='waves-effect user-pick'>Week "+i+"</a></li>");
-	}
+		var seasonType = $(data).find('g')[0].getAttribute('gt');
+				if(seasonType == "PRE")
+					week = 1;
+				else if(seasonType == "REG")
+					week = $(data).find('gms')[0].getAttribute('w');
+				else
+					week = 17;
+		for(var i=1; i<=17; i++)
+		{
+			$("#weeks-list").append("<li><a id='week"+i+"-link' class='waves-effect week'>Week "+i+"</a></li>");
+			$("#picks-weeks-list").append("<li><a id='user-picks-week"+i+"-link' class='waves-effect user-pick'>Week "+i+"</a></li>");
+			if(i == week) 
+			{
+				$("#week"+i+"-link, #user-picks-week"+i+"-link")
+						.css({'font-weight': 'bold'})	// set current week text to bold
+						.append(" - Current Week");
+				
+				
+			}
+		}
+	});
 </script>
