@@ -74,15 +74,15 @@ $(document).ready(function()
 						if(i==0)
 						{
 							//place the game start time as a header of the game
-							$("#nfl-games-headers").append('<th style="font-size: 14px; font-weight: 400;" id="date-' + j +'">' + gameStartTime(Games[j].getAttribute('eid'), Games[j].getAttribute('t'), Games[j].getAttribute('d')) + '</th>');
-							$("#away-teams").append('<td id="visitor-' + j + '">' + teamLogo(Games[j].getAttribute('v')) + '</td>');
-							$("#at").append("<td>@</td>");
-							$("#home-teams").append('<td id="home-' + j + '">' + teamLogo(Games[j].getAttribute('h')) + '</td>');
+							$("#nfl-games-headers").append('<th colspan="2" style="font-size: 14px; font-weight: 400;" id="date-' + j +'">' + gameStartTime(Games[j].getAttribute('eid'), Games[j].getAttribute('t'), Games[j].getAttribute('d')) + '</th>');
+							$("#away-teams").append('<td style="max-width:47px; min-width:47px;" id="visitor-' + j + '">' + teamLogo(Games[j].getAttribute('v')) + '</td>').append('<td style="width:25px"></td>');
+							$("#at").append('<td style="max-width:47px; min-width:47px;">@</td>').append('<td style="width:25px"></td>');
+							$("#home-teams").append('<td style="max-width:47px; min-width:47px;" id="home-' + j + '">' + teamLogo(Games[j].getAttribute('h')) + '</td>').append('<td style="width:25px"></td>');
 						}
 						
 						// mark each users' pick cell for easier access upon next database query
-						$("#" + tag).append('<td style="width:37px;" id="' + tag + '-' + j + '"></td>');
-						$("#" + tag).append('<td style="text-align: center; width:5px;" id="' + tag + '-' + j + '-points"></td>');
+						$("#" + tag).append('<td style="max-width:47px; min-width:47px;" id="' + tag + '-' + j + '"></td>');
+						$("#" + tag).append('<td style="text-align: center; max-width:25px; min-width:25px;" id="' + tag + '-' + j + '-points"></td>');
 					}
 				}
 				
