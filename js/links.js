@@ -12,10 +12,10 @@ $(document).ready(function()
 	 */
 	$("#header").on("click", "#standings-link", function()
 	{
-		if(sPage != "standings")
+		if(sPage !== "standings")
 		{
-			if(sPage == "") setTimeout(function() { window.location.href = "standings"; }, 600);
-			else if(sPage != "standings") setTimeout(function() { window.location.href = "../standings"; }, 600);
+			if(sPage === "") setTimeout(function() { window.location.href = "standings"; }, 600);
+			else if(sPage !== "standings") setTimeout(function() { window.location.href = "../standings"; }, 600);
 		}
 	});
 	
@@ -24,8 +24,8 @@ $(document).ready(function()
 	 */
 	$("#header").on("click", "#register-link", function()
 	{
-		setTimeout(function() { $(".button-collapse").sideNav("hide") }, 400);
-		if(sPage != "register") setTimeout(function() { window.location.href = "../register"; }, 600);
+		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
+		if(sPage !== "register") setTimeout(function() { window.location.href = "../register"; }, 600);
 	});
 	
 	/**
@@ -34,14 +34,14 @@ $(document).ready(function()
 	$("#header").on("click", "#change-password-link", function()
 	{
 		setTimeout(function() { $(".button-collapse").sideNav("hide") }, 400);
-		if(sPage != "change-password")	setTimeout(function() { window.location.href = "../change-password"; }, 600);
+		if(sPage !== "change-password")	setTimeout(function() { window.location.href = "../change-password"; }, 600);
 	});
 	
 	$("#header").on("click", '#login-li', function()
 	{
 		var user = firebase.auth().currentUser;	// current user
-		setTimeout(function() { $(".button-collapse").sideNav("hide") }, 400);
-		if(user != null)	// logged in
+		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
+		if(user !== null)	// logged in
 		{
 			firebase.auth().signOut().then(function()
 			{
@@ -50,7 +50,7 @@ $(document).ready(function()
 				Materialize.toast(error.message, 4000, "red-darken-1");
 			});
 		}
-		if(sPage != "login") setTimeout(function() { window.location.href = "../login"; }, 600);
+		if(sPage !== "login") setTimeout(function() { window.location.href = "../login"; }, 600);
 	});
 	
 	/**
@@ -61,7 +61,7 @@ $(document).ready(function()
 		debugger;
 		var START = 5; // starting index to search for space because 'Week' has 4 characters
 		var secondSpace = $(this).text().indexOf(" ", 5); // find second space if there is one. This is to delete the 'Current Week' part of the link if applicable.
-		var week = $(this).text().substring(START, (secondSpace==-1) ? START+1 : secondSpace);
+		var week = $(this).text().substring(START, (secondSpace===-1) ? START+1 : secondSpace);
 		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
 		setTimeout(function() { window.location.href = "../league-picks?week="+week; }, 600);
 	});
@@ -73,7 +73,7 @@ $(document).ready(function()
 	{
 		var START = 5; // starting index to search for space because 'Week' has 4 characters
 		var secondSpace = $(this).text().indexOf(" ", 5); // find second space if there is one. This is to delete the 'Current Week' part of the link if applicable.
-		var week = $(this).text().substring(START, (secondSpace==-1) ? START+1 : secondSpace);
+		var week = $(this).text().substring(START, (secondSpace===-1) ? START+1 : secondSpace);
 		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
 		setTimeout(function() { window.location.href = "../user-picks?week="+week; }, 600);
 	});
@@ -84,6 +84,6 @@ $(document).ready(function()
 	$("#header").on('click', '#rules-link', function()
 	{
 		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
-		setTimeout(function() { window.location.href = "../rules"; }, 600);
+		if(sPage !== "rules") setTimeout(function() { window.location.href = "../rules"; }, 600);
 	});
 });

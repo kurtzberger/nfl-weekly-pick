@@ -40,38 +40,36 @@
 	
 	<div id="main-content" class="container" style="width:auto;">
 		<div id="scoring-rules" class="col s12">
-			<h4 style="padding-top: 0px;">Scoring</h4>
-			<p>
+			<h3 style="padding-top: 0px;">Scoring</h3>
+			<p class="flow-text">
 				The scoring for this league will follow the "Straight-Up Weekly Ranked Pick 'em" format. That is, each week, along with picking each team you predict to win,
 				you will also rank each game 1 to the number of games played that week. For example, if there are 16 games to be played for that week, you will rank those games 1 
 				through 16. Please note that "Straight-Up" means the spread is <b>NOT</b> a factor in determining if your pick was correct or not.
 				You only have to worry about picking the winner of each game. Note: if a game ends in a tie, the corresponding pick is marked incorrect.
 			</p>
-			<p>
+			<p class="flow-text">
 				Upon completion of a game*, if your prediction was correct, you will <b>receive</b> points equal to the rank that you assigned for the corresponding game;
 				however, if your prediction was incorrect, you will <b>lose</b> those points. Because of this, it is recommended to rank games you are more confident with a higher
 				point value	and rank games you are either unsure of or attempting to pick an upset with a lower point value. Please note: your season starting score will be 0, 
 				but there is no minimum score, meaning it is possible for your score to drop below zero.
 			</p>
-			<p>
+			<p class="flow-text">
 				There are no weekly winners. The winner of the league is determined by the player with the most points at the end of the NFL regular season (week 17).
 			</p>
-			<h4>Tiebreaker</h4>
-			<p>
+			<h3>Tiebreaker</h3>
+			<p class="flow-text">
 				In the event that two or more players have the same amount of points, the tiebreaker will go to the player who has the higher win percentage.
 				Win percentage is calculated by the player's correctly predicted games divided by the number of completed games.
 			</p>
 			<p>
 				$$ winPercent = {numberOfWins \over numberOfCompleteGames} $$
 			</p>
-			<h4>
-				Missed Picks & Unassigned Points
-			</h4>
-			<p>
+			<h3>Missed Picks & Unassigned Points</h3>
+			<p class="flow-text">
 				Any pick(s) that were not made prior to game time will be marked as incorrect at completion of that game. The corresponding unassigned point(s)
 				will be subtracted from your point total.
 			</p>
-			<p>
+			<p class="flow-text">
 				For example: In a week with 15 games played, two picks were left unmade. The two unassigned points were 5 and 1 for a total of 6 unassigned points.
 				After calculating the score (using the rules stated above), those 6 points will be subtracted from the total.
 			</p>
@@ -80,14 +78,14 @@
 			</p>
 		</div>
 		<div id="making-picks" class="col s12">
-			<h4 style="padding-top: 0px;">Making Your Picks</h4>
+			<h3 style="padding-top: 0px;">Making Your Picks</h3>
 			<div class="row">
 				<div class="col s6">
-					<p>
-						To make your picks click the menu button in the upper left corner, select "Your Picks", and then select the desired week. The current NFL week will be
+					<p class="flow-text">
+						To make your picks, click the menu button in the upper left corner, select "Your Picks", and then select the desired week. The current NFL week will be
 						marked with bold text.
 					</p>
-					<p>
+					<p class="flow-text">
 						After navigating to the desired week, a table will be loaded containing all NFL games of that week (see screenshot below). Any picks that you have already
 						submitted will be loaded into the table as well.
 					</p>
@@ -97,38 +95,47 @@
 				</div>
 			</div>
 			<img style="display: block; margin-left: auto; margin-right: auto; width: 100%; height: auto;" src="MakingPicksTable.PNG">
-			<p>
+			<p class="flow-text">
 				Use the radio buttons to select either the home or away team, and then use the drop down menu under the "Assigned Points" column to assign a point value to your pick.
 			</p>
-			<h4>Clearing a Pick</h4>
-			<p>
+			<h3>Clearing a Pick</h3>
+			<p class="flow-text">
 				If you wish clear a pick, use the corresponding reset button on the right of each row. Not all the picks must be submitted together, so the resetting feature is
-				useful when you have mistakenly made a pick before wanting submit it.
+				useful when you have mistakenly made a pick before wanting submit it. If your intention is to clear a pick that you have already submitted before, be sure to submit your picks
+				before navigating away from the page to ensure this change is reflected the database.
 			</p>
-			<h4>Submitting Your Picks</h4>
-			<p>
-				Use the submit button at the bottom of the page to submit your picks. Picks that are cleared (i.e., no team is selected AND no point is assigned) will not be submitted.
-				An error message will be displayed if attempting to submit an incomplete pick. An incomplete pick can be either: A team was selected but no point value assigned, or a
+			<h3>Submitting Your Picks</h3>
+			<p class="flow-text">
+				Use the submit button at the bottom of the page to submit your picks. An error message will be displayed if attempting to submit an incomplete pick. An incomplete pick can be either: A team was selected but no point value assigned, or a
 				point value was assigned but no team selected. To correct this error, you must either clear the pick (no errors occur with cleared picks), or complete it by
 				selecting a	team or assigning a point value (depending on which is missing).
 			</p>
-			<h4>Pick Deadlines</h4>
-			<p>
+			<h3>Pick Deadlines</h3>
+			<p class="flow-text">
 				Picks may be changed and resubmitted as often as you'd like; however, picks will be locked at kickoff. The kickoff date and time for each game is listed under the "Date" column.
 			</p>
 		</div>
 		<div id="viewing-picks" class="col s12">
-			<h4 style="padding-top: 0px;">Viewing Picks</h4>
+			<h3 style="padding-top: 0px;">Viewing Picks</h3>
 			<div class="row">
 				<div class="col s6">
-					<p>
-						To view 
+					<p class="flow-text">
+						To view picks made by the all players, click the menu button in the upper left corner, select "League Picks", and then select the desired week. The current NFL week will be marked
+						with bold text.
+					</p>
+					<p class="flow-text">
+						After navigating to the desired week, two tables will be loaded (see screenshot below). The table displayed on top will have the current week's NFL matchups with kickoff time, visitor
+						&amp; home scores, and the current quarter.
 					</p>
 				</div>
 				<div class="col s6">
 					<img style="display: block; margin-left: auto; margin-right: auto;" src="ViewingPicksMenuNav.PNG">
 				</div>
 			</div>
+			<img style="display: block; margin-left: auto; margin-right: auto; width: 100%; height: auto;" src="ViewingPicksTable.PNG">
+			<p class="flow-text">
+				Here all picks, other than your own, will be hidden until kickoff. This is to prevent other players from seeing each other's picks before the picks locked.
+			</p>
 		</div>
 		<div id="about" class="col s12">
 			<h4 style="padding-top: 0px;">About</h4>

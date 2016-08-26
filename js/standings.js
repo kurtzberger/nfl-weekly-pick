@@ -10,7 +10,7 @@ $(document).ready(function()
 	$("#header").load("../header.html", function()
 	{
 		var seasonType, week, localURL, Games;
-		var Names = [], Users = [], Picks = {}, Standings = {};
+		var Names = [], Users = [], Standings = {};
 		// this URL is used just for this webpage
 		localURL = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
 		
@@ -40,21 +40,21 @@ $(document).ready(function()
 				Standings[i] = {
 					name:				data[i].displayName,
 					points:				0,
-					wins:				0,
+					wins:				0
 				};
 			}
 			
 			$.get(localURL, function( data )
 			{
 				seasonType = $(data).find('g')[0].getAttribute('gt');
-				if(seasonType == "PRE")
+				if(seasonType === "PRE")
 					week = 1;
-				else if(seasonType == "REG")
+				else if(seasonType === "REG")
 					week = $(data).find('gms')[0].getAttribute('w');
 				else
 					week = 17;
 			
-				processStandings(week, Picks, Games, Standings);
+				processStandings(week, Games, Standings);
 				var timerID = setInterval( function()
 				{
 					
@@ -103,7 +103,7 @@ $(document).ready(function()
 	});
 });
 
-function processStandings(week, Picks, Games, Standings)
+function processStandings(week, Games, Standings)
 {
 	for(var n=1; n<=week; n++)
 	{
@@ -113,14 +113,14 @@ function processStandings(week, Picks, Games, Standings)
 
 function processLoop(n, week, Games, Standings)
 {
-	getGames(n, Games, Standings, function(uWeek, uGames, uStandings)
+	getGames(n, Games, Standings, function(uWeek, uGames, finals, uStandings)
 	{
 		database.ref(season + '/picks/week' + uWeek).once('value').then(function(snapshot)
 		{
-			Picks = snapshot.val();
-			Standings = calcStandings(Picks, uGames, uStandings);
-			completedGames += uGames.length;
-			finished = (n == week);
+			var Picks = snapshot.val();
+			Standings = calcStandings(Picks, uGames, finals, uStandings);
+			completedGames += finals;
+			finished = (n === week);
 			
 		});
 	});
@@ -132,20 +132,22 @@ function getGames(n, Games, Standings, callback)
 	$.get(localURL, function( data )
 	{
 		var xmlDoc = $(data);
-		Games = xmlDoc.find('g[q="F"], g[q="FO"]'); // only concerned with completed games
+		var finals = xmlDoc.find('g[q="F"], g[q="FO"]').length;
+		Games = xmlDoc.find('g');
 		
 		// callback function returning the modified standings
-		callback(n, Games, Standings);
+		callback(n, Games, finals, Standings);
 	});
 };
 
-function calcStandings(Picks, Games, Standings)
+function calcStandings(Picks, Games, finals, Standings)
 {
 	// enter possible unassigned points for this week
 	for(var i in Standings)
-		Standings[i].unassignedPoints = (Games.length * (Games.length + 1)) / 2;
+		Standings[i].unassignedPoints = (finals * (finals + 1)) / 2;
 	
 	var Winners = determineWinners(Games);
+	debugger;
 	
 	// outer loop is games
 	for(var i in Picks)
@@ -154,7 +156,7 @@ function calcStandings(Picks, Games, Standings)
 		for(var j in Picks[i])
 		{
 			// if user's pick was correct credit them points and if they were wrong discredit them points
-			if(Picks[i][j].pick == Winners[Picks[i][j].game])
+			if(Picks[i][j].pick === Winners[Picks[i][j].game])
 			{
 				Standings[j].points += Picks[i][j].points;
 				Standings[j].wins++;
