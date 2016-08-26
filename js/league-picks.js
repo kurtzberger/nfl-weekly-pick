@@ -29,11 +29,10 @@ $(document).ready(function()
 		{
 			var xmlDoc = $(data);
 			week = xmlDoc.find('gms')[0].getAttribute('w');
-			season = xmlDoc.find('gms')[0].getAttribute('y');
 			Games = xmlDoc.find('g');
 			
 			path = season + '/picks/week' + week;
-			var Names = [], Users = [], Picks = {};
+			var Names = [], Users = [], Picks = {}, Winners = [];
 			
 			// search database for all users' display name and then finish putting in all data except user's picks
 			// users' picks will be handled in a seperate database query
@@ -57,27 +56,22 @@ $(document).ready(function()
 					var tag = Users[i].replace('@','').replace('_','');	// remove illegal characters
 					$("#body").append('<tr id=' + tag + '></tr>');
 					//player's name in the table
-					$("#" + tag).append('<td style="font-size: 14px">'+name+'</td>');
+					$("#" + tag).append('<td>'+name+'</td>');
 				
 					for(var j=0; j<Games.length; j++)
-					{
-						/*$("#" + i).append('<td id="winner-' + i + '"></td>');
-						$("#" + i).append('<td id="visitor-score-' + i + '">' + (Games[i].getAttribute('vs')=="" ? 0 : Games[i].getAttribute('vs')) + '</td>');
-						$("#" + i).append('<td id="visitor-' + i + '">' + teamLogo(Games[i].getAttribute('v')) + '</td>');
-						$("#" + i).append('<td id="quarter-' + i + '">' + Games[i].getAttribute('q') + '</td>');
-						$("#" + i).append('<td id="home-score-' + i + '">' + (Games[i].getAttribute('hs')=="" ? 0 : Games[i].getAttribute('hs')) + '</td>');
-						$("#" + i).append('<td id="home-' + i + '">' + teamLogo(Games[i].getAttribute('h')) + '</td>');
-						$("#" + i).append('<td id="date-' + i + '">' + gameStartTime(Games[i].getAttribute('eid'), Games[i].getAttribute('t'), Games[i].getAttribute('d')) + '</td>');*/
-						
+					{				
 						
 						// only do this the first time through the outer loop
-						if(i==0)
+						if(i===0)
 						{
 							//place the game start time as a header of the game
-							$("#nfl-games-headers").append('<th colspan="2" style="font-size: 14px; font-weight: 400;" id="date-' + j +'">' + gameStartTime(Games[j].getAttribute('eid'), Games[j].getAttribute('t'), Games[j].getAttribute('d')) + '</th>');
-							$("#away-teams").append('<td style="max-width:47px; min-width:47px;" id="visitor-' + j + '">' + teamLogo(Games[j].getAttribute('v')) + '</td>').append('<td style="width:25px"></td>');
-							$("#at").append('<td style="max-width:47px; min-width:47px;">@</td>').append('<td style="width:25px"></td>');
-							$("#home-teams").append('<td style="max-width:47px; min-width:47px;" id="home-' + j + '">' + teamLogo(Games[j].getAttribute('h')) + '</td>').append('<td style="width:25px"></td>');
+							$("#nfl-games-headers").append('<th colspan="2" style="font-size: 14px; font-weight: 400; max-width:72px; min-width:72px; text-align: center;" id="date-' + j +'">' + 
+									gameStartTime(Games[j].getAttribute('eid'), Games[j].getAttribute('t'), Games[j].getAttribute('d')) + '</th>');
+							$("#away-teams").append('<td style="text-align: center;" colspan="2" id="visitor-' + j + '">' + teamLogo(Games[j].getAttribute('v')) + '</td>');
+							$("#away-score").append('<td style="text-align: center;" colspan="2">' + ((Games[j].getAttribute('vs') === '') ? 0 : Games[j].getAttribute('vs')) + '</td>');
+							$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder">' + getQuarter(Games[j].getAttribute('q')) + '</td>');
+							$("#home-score").append('<td style="text-align: center;" colspan="2">' + ((Games[j].getAttribute('hs') === '') ? 0 : Games[j].getAttribute('hs')) + '</td>');
+							$("#home-teams").append('<td style="text-align: center; border-bottom: thin solid #d0d0d0;" colspan="2" id="home-' + j + '">' + teamLogo(Games[j].getAttribute('h')) + '</td>');
 						}
 						
 						// mark each users' pick cell for easier access upon next database query
@@ -90,8 +84,10 @@ $(document).ready(function()
 				database.ref(path).once('value').then(function(snapshot)
 				{
 					Picks = snapshot.val();
-					userPicks(Picks);			// put all users' picks into the table, and hide other users' picks of games that haven't started
-					//determineWinners(Games);	// determine the winners of each game.
+					Winners = determineWinners(xmlDoc.find('g'));
+					// put all users' picks into the table, and hide other users' picks of games that haven't started
+					// mark the users games correct (green) or wrong (red) as well if the games are complete.
+					userPicks(Picks, Winners);															
 					
 					// remove loading animation
 					$(".loader").remove();
@@ -99,12 +95,34 @@ $(document).ready(function()
 					$(".show-me").toggle();
 					
 					// call this function regularly to fill in other user's picks after the games start
-					setInterval(function()
+					var timeID = setInterval(function()
 					{
-						//userPicks(Picks); 
+						if(xmlDoc.find('g[q="F"], g[q="FO"]').length === Games.length)
+						{
+							clearInterval(timeID);
+							return;
+						}
+						userPicks(Picks, Winners); 
 					}, 1000);
 				});
 			});
 		});
 	});
 });
+
+/**
+ * Function to decipher the NFL quarter read in from NFL.com
+ * @param {string} quarter string read in from NFL.com (e.g., "1", "4", "F", "FO")
+ * @return {string} returns a more readable string giving the parameter passed
+ */
+function getQuarter(quarter)
+{
+	switch(quarter)
+	{
+		case "P" :	return "Pre-game";
+		case "F" :	return "Final";
+		case "FO":	return "Final OT";
+		case "H" :	return "Halftime";
+		default	 :	return quarter + "Q";
+	}
+};

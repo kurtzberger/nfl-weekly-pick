@@ -22,6 +22,25 @@
 		}
 		.spacer {
 			min-width: 150px;
+			max-width: 150px;
+			text-align: right;
+			padding-right: 10px;
+		}
+		td {
+			font-size: 14px;
+			border-radius: 0px;
+		}
+		.cellHeader {
+			font-size: 17px;
+		}
+		
+		.verticalLine {
+			border-right: thin solid #d0d0d0;
+		}
+
+		.quarterBorder {
+			border-bottom: thin solid #d0d0d0;
+			border-top: thin solid #d0d0d0;
 		}
 	</style>
 </head>
@@ -41,27 +60,33 @@
 	
 	<div id="main-content" class="container" style="width:auto;">
 		<div class="row center show-me" style="display: none">
-			<table id="nfl-games" class="centered">
+			<table id="nfl-games">
 				<thead>
 					<tr id="nfl-games-headers">
-						<th class="spacer"></th>
+						<th class="spacer verticalLine">Date</th>
 					</tr>
 				</thead>
 				<tbody id="nfl-games-body">
-					<tr id="home-teams">
-						<td class="spacer"></td>
-					</tr>
-					<tr id="at">
-						<td class="spacer"></td>
-					</tr>
 					<tr id="away-teams">
-						<td class="spacer"></td>
+						<td class="spacer verticalLine cellHeader"><b>Visiting Team</b></td>
+					</tr>
+					<tr id="away-score">
+						<td class="spacer verticalLine cellHeader"><b>Score</b></td>
+					</tr>
+					<tr id="quarter">
+						<td class="spacer verticalLine quarterBorder cellHeader"><b>Quarter</b></td>
+					</tr>
+					<tr id="home-score">
+						<td class="spacer verticalLine cellHeader"><b>Score</b></td>
+					</tr>
+					<tr id="home-teams">
+						<td class="spacer verticalLine cellHeader" style="border-bottom: thin solid #d0d0d0;"><b>Home Team</b></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 		<div class="row center show-me" style="display: none;">
-			<table id="league-picks-table" class="striped centered">
+			<table id="league-picks-table" class="bordered centered">
 				<thead>
 					<tr id="headers">
 						<th data-field="name" class="spacer">Name</th>
