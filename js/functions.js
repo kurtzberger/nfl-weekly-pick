@@ -398,12 +398,11 @@ function userPicks(Picks)
 	{
 		for(var j in Picks[i])
 		{
-			debugger;
 			gameTime = Date.parse($("#date-" + Picks[i][j].game).text());
 			var tag = (j + '-' + Picks[i][j].game).replace('@', '').replace('_','');	// remove illegal characters
 			if(gameTime > now && j != UID)
 			{
-				$('#' + tag).text("HIDDEN");
+				$('#' + tag).text("");
 				$("#" + tag + '-points').text("");
 				continue;
 			}
