@@ -175,13 +175,13 @@ function xmlImport(xml)
 function disableStartedGames()
 {
 	
-	$.get('http://www.timeapi.org/utc/now', function( data )
+	/*$.get('http://www.timeapi.org/utc/now', function( data )
 	{
 		debugger;
 		var time = $(data);
 		time = $(data).text();
 		
-	});
+	});*/
 	var now = Date.now();
 	var gameTime, startedGames = 0, numberOfGames = $('#body tr').length;
 	for(var i=0; i<numberOfGames; i++)

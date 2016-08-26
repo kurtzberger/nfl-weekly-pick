@@ -147,7 +147,6 @@ function calcStandings(Picks, Games, finals, Standings)
 		Standings[i].unassignedPoints = (finals * (finals + 1)) / 2;
 	
 	var Winners = determineWinners(Games);
-	debugger;
 	
 	// outer loop is games
 	for(var i in Picks)
