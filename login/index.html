@@ -76,10 +76,10 @@
 						else
 						{
 							$("#email-not-confirmed").openModal({
-								complete: function() { $("#login-li").trigger("click"); } // Callback for Modal close
+								complete: function() { $('#login-div').html('<a id="login-button" class="btn waves-effect waves-light blue-grey lighten-1 col s2 offset-s5">Login</a>'); } // Callback for Modal close
 							});
 						}
-					}, function(error)
+					}, function()
 					{
 						Materialize.toast('Login Failed! Username and/or password is incorrect.', 6000, "red darken-1"); // 6000 is the duration  of the toast in milliseconds
 						$('#login-div').html('<a id="login-button" class="btn waves-effect waves-light blue-grey lighten-1 col s2 offset-s5">Login</a>');
