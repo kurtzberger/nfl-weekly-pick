@@ -172,32 +172,33 @@ function xmlImport(xml)
 /**
  * This function will disable all elements of a game that has already started (on user picks page).
  */
-function disableStartedGames()
+function disableStartedGames(callback)
 {
 	
-	/*$.get('http://www.timeapi.org/utc/now', function( data )
-	{
-		debugger;
-		var time = $(data);
-		time = $(data).text();
-		
-	});*/
-	var now = Date.now();
-	var gameTime, startedGames = 0, numberOfGames = $('#body tr').length;
-	for(var i=0; i<numberOfGames; i++)
-	{
-		gameTime = Date.parse($("#date" + i).text());
-		if(gameTime < now)
-		{
-			$("input[name=game" + i + "]").prop('disabled', true);
-			$("#dropdown-" + i).prop('disabled', true);
-			$('select').material_select();	// update material select UI
-			$("#reset-" + i).prop('disabled', true);
-			$('#body tr').eq(i).css({ opacity: 0.5 });
-			startedGames++;
-		}
-	}
-	if(startedGames === numberOfGames) $("#submit-picks").hide();	// hide submit button if all games have started
+	$.ajax({
+		dataType:	'jsonp',	// use JSON w/padding to work around the cross-domain policies 
+		url:		'http://www.timeapi.org/utc/now.json',
+		success:	function(result)
+			{
+				var now = new Date(result.dateString);
+				var gameTime, startedGames = 0, numberOfGames = $('#body tr').length;
+				for(var i=0; i<numberOfGames; i++)
+				{
+					gameTime = Date.parse($("#date" + i).text());
+					if(gameTime < now)
+					{
+						$("input[name=game" + i + "]").prop('disabled', true);
+						$("#dropdown-" + i).prop('disabled', true);
+						$('select').material_select();	// update material select UI
+						$("#reset-" + i).prop('disabled', true);
+						$('#body tr').eq(i).css({ opacity: 0.5 });
+						startedGames++;
+					}
+				}
+				if(startedGames === numberOfGames) $("#submit-picks").hide();	// hide submit button if all games have started
+				callback();
+			}
+	});
 };
 
 function pointAssignments()
@@ -396,42 +397,52 @@ function determineWinners(Games)
  * @param Picks Object of all the user's picks and point assignments
  * @returns
  */
-function userPicks(Picks, Winners)
+function userPicks(Picks, Winners, callback)
 {
-	var now = Date.now();
-	var gameTime;
-	var tag;
-	for(var i in Picks)
-	{
-		for(var j in Picks[i])
+	$.ajax({
+		dataType:	'jsonp',	// use JSON w/padding to work around the cross-domain policies 
+		url:		'http://www.timeapi.org/utc/now.json',
+		success:	function(result)
 		{
-			gameTime = Date.parse($("#date-" + Picks[i][j].game).text());
-			tag = (j + '-' + Picks[i][j].game).replace('@', '').replace('_','');	// remove illegal characters
-			if(gameTime > now && j !== UID)
+			debugger;
+			var now = new Date(result.dateString);
+			var gameTime, tag;
+
+			for(var i in Picks)
 			{
-				
-				$('#' + tag).text("HIDDEN");
-				$("#" + tag + '-points').text("");
-				continue;
+				for(var j in Picks[i])
+				{
+					gameTime = Date.parse($("#date-" + Picks[i][j].game).text());
+					tag = (j + '-' + Picks[i][j].game).replace('@', '').replace('_','');	// remove illegal characters
+					if(gameTime > now && j !== UID)
+					{
+
+						$('#' + tag).text("HIDDEN");
+						$("#" + tag + '-points').text("");
+						continue;
+					}
+					$("#" + tag).html(teamLogo(Picks[i][j].pick));
+					$("#" + tag + "-points").html(Picks[i][j].points);
+					if(Winners[Picks[i][j].game] !== "-")	// game is a final
+					{
+						if(Picks[i][j].pick === Winners[Picks[i][j].game])
+							$("#" + tag + ", #" + tag + "-points").css("background-color", "#00d05e");
+						else
+							$("#" + tag + ", #" + tag + "-points").css("background-color", "#da9694");
+					}
+				}
 			}
-			$("#" + tag).html(teamLogo(Picks[i][j].pick));
-			$("#" + tag + "-points").html(Picks[i][j].points);
-			if(Winners[Picks[i][j].game] !== "-")	// game is a final
+
+			//take care of empty picks
+			$("td:empty").each(function ()
 			{
-				if(Picks[i][j].pick === Winners[Picks[i][j].game])
-					$("#" + tag + ", #" + tag + "-points").css("background-color", "#00d05e");
-				else
-					$("#" + tag + ", #" + tag + "-points").css("background-color", "#da9694");
-			}
+				var index = Math.floor(((this.cellIndex % 2 === 0) ? this.cellIndex - 1 : this.cellIndex) / 2);
+				var quarter = $("#quarter").find('td').eq(index).text();
+				if(Winners[index] !== "-" && (quarter === "Final" || quarter === "Final OT"))	// game is a final
+					$(this).css("background-color", "#da9694");
+			});
+
+			callback();
 		}
-	}
-	
-	//take care of empty picks
-	$("td:empty").each(function ()
-	{
-		var index = Math.floor(((this.cellIndex % 2 === 0) ? this.cellIndex - 1 : this.cellIndex) / 2);
-		var quarter = $("#quarter").find('td').eq(index).text();
-		if(Winners[index] !== "-" && (quarter === "Final" || quarter === "Final OT"))	// game is a final
-			$(this).css("background-color", "#da9694");
 	});
 };

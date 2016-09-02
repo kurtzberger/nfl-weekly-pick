@@ -2,25 +2,14 @@ $(document).ready(function()
 {
 	$("#header").load("../header.html", function()
 	{
+		debugger;
 		var week, Games, localURL;
 		week = location.search.substring(1).split("&")[0].split("=")[1];
 		// this URL is used just for this webpage
 		localURL = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
-		//localURL = 'http://www.nfl.com/ajax/scorestrip?season=2015&seasonType=REG&week=10';
 		$('.league-picks').addClass("deep-orange lighten-3");
 		$("#week" + week + "-link").addClass("deep-orange lighten-3");
 		$("#title").text(season + " Week " + week + " League Picks");
-		
-		// add loader animation
-		$("#main-content").append('<div class="loader s12 m4 center">' +
-				'<div class="preloader-wrapper big active">' +
-				'<div class="spinner-layer spinner-blue-only">' +
-				'<div class="circle-clipper left">' +
-				'<div class="circle"></div>' +
-				'</div><div class="gap-patch">' +
-				'<div class="circle"></div>' + 
-				'</div><div class="circle-clipper right">' +
-				'<div class="circle"></div></div></div></div></div>');
 		
 		// Get a reference to the database service
 		var database = firebase.database();
@@ -87,23 +76,25 @@ $(document).ready(function()
 					Winners = determineWinners(xmlDoc.find('g'));
 					// put all users' picks into the table, and hide other users' picks of games that haven't started
 					// mark the users games correct (green) or wrong (red) as well if the games are complete.
-					userPicks(Picks, Winners);															
+					userPicks(Picks, Winners, function()
+					{															
 					
-					// remove loading animation
-					$(".loader").remove();
-					// toggle hidden content
-					$(".show-me").toggle();
-					
-					// call this function regularly to fill in other user's picks after the games start
-					var timeID = setInterval(function()
-					{
-						if(xmlDoc.find('g[q="F"], g[q="FO"]').length === Games.length)
+						// remove loading animation
+						$(".loader").remove();
+						// toggle hidden content
+						$(".show-me").toggle();
+
+						// call this function regularly to fill in other user's picks after the games start
+						var timeID = setInterval(function()
 						{
-							clearInterval(timeID);
-							return;
-						}
-						userPicks(Picks, Winners); 
-					}, 1000);
+							if(xmlDoc.find('g[q="F"], g[q="FO"]').length === Games.length)
+							{
+								clearInterval(timeID);
+								return;
+							}
+							userPicks(Picks, Winners, function(){}); 
+						}, 1000);
+					});
 				});
 			});
 		});

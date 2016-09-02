@@ -2,7 +2,7 @@ $(document).ready(function()
 {
 	$("#header").load("../header.html", function()
 	{
-		var week, Games, localURL, seasonType, /*season,*/ path;
+		var week, localURL, seasonType, path;
 		week = location.search.substring(1).split("&")[0].split("=")[1];
 		// this URL is used just for this webpage
 		localURL = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
@@ -11,16 +11,6 @@ $(document).ready(function()
 		$("#user-picks-week" + week + "-link").addClass("deep-orange lighten-3");
 		
 		$("#user-picks-link").addClass("deep-orange lighten-3");
-		// add loader animation
-		$("#main-content").append('<div class="loader s12 m4 center">' +
-				'<div class="preloader-wrapper big active">' +
-				'<div class="spinner-layer spinner-blue-only">' +
-				'<div class="circle-clipper left">' +
-				'<div class="circle"></div>' +
-				'</div><div class="gap-patch">' +
-				'<div class="circle"></div>' + 
-				'</div><div class="circle-clipper right">' +
-				'<div class="circle"></div></div></div></div></div>');
 
 		// Get a reference to the database service
 		var database = firebase.database();
@@ -31,14 +21,14 @@ $(document).ready(function()
 			seasonType = $(data).find('gms')[0].getAttribute('t');
 			path = season + '/picks/week' + week;
 			// load xml data into the table
-			setTimeout(function() {
-				xmlImport(data);
-				databaseImport(database, path, UID);
-				disableStartedGames();
+			xmlImport(data);
+			databaseImport(database, path, UID);
+			disableStartedGames(function() 
+			{
 				//remove loader animation
 				$(".loader").remove();
 				$(".show-me").toggle();
-			}, LOAD_DELAY);
+			});
 		});
 		
 		$('#main-content').on('change', 'select', function()
@@ -83,7 +73,7 @@ $(document).ready(function()
 		});
 		
 		// call this function regularly to disable any games that have started
-		setInterval(function(){ disableStartedGames() }, 1000);
+		setInterval(function(){ disableStartedGames(function(){}); }, 10000);
 	});
 	
 });
