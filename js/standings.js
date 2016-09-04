@@ -66,7 +66,6 @@ $(document).ready(function()
 						// place the user's display name in the table
 						for(var i in Standings)
 							Sorted.push(Standings[i]);
-						
 						// sort standings by points from highest points to lowest points. Win % is tie breaker
 						Sorted.sort(function(a,b)
 						{ 
@@ -79,7 +78,8 @@ $(document).ready(function()
 						for(var i=0; i<Sorted.length; i++)
 						{
 							var name = Sorted[i].name;
-							var tag = Users[i].replace('@','').replace('_','');	// remove illegal characters
+							var tag = replaceAll(Users[i], '@', '');
+							tag = replaceAll(tag, '_', '');	// remove illegal characters
 							var winPct = (Sorted[i].wins * 100.0 / completedGames).toFixed(2);
 							$("#body").append('<tr id="' + tag + '"></tr>');
 							//player's name in the table
@@ -117,10 +117,11 @@ function processLoop(n, week, Games, Standings)
 	{
 		database.ref(season + '/picks/week' + uWeek).once('value').then(function(snapshot)
 		{
+			debugger;
 			var Picks = snapshot.val();
 			Standings = calcStandings(Picks, uGames, finals, uStandings);
 			completedGames += finals;
-			finished = (n === week);
+			finished = (n === parseInt(week));
 			
 		});
 	});

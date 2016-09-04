@@ -2,7 +2,6 @@ $(document).ready(function()
 {
 	$("#header").load("../header.html", function()
 	{
-		debugger;
 		var week, Games, localURL;
 		week = location.search.substring(1).split("&")[0].split("=")[1];
 		// this URL is used just for this webpage
@@ -42,7 +41,8 @@ $(document).ready(function()
 				for(var i=0; i<Names.length; i++)
 				{
 					var name = Names[i];
-					var tag = Users[i].replace('@','').replace('_','');	// remove illegal characters
+					var tag = replaceAll(Users[i], '@', '');
+					tag = replaceAll(tag, '_', '');	// remove illegal characters
 					$("#body").append('<tr id=' + tag + '></tr>');
 					//player's name in the table
 					$("#" + tag).append('<td>'+name+'</td>');
