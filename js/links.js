@@ -86,4 +86,10 @@ $(document).ready(function()
 		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
 		if(sPage !== "rules") setTimeout(function() { window.location.href = "../rules"; }, 600);
 	});
+	
+	$("#header").on('click', '#non-user-link', function()
+	{
+		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
+		if(sPage !== "rules") setTimeout(function() { window.location.href = "../non-user-picks"; }, 600);
+	});
 });
