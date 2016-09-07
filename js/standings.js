@@ -117,7 +117,6 @@ function processLoop(n, week, Games, Standings)
 	{
 		database.ref(season + '/picks/week' + uWeek).once('value').then(function(snapshot)
 		{
-			debugger;
 			var Picks = snapshot.val();
 			Standings = calcStandings(Picks, uGames, finals, uStandings);
 			completedGames += finals;

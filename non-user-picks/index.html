@@ -24,32 +24,44 @@
 	<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
 	<script type="text/javascript" src="../js/init.js"></script>
 	<script type="text/javascript" src="../js/links.js"></script>
+	<script type="text/javascript" src="../js/functions.js"></script>
 	
 	<div id="main-content" class="container" style="width:auto;">
-		<table>
-			<tr>
-				<td><a id="random-button" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s4 push-s4">Make Random Picks</a></td>
-				<td><select id="dropdown-random"><option value="" selected></option></select></td>
-			</tr>
-			<tr>
-				<td><a id="home-button" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s4 push-s4">Make Home Picks</a></td>
-				<td><select id="dropdown-home"><option value="" selected></option></select></td>
-			</tr>
-			<tr>
-				<td><a id="away-button" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s4 push-s4">Make Away Picks</a></td>
-				<td><select id="dropdown-away"><option value="" selected></option></select></td>
-			</tr>
+		<table class="show-me" style="display: none">
+			<thead>
+				<tr>
+					<th data-field="action">Action</th>
+					<th data-field="week">Week</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><a id="random-button" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s4 push-s4">Make Random Picks</a></td>
+					<td><select id="dropdown-random"><option value="" selected></option></select></td>
+				</tr>
+				<tr>
+					<td><a id="home-button" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s4 push-s4">Make Home Picks</a></td>
+					<td><select id="dropdown-home"><option value="" selected></option></select></td>
+				</tr>
+				<tr>
+					<td><a id="away-button" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s4 push-s4">Make Away Picks</a></td>
+					<td><select id="dropdown-away"><option value="" selected></option></select></td>
+				</tr>
+			</tbody>
 		</table>
 	</div>
-	
+
 	<script>
+		// Get a reference to the database service
+		var database = firebase.database();
+
 		$(document).ready(function()
 		{
 			$("#header").load("../header.html", function()
 			{
 				$('#non-user-link').addClass("deep-orange lighten-3");
 				$("#title").text("Non-Users' Picks");
-				
+
 				for(var j=1; j<=17; j++)
 				{
 					$("#dropdown-random").append('<option value=' + j + '>' + j + '</option>');
@@ -60,17 +72,181 @@
 				$("select").material_select();
 			});
 		});
-		
+
 		$("#main-content").on('click', '#random-button', function()
 		{
-			$.ajax({
-				url: 'https://api.random.org/json-rpc/1/invoke',
-				jsonrpc:	'2.0',
-				
-				
-			})
+			var eid, week, Points, Picks;
+			week = $('#dropdown-random').val();
+			if(week === '')
+			{
+				alert('No week selected!');
+				return;
+			}
+
+			var path = season + '/picks/week' + week;
+			var url = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
+			var user = 'placeholder@1_com';	// random teams email
+
+			$.get(url, function(data)
+			{
+				var g = $(data).find('g');	// all games in given week
+
+				// json structure to request random array of points from Random.org
+				var requestPoints = {
+					jsonrpc: "2.0",
+					method: "generateIntegers",
+					params: {
+						apiKey: "acf28c33-d707-4e26-9b43-c41e43ea2a54",
+						n: g.length,
+						min: 1,
+						max: g.length,
+						replacement: false
+					},
+					id: 1
+				};
+				// json structure to request random array of picks (0=home 1=away) from Random.org
+				var requestPicks = {
+					jsonrpc: "2.0",
+					method: "generateIntegers",
+					params: {
+						apiKey: "acf28c33-d707-4e26-9b43-c41e43ea2a54",
+						n: g.length,
+						min: 0,
+						max: 1,
+					},
+					id: 1
+				};
+
+				// request points from random.org
+				$.post('https://api.random.org/json-rpc/1/invoke', JSON.stringify(requestPoints), function(pointsResult)
+				{
+					Points = pointsResult.result.random.data;
+					$.post('https://api.random.org/json-rpc/1/invoke', JSON.stringify(requestPicks), function(picksResult)
+					{
+						Picks = picksResult.result.random.data;
+						debugger;
+						for(var i=0; i<g.length; i++)
+						{
+							eid = g[i].getAttribute('eid');
+							database.ref(path + '/' + eid + '/' + user).update({
+								game:	i,
+								pick:	(Picks[i]===0) ? g[i].getAttribute('h') : g[i].getAttribute('v'),
+								points:	Points[i]
+							}).catch(function(error)
+							{
+								Materialize.toast('Submission failed ' + error.message, 6000, "red darken-1"); // 6000 is the duration of the toast in milliseconds
+							});
+						}
+					}, "json");
+				}, "json");	
+			});
+		});
+
+		$("#main-content").on('click', '#home-button', function()
+		{
+			var eid, week, Points;
+			week = $('#dropdown-home').val();
+			if(week === '')
+			{
+				alert('No week selected!');
+				return;
+			}
+
+			var path = season + '/picks/week' + week;
+			var url = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
+			var user = 'placeholder@2_com';	// home teams email
+
+
+			$.get(url, function(data)
+			{
+				var g = $(data).find('g');	// all games in given week
+
+				//json structure to request random points from random.org
+				var request = {
+					jsonrpc: "2.0",
+					method: "generateIntegers",
+					params: {
+						apiKey: "acf28c33-d707-4e26-9b43-c41e43ea2a54",
+						n: g.length,
+						min: 1,
+						max: g.length,
+						replacement: false
+					},
+					id: 1
+				};
+
+				//request points from random.org
+				$.post('https://api.random.org/json-rpc/1/invoke', JSON.stringify(request), function(result)
+				{
+					Points = result.result.random.data;
+					for(var i=0; i<g.length; i++)
+					{
+						eid = g[i].getAttribute('eid');
+						database.ref(path + '/' + eid + '/' + user).update({
+							game:	i,
+							pick:	g[i].getAttribute('h'),
+							points:	Points[i]
+						}).catch(function(error)
+						{
+							Materialize.toast('Submission failed ' + error.message, 6000, "red darken-1"); // 6000 is the duration of the toast in milliseconds
+						});
+					}
+				}, "json");	
+			});
+		});
+
+		$("#main-content").on('click', '#away-button', function()
+		{
+			var eid, week, Points;
+			week = $('#dropdown-away').val();
+			if(week === '')
+			{
+				alert('No week selected!');
+				return;
+			}
+
+			var path = season + '/picks/week' + week;
+			var url = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
+			var user = 'placeholder@3_com';	// away teams email
+
+
+			$.get(url, function(data)
+			{
+				var g = $(data).find('g');	// all games in given week
+
+				//json structure to request random points from random.org
+				var request = {
+					jsonrpc: "2.0",
+					method: "generateIntegers",
+					params: {
+						apiKey: "acf28c33-d707-4e26-9b43-c41e43ea2a54",
+						n: g.length,
+						min: 1,
+						max: g.length,
+						replacement: false
+					},
+					id: 1
+				};
+
+				//request points from random.org
+				$.post('https://api.random.org/json-rpc/1/invoke', JSON.stringify(request), function(result)
+				{
+					Points = result.result.random.data;
+					for(var i=0; i<g.length; i++)
+					{
+						eid = g[i].getAttribute('eid');
+						database.ref(path + '/' + eid + '/' + user).update({
+							game:	i,
+							pick:	g[i].getAttribute('v'),
+							points:	Points[i]
+						}).catch(function(error)
+						{
+							Materialize.toast('Submission failed ' + error.message, 6000, "red darken-1"); // 6000 is the duration of the toast in milliseconds
+						});
+					}
+				}, "json");	
+			});
 		});
 	</script>
-	
 </body>
 </html>

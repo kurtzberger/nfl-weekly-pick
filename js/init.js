@@ -33,8 +33,9 @@ if(sPage !== "register")
 			{
 				$("#menu-nav").append('<li id="non-user-li">\n\
 					<a id="non-user-link" class="waves-effect"><i class="mdi mdi-account-alert left"></i><b>Non-Users\' Picks</b></a></li>');
+				if(sPage === "non-user-picks") $('.show-me').toggle();
 			}
-			if(sPage === "index.html" || sPage == "")	//user is logged in
+			if(sPage === "index.html" || sPage == "" || (sPage === "non-user-picks" && UID !== SUPERUSER))	//user is logged in
 				window.location.href = "standings";
 			else if(sPage === "change-password")
 				$("#current-user").html("Current user: <b>" + user.email + "</b>");
@@ -42,7 +43,7 @@ if(sPage !== "register")
 			{
 				var week = location.search.substring(1).split("&")[0].split("=")[1];
 				$("#title").append(curUser.displayName + "'s " + season + " Week " + week + " Picks");
-			}
+			}		
 		}
 		else if(user === null)
 		{

@@ -15,7 +15,7 @@ $(document).ready(function()
 		// Get a reference to the database service
 		var database = firebase.database();
 		
-		// read from nfl.com all the games for the given URL defined in init.js
+		// read from nfl.com all the games
 		$.get(localURL, function( data )
 		{
 			seasonType = $(data).find('gms')[0].getAttribute('t');
