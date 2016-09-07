@@ -412,7 +412,6 @@ function userPicks(Picks, Winners, callback)
 		{
 			var now = new Date(result.dateString);
 			var gameTime, tag;
-			debugger;
 			for(var i in Picks)
 			{
 				for(var j in Picks[i])
@@ -420,9 +419,8 @@ function userPicks(Picks, Winners, callback)
 					gameTime = Date.parse($("#date-" + Picks[i][j].game).text());
 					tag = replaceAll(j + '-' + Picks[i][j].game, '@', '');
 					tag = replaceAll(tag, '_', '');	// remove illegal characters
-					if(gameTime > now && j !== UID)
+					if((gameTime > now && j !== UID) && !nonUserCheck(j)) 
 					{
-
 						$('#' + tag).text("HIDDEN");
 						$("#" + tag + '-points').text("");
 						continue;
