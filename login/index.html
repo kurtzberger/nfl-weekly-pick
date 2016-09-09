@@ -51,7 +51,7 @@
 			$("#title").text("Login");
 			$("#password").bind('keypress', function(e)
 			{
-				if((e.keyCode || e.which) == 13)
+				if((e.keyCode || e.which) === 13)
 					$("#login-button").trigger("click");
 			});
 			$("#main-content").on("click", "#login-button", function()
@@ -82,7 +82,7 @@
 					}, function()
 					{
 						Materialize.toast('Login Failed! Username and/or password is incorrect.', 6000, "red darken-1"); // 6000 is the duration  of the toast in milliseconds
-						$('#login-div').html('<a id="login-button" class="btn waves-effect waves-light blue-grey lighten-1 col s2 offset-s5">Login</a>');
+						$('#login-div').html('<a id="login-button" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s4 push-s4">Login</a>');
 					});
 				}, LOAD_DELAY);
 			});
