@@ -40,6 +40,7 @@ $(document).ready(function()
 				Standings[i] = {
 					name:				data[i].displayName,
 					points:				0,
+					unassignedPoints:	0,
 					wins:				0
 				};
 			}
@@ -142,9 +143,13 @@ function getGames(n, Games, Standings, callback)
 
 function calcStandings(Picks, Games, finals, Standings)
 {
-	// enter possible unassigned points for this week
-	for(var i in Standings)
-		Standings[i].unassignedPoints = (finals * (finals + 1)) / 2;
+	debugger;
+	// enter possible unassigned points for this week, but if week is incomplete. Skip this.
+	if(finals === Games.length)
+	{
+		for(var i in Standings)
+			Standings[i].unassignedPoints = (finals * (finals + 1)) / 2;
+	}
 	
 	var Winners = determineWinners(Games);
 	
@@ -159,16 +164,20 @@ function calcStandings(Picks, Games, finals, Standings)
 			{
 				Standings[j].points += Picks[i][j].points;
 				Standings[j].wins++;
-			} else
+			} else if(Winners[Picks[i][j].game] !== "-")	// skip over if game is incomplete
 				Standings[j].points -= Picks[i][j].points;
-			// since a pick was found here, mark these points as "assigned".
-			Standings[j].unassignedPoints -= Picks[i][j].points;
+			// since a pick was found here, mark these points as "assigned", skip this if week is incomplete
+			if(finals === Games.length)
+				Standings[j].unassignedPoints -= Picks[i][j].points;
 		}
 	}
 	
-	// subtract any remaining unassigned points
-	for(var i in Standings)
-		Standings[i].points -= Standings[i].unassignedPoints;
+	// subtract any remaining unassigned points, but if week is incomplete. Skip this.
+	if(finals === Games.length)
+	{
+		for(var i in Standings)
+			Standings[i].points -= Standings[i].unassignedPoints;
+	}
 	
 	return Standings;
 };
