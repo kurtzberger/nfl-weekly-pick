@@ -62,7 +62,6 @@ $(document).ready(function()
 					if(finished)
 					{
 						// place objects into array
-						//var sorted = [Standings].sort(function(a,b) { debugger; return (a.points > b.points) ? 1 : ((b.points > a.points) ? -1 : 0); });
 						var Sorted = [];
 						// place the user's display name in the table
 						for(var i in Standings)
@@ -114,22 +113,28 @@ function processStandings(week, Games, Standings)
 
 function processLoop(n, week, Games, Standings)
 {
-	getGames(n, Games, Standings, function(uWeek, uGames, finals, uStandings)
+	setTimeout( function() 
 	{
-		database.ref(season + '/picks/week' + uWeek).once('value').then(function(snapshot)
+		getGames(n, Games, Standings, function(uWeek, uGames, finals, uStandings)
 		{
-			var Picks = snapshot.val();
-			Standings = calcStandings(Picks, uGames, finals, uStandings);
-			completedGames += finals;
-			finished = (n === parseInt(week));
-			
+			database.ref(season + '/picks/week' + uWeek).once('value').then(function(snapshot)
+			{
+				var Picks = snapshot.val();
+				Standings = calcStandings(Picks, uGames, finals, uStandings);
+				completedGames += finals;
+				finished = (n === parseInt(week));
+				
+			});
 		});
-	});
+	}, 2000);
 };
 
 function getGames(n, Games, Standings, callback)
 {
-	localURL = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + n;
+	if(n === parseInt(CUR_WEEK))
+		localURL = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
+	else
+		localURL = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + n;
 	$.get(localURL, function( data )
 	{
 		var xmlDoc = $(data);
@@ -143,7 +148,6 @@ function getGames(n, Games, Standings, callback)
 
 function calcStandings(Picks, Games, finals, Standings)
 {
-	debugger;
 	// enter possible unassigned points for this week, but if week is incomplete. Skip this.
 	if(finals === Games.length)
 	{
