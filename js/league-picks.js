@@ -102,17 +102,16 @@ $(document).ready(function()
 							// call this function regularly to reveal other user's picks after the games start
 							var timeID = setInterval(function()
 							{
-								if(xmlDoc.find('g[q="F"], g[q="FO"]').length === Games.length)
-								{
-									clearInterval(timeID);
-									return;
-								}
 								userPicks(Picks, Winners, function()
 								{
 									// update Winners
-									$.get(localURL, function( data )
+									$.get(localURL, function( newData )
 									{
-										Winners = determineWinners($(data).find('g'));
+										Winners = determineWinners($(newData).find('g'));
+										if($(newData).find('g[q="F"], g[q="FO"]').length === Games.length)
+										{
+											clearInterval(timeID);
+										}
 									});
 								}); 
 							}, 10000);
