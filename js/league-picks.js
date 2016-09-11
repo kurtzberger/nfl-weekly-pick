@@ -10,7 +10,7 @@ $(document).ready(function()
 			
 			// this URL is used just for this webpage
 			if(week === CUR_WEEK)
-				localURL = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml'
+				localURL = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
 			else
 				localURL = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
 			
@@ -107,8 +107,15 @@ $(document).ready(function()
 									clearInterval(timeID);
 									return;
 								}
-								userPicks(Picks, Winners, function(){}); 
-							}, 1000);
+								userPicks(Picks, Winners, function()
+								{
+									// update Winners
+									$.get(localURL, function( data )
+									{
+										Winners = determineWinners($(data).find('g'));
+									});
+								}); 
+							}, 10000);
 							
 							//regularly update nfl scores if it's the current week
 							if(week === CUR_WEEK)
@@ -144,7 +151,11 @@ function getQuarter(quarter)
 		case "F" :	return "Final";
 		case "FO":	return "Final OT";
 		case "H" :	return "Halftime";
-		default	 :	return quarter + "Q";
+		default	 :	
+				if(parseInt(quarter) > 4 )
+						return "OT";
+				else
+					return quarter + "Q";
 	}
 };
 
