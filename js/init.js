@@ -10,6 +10,7 @@ var curUser = null;
 var UID = null;
 var season = 2016; // update this each season. This is used for the individual week league picks.
 				   // it's set static here instead of reading from NFL.com to save overhead.
+var CUR_WEEK;	//	current NFL week (set inside of header.html)
 
 // Initialize Firebase
 var config = {
