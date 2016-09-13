@@ -401,6 +401,8 @@ function determineWinners(Games)
 /**
  * Fills in all user's picks according to the currently logged in user. The function will hide other users' picks if that pick's game hasn't started
  * @param Picks Object of all the user's picks and point assignments
+ * @param {Array} Winners Array of winners (returned from determine winners function
+ * @param {function} callback a function to be called upon completion
  * @returns
  */
 function userPicks(Picks, Winners, callback)
@@ -411,7 +413,17 @@ function userPicks(Picks, Winners, callback)
 		success:	function(result)
 		{
 			var now = new Date(result.dateString);
-			var gameTime, tag;
+			var gameTime, tag, wins, finals = 0;
+			$(".points").text("0");	// clear points
+			$(".win-pct").text("0.00%");	// clear win %
+			
+			// determine number of final games
+			for(var i=0; i<Winners.length; i++)
+			{
+				if(Winners[i] !== "-")
+					finals++;
+			}
+			
 			for(var i in Picks)
 			{
 				for(var j in Picks[i])
@@ -430,9 +442,13 @@ function userPicks(Picks, Winners, callback)
 					if(Winners[Picks[i][j].game] !== "-")	// game is a final
 					{
 						if(Picks[i][j].pick === Winners[Picks[i][j].game])
+						{
 							$("#" + tag + ", #" + tag + "-points").css("background-color", "#00d05e");
+						}
 						else
+						{
 							$("#" + tag + ", #" + tag + "-points").css("background-color", "#da9694");
+						}
 					}
 				}
 			}
@@ -444,6 +460,25 @@ function userPicks(Picks, Winners, callback)
 				var quarter = $("#quarter").find('td').eq(index).text();
 				if(Winners[index] !== "-" && (quarter === "Final" || quarter === "Final OT"))	// game is a final
 					$(this).css("background-color", "#da9694");
+			});
+
+			$("#league-picks-table").find('tr:not(#headers)').each(function()
+			{
+				var Cells = $(this).find('td');	// get all cells in this row
+				wins = 0;	// reset number of wins for this row
+				for(var i=2; i<Cells.length-2; i+=2)
+				{
+					if(Cells.eq(i).css("background-color") === 'rgb(0, 208, 94)')	// pick was correct
+					{
+						wins++;
+						Cells.eq(Cells.length-2).text(parseInt(Cells.eq(Cells.length-2).text()) + parseInt(Cells.eq(i).text()));
+					}
+					else if(Cells.eq(i).css("background-color") === 'rgb(218, 150, 148)')	// pick was incorrect
+					{
+						Cells.eq(Cells.length-2).text(parseInt(Cells.eq(Cells.length-2).text()) - parseInt(Cells.eq(i).text()));
+					}
+				}
+				Cells.eq(Cells.length-1).text((finals === 0 ? '0.00' : (wins / finals * 100).toFixed(2)) + "%");	// calculate win percent
 			});
 
 			callback();

@@ -44,6 +44,8 @@ $(document).ready(function()
 					
 					// span the length of number of games for the picks header
 					$("#headers").append('<th colspan="' + Games.length*2 + '" data-field="picks">Picks</th>');
+					$("#headers").append('<th data-field="total-points" style="max-width:72px; min-width:72px;">Points</th>');
+					$("#headers").append('<th data-field="win-pct" style="max-width:72px; min-width:72px;">Win %</th>');
 					
 					// place the user's display name in the table. each iteration is a new row in the table
 					for(var i=0; i<Names.length; i++)
@@ -82,6 +84,8 @@ $(document).ready(function()
 							$("#" + tag).append('<td style="max-width:47px; min-width:47px;" id="' + tag + '-' + j + '"></td>');
 							$("#" + tag).append('<td style="text-align: center; max-width:25px; min-width:25px;" id="' + tag + '-' + j + '-points"></td>');
 						}
+						$("#" + tag).append('<td id="' + tag + '-total-points" class="points"></td>');
+						$("#" + tag).append('<td id="' + tag + '-win-pct" class="win-pct"></td>');
 					}
 					
 					// search database and retrieve all users' picks and then populate the table accordingly
@@ -93,7 +97,6 @@ $(document).ready(function()
 						// mark the users games correct (green) or wrong (red) as well if the games are complete.
 						userPicks(Picks, Winners, function()
 						{															
-						
 							// remove loading animation
 							$(".loader").remove();
 							// toggle hidden content
