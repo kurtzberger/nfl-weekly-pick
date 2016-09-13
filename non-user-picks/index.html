@@ -135,8 +135,10 @@
 							}).catch(function(error)
 							{
 								Materialize.toast('Submission failed ' + error.message, 6000, "red darken-1"); // 6000 is the duration of the toast in milliseconds
+								return;
 							});
 						}
+						alert('Random Pick: Week ' + week + ' picks submitted!');
 					}, "json");
 				}, "json");	
 			});
@@ -144,7 +146,7 @@
 
 		$("#main-content").on('click', '#home-button', function()
 		{
-			var eid, week, Points;
+			var eid, week, points;
 			week = $('#dropdown-home').val();
 			if(week === '')
 			{
@@ -161,43 +163,27 @@
 			{
 				var g = $(data).find('g');	// all games in given week
 
-				//json structure to request random points from random.org
-				var request = {
-					jsonrpc: "2.0",
-					method: "generateIntegers",
-					params: {
-						apiKey: "acf28c33-d707-4e26-9b43-c41e43ea2a54",
-						n: g.length,
-						min: 1,
-						max: g.length,
-						replacement: false
-					},
-					id: 1
-				};
-
-				//request points from random.org
-				$.post('https://api.random.org/json-rpc/1/invoke', JSON.stringify(request), function(result)
+				points = (g.length * (g.length + 1)) / (2 * g.length);
+				for(var i=0; i<g.length; i++)
 				{
-					Points = result.result.random.data;
-					for(var i=0; i<g.length; i++)
+					eid = g[i].getAttribute('eid');
+					database.ref(path + '/' + eid + '/' + user).update({
+						game:	i,
+						pick:	g[i].getAttribute('h'),
+						points:	points
+					}).catch(function(error)
 					{
-						eid = g[i].getAttribute('eid');
-						database.ref(path + '/' + eid + '/' + user).update({
-							game:	i,
-							pick:	g[i].getAttribute('h'),
-							points:	Points[i]
-						}).catch(function(error)
-						{
-							Materialize.toast('Submission failed ' + error.message, 6000, "red darken-1"); // 6000 is the duration of the toast in milliseconds
-						});
-					}
-				}, "json");	
+						Materialize.toast('Submission failed ' + error.message, 6000, "red darken-1"); // 6000 is the duration of the toast in milliseconds
+						return;
+					});
+				}
+				alert('Home Teams: Week ' + week + ' picks submitted!');
 			});
 		});
 
 		$("#main-content").on('click', '#away-button', function()
 		{
-			var eid, week, Points;
+			var eid, week, points;
 			week = $('#dropdown-away').val();
 			if(week === '')
 			{
@@ -214,37 +200,21 @@
 			{
 				var g = $(data).find('g');	// all games in given week
 
-				//json structure to request random points from random.org
-				var request = {
-					jsonrpc: "2.0",
-					method: "generateIntegers",
-					params: {
-						apiKey: "acf28c33-d707-4e26-9b43-c41e43ea2a54",
-						n: g.length,
-						min: 1,
-						max: g.length,
-						replacement: false
-					},
-					id: 1
-				};
-
-				//request points from random.org
-				$.post('https://api.random.org/json-rpc/1/invoke', JSON.stringify(request), function(result)
+				points = (g.length * (g.length + 1)) / (2 * g.length);
+				for(var i=0; i<g.length; i++)
 				{
-					Points = result.result.random.data;
-					for(var i=0; i<g.length; i++)
+					eid = g[i].getAttribute('eid');
+					database.ref(path + '/' + eid + '/' + user).update({
+						game:	i,
+						pick:	g[i].getAttribute('v'),
+						points:	points
+					}).catch(function(error)
 					{
-						eid = g[i].getAttribute('eid');
-						database.ref(path + '/' + eid + '/' + user).update({
-							game:	i,
-							pick:	g[i].getAttribute('v'),
-							points:	Points[i]
-						}).catch(function(error)
-						{
-							Materialize.toast('Submission failed ' + error.message, 6000, "red darken-1"); // 6000 is the duration of the toast in milliseconds
-						});
-					}
-				}, "json");	
+						Materialize.toast('Submission failed ' + error.message, 6000, "red darken-1"); // 6000 is the duration of the toast in milliseconds
+						return;
+					});
+				}
+				alert('Away Teams: Week ' + week + ' picks submitted!');
 			});
 		});
 	</script>
