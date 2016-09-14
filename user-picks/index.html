@@ -15,8 +15,16 @@
 	<style>
 		td img {
 			width: auto; 
-			max-height: 35px;
-			float: left;
+			height: 35px;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		td input {
+			text-align: center;
+		}
+		th{
+			text-align: center;
 		}
 	</style>
 </head>
@@ -41,10 +49,10 @@
 				<thead>
 					<tr>
 						<th data-field="date">Date</th>
-						<th data-field="awayLogo">Away</th>
-						<th data-field="awayName"></th>
-						<th data-field="homeLogo">Home</th>
-						<th data-field="homeName"></th>
+						<th data-field="away" colspan="2">Away</th>
+						<!-- <th data-field="awayName"></th> -->
+						<th data-field="home" colspan="2">Home</th>
+						<!-- <th data-field="homeName"></th> -->
 						<th data-field="points">Assigned Points*</th>
 						<th data-field="reset">Reset</th>
 					</tr>

@@ -150,7 +150,7 @@ function xmlImport(xml)
 		dateString = gameStartTime(day, time, weekday, false);
 		$("#body").append('<tr id=' + day + '></tr>');
 		//date in the table
-		$("#" + day).append('<td id="date' + i + '">' + dateString + '</td>');
+		$("#" + day).append('<td id="date' + i + '" style="text-align: center;">' + dateString + '</td>');
 		//away at home data in table
 		$("#" + day).append('<td>' + teamLogo(away) + '</td><td>' + '<input name="game' + i + '" type="radio" id="'+ away + '" value="' + away + '" />' +
 				'<label class="black-text" for='+ away +'>'+ teamName(away) +'</label></td>'+
