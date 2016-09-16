@@ -449,6 +449,9 @@ function userPicks(Picks, Winners, callback)
 						{
 							$("#" + tag + ", #" + tag + "-points").css("background-color", "#da9694");
 						}
+					} else if(Winners[Picks[i][j].game] === "-" && $("#" + tag).css("background-color") !== "rgba(0, 0, 0, 0)")
+					{
+						$("#" + tag + ", #" + tag + "-points").css("background-color", "rgba(0, 0, 0, 0)");
 					}
 				}
 			}
@@ -460,6 +463,8 @@ function userPicks(Picks, Winners, callback)
 				var quarter = $("#quarter").find('td').eq(index).text();
 				if(Winners[index] !== "-" && (quarter === "Final" || quarter === "Final OT"))	// game is a final
 					$(this).css("background-color", "#da9694");
+				else if(Winners[index] === "-" && $(this).css("background-color") !== "rgba(0, 0, 0, 0)")
+					$(this).css("background-color", "rgba(0, 0, 0, 0)");
 			});
 
 			$("#league-picks-table").find('tr:not(#headers)').each(function()
@@ -482,6 +487,12 @@ function userPicks(Picks, Winners, callback)
 			});
 
 			callback();
+		},
+		error:	function(xhr, textStatus, errorThrown)
+		{
+			console.log(xhr.responseText);
+			console.log(textStatus);
+			console.log(errorThrown);
 		}
 	});
 };
