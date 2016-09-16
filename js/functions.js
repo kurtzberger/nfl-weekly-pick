@@ -495,8 +495,8 @@ function nonUserCheck(user)
 
 
 /**
- * A stricter way of parsing floats. Will return an integer where possible, otherwise if number can be interpreted as a float, then a float
- * will be returned
+ * A stricter way of parsing floats. Will return an integer where possible, otherwise,
+ * if number can be interpreted as a float, then a float will be returned.
  * @param value
  * @returns equivalent number (float or int) depending on if it can be interpreted as a float or int.
  */

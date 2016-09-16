@@ -35,6 +35,7 @@
 			<table id="standings-table" class="striped responsive-table centered">
 				<thead>
 					<tr id="headers">
+						<th data-field="position" style="width: 10px;"></th>
 						<th data-field="name" style="width:100px;">Name</th>
 						<th data-field="points" style="width:100px;">Season Points</th>
 						<th data-field="win-pct" style="width:100px;">Season Win %</th>
@@ -42,6 +43,26 @@
 				</thead>
 				<tbody id="body"></tbody>
 			</table>
+		</div>
+		<div class="vertical-align">
+			<div class="loader s12 m4 center">
+				<div class="preloader-wrapper big active">
+					<div class="spinner-layer spinner-blue-only">
+						<div class="circle-clipper left">
+							<div class="circle"></div>
+						</div>
+						<div class="gap-patch">
+							<div class="circle"></div>
+						</div>
+						<div class="circle-clipper right">
+							<div class="circle"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="show-me col s12">
+				<p class="flow-text center-align">Calculating Standings. Please wait...</p>
+			</div>
 		</div>
 	</div>
 </body>

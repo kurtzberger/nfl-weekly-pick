@@ -10,23 +10,12 @@ $(document).ready(function()
 	$("#header").load("../header.html", function()
 	{
 		var seasonType, week, localURL, Games;
-		var Names = [], Users = [], Standings = {};
+		var Names = [], Standings = {};
 		// this URL is used just for this webpage
 		localURL = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
 		
 		$("#standings-link").addClass("deep-orange lighten-3");
 		$("#title").text("Standings");
-		
-		// add loader animation
-		$("#main-content").append('<div class="loader s12 m4 center">' +
-				'<div class="preloader-wrapper big active">' +
-				'<div class="spinner-layer spinner-blue-only">' +
-				'<div class="circle-clipper left">' +
-				'<div class="circle"></div>' +
-				'</div><div class="gap-patch">' +
-				'<div class="circle"></div>' + 
-				'</div><div class="circle-clipper right">' +
-				'<div class="circle"></div></div></div></div></div>');
 		
 		// get all users and create a standings object for that user.
 		database.ref('users').once('value').then(function(snapshot)
@@ -35,7 +24,6 @@ $(document).ready(function()
 			// get all display names from imported data and initialize standings object
 			for(var i in data)
 			{
-				Users.push(i);
 				Names.push(data[i].displayName);
 				Standings[i] = {
 					name:				data[i].displayName,
@@ -58,12 +46,10 @@ $(document).ready(function()
 				processStandings(week, Games, Standings);
 				var timerID = setInterval( function()
 				{
-					
 					if(finished)
 					{
 						// place objects into array
 						var Sorted = [];
-						// place the user's display name in the table
 						for(var i in Standings)
 							Sorted.push(Standings[i]);
 						// sort standings by points from highest points to lowest points. Win % is tie breaker
@@ -78,16 +64,16 @@ $(document).ready(function()
 						for(var i=0; i<Sorted.length; i++)
 						{
 							var name = Sorted[i].name;
-							var tag = replaceAll(Users[i], '@', '');
-							tag = replaceAll(tag, '_', '');	// remove illegal characters
 							var winPct = (Sorted[i].wins * 100.0 / completedGames).toFixed(2);
-							$("#body").append('<tr id="' + tag + '"></tr>');
+							$("#body").append('<tr id="' + i + '"></tr>');
+							//player's position
+							$("#" + i).append('<td style="text-align: left;">' + ordinalSuffixOf(i+1) + '</td>')
 							//player's name in the table
-							$("#" + tag).append('<td>' + name + '</td>');
+							$("#" + i).append('<td>' + name + '</td>');
 							//player's score
-							$("#" + tag).append('<td>' + Sorted[i].points + '</td>');
+							$("#" + i).append('<td>' + Sorted[i].points + '</td>');
 							//player's win %
-							$("#" + tag).append('<td>' + (isNaN(winPct) ? '0.00' : winPct) + '%</td>');
+							$("#" + i).append('<td>' + (isNaN(winPct) ? '0.00' : winPct) + '%</td>');
 						}
 						
 						// remove loading animation
@@ -103,30 +89,61 @@ $(document).ready(function()
 	});
 });
 
+/**
+ * Ordinal suffix rules are as follows:
+ * st is used with numbers ending in 1 (e.g. 1st, pronounced first)
+ * nd is used with numbers ending in 2 (e.g. 92nd, pronounced ninety-second)
+ * rd is used with numbers ending in 3 (e.g. 33rd, pronounced thirty-third)
+ * As an exception to the above rules, all the "teen" numbers ending with 11, 12 or 13 use -th (e.g. 11th, pronounced eleventh, 112th, pronounced one hundred [and] twelfth)
+ * th is used for all other numbers (e.g. 9th, pronounced ninth).
+ * @param i
+ * @returns Returns the number i plus its correct ordinal suffix
+ */
+function ordinalSuffixOf(i) {
+    var j = i % 10,
+        k = i % 100;
+    if (j == 1 && k != 11) {
+        return i + "st";
+    }
+    if (j == 2 && k != 12) {
+        return i + "nd";
+    }
+    if (j == 3 && k != 13) {
+        return i + "rd";
+    }
+    return i + "th";
+};
+
 function processStandings(week, Games, Standings)
 {
-	for(var n=1; n<=week; n++)
+	var timeID = setInterval( function()
 	{
-		processLoop(n, week, Games, Standings);
-	}
+		if(!isNaN(parseInt(CUR_WEEK)))	// wait until CUR_WEEK has been defined.
+		{
+			clearInterval(timeID);
+			processLoop(1, week, Games, Standings);
+		}
+	}, 100);
 };
 
 function processLoop(n, week, Games, Standings)
 {
-	setTimeout( function() 
+	// get games of current week (n) and then process those games with users' picks into Standings
+	getGames(n, Games, Standings, function(uWeek, uGames, finals, uStandings)
 	{
-		getGames(n, Games, Standings, function(uWeek, uGames, finals, uStandings)
+		database.ref(season + '/picks/week' + uWeek).once('value').then(function(snapshot)
 		{
-			database.ref(season + '/picks/week' + uWeek).once('value').then(function(snapshot)
-			{
-				var Picks = snapshot.val();
-				Standings = calcStandings(Picks, uGames, finals, uStandings);
-				completedGames += finals;
-				finished = (n === parseInt(week));
-				
-			});
+			var Picks = snapshot.val();
+			Standings = calcStandings(Picks, uGames, finals, uStandings);
+			completedGames += finals;
+			if(n < parseInt(week))
+				// recursively call this function again until base case (n greater than or equal to current week) is reached.
+				processLoop(n+1, week, uGames, uStandings);
+			else
+				finished = true;
+			
 		});
-	}, 2000);
+	});
 };
 
 function getGames(n, Games, Standings, callback)

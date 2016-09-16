@@ -18,3 +18,14 @@ p {
 h3 {
 	padding-top: 40px;
 }
+
+.vertical-align {
+	width:		auto;
+	height:		500px;
+	position:	absolute;
+	top:		0;
+	bottom:		0;
+	left:		0;
+	right:		0;
+	margin:		auto;
+}
