@@ -471,11 +471,11 @@ function userPicks(Picks, Winners, callback)
 					if(Cells.eq(i).css("background-color") === 'rgb(0, 208, 94)')	// pick was correct
 					{
 						wins++;
-						Cells.eq(Cells.length-2).text(parseInt(Cells.eq(Cells.length-2).text()) + parseInt(Cells.eq(i).text()));
+						Cells.eq(Cells.length-2).text(filterFloat(Cells.eq(Cells.length-2).text()) + filterFloat(Cells.eq(i).text()));
 					}
 					else if(Cells.eq(i).css("background-color") === 'rgb(218, 150, 148)')	// pick was incorrect
 					{
-						Cells.eq(Cells.length-2).text(parseInt(Cells.eq(Cells.length-2).text()) - parseInt(Cells.eq(i).text()));
+						Cells.eq(Cells.length-2).text(filterFloat(Cells.eq(Cells.length-2).text()) - filterFloat(Cells.eq(i).text()));
 					}
 				}
 				Cells.eq(Cells.length-1).text((finals === 0 ? '0.00' : (wins / finals * 100).toFixed(2)) + "%");	// calculate win percent
@@ -491,4 +491,18 @@ function nonUserCheck(user)
 	return	user === "placeholder@1_com" ||
 			user === "placeholder@2_com" ||
 			user === "placeholder@3_com";
+};
+
+
+/**
+ * A stricter way of parsing floats. Will return an integer where possible, otherwise if number can be interpreted as a float, then a float
+ * will be returned
+ * @param value
+ * @returns equivalent number (float or int) depending on if it can be interpreted as a float or int.
+ */
+function filterFloat (value) {
+    if(/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/
+      .test(value))
+      return Number(value);
+  return NaN;
 };
