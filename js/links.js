@@ -58,9 +58,8 @@ $(document).ready(function()
 	 */
 	$("#header").on('click', '.week', function()
 	{
-		var START = 5; // starting index to search for space because 'Week' has 4 characters
-		var secondSpace = $(this).text().indexOf(" ", 5); // find second space if there is one. This is to delete the 'Current Week' part of the link if applicable.
-		var week = $(this).text().substring(START, (secondSpace===-1) ? START+1 : secondSpace);
+		var id = $(this).attr('id');
+		var week = id.substring(id.lastIndexOf('week')+4, id.lastIndexOf('-')); // get the week number (after 'week' and before the last '-')
 		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
 		setTimeout(function() { window.location.href = "../league-picks?week="+week; }, 600);
 	});
@@ -70,9 +69,8 @@ $(document).ready(function()
 	 */
 	$("#header").on('click', '.user-pick', function()
 	{
-		var START = 5; // starting index to search for space because 'Week' has 4 characters
-		var secondSpace = $(this).text().indexOf(" ", 5); // find second space if there is one. This is to delete the 'Current Week' part of the link if applicable.
-		var week = $(this).text().substring(START, (secondSpace===-1) ? START+1 : secondSpace);
+		var id = $(this).attr('id');
+		var week = id.substring(id.lastIndexOf('week')+4, id.lastIndexOf('-')); // get the week number (after 'week' and before the last '-')
 		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
 		setTimeout(function() { window.location.href = "../user-picks?week="+week; }, 600);
 	});
