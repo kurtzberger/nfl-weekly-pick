@@ -2,14 +2,8 @@ $(document).ready(function()
 {
 	$("#header").load("../header.html", function()
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
 		// wait 2 seconds to allow CUR_WEEK to get set
 		setTimeout( function()
-=======
-=======
->>>>>>> parent of 4e7ddde... Update for Carl's Email
-		debugger;
 		var week, Games, localURL;
 		week = location.search.substring(1).split("&")[0].split("=")[1];
 		// this URL is used just for this webpage
@@ -22,7 +16,6 @@ $(document).ready(function()
 		var database = firebase.database();
 		
 		$.get(localURL, function( data )
->>>>>>> parent of 4e7ddde... Update for Carl's Email
 		{
 			var week, Games, localURL;
 			week = location.search.substring(1).split("&")[0].split("=")[1];
@@ -53,7 +46,6 @@ $(document).ready(function()
 				// users' picks will be handled in a seperate database query
 				database.ref('users').once('value').then(function(snapshot)
 				{
-<<<<<<< HEAD
 					var data = snapshot.val();
 					// get all display names from imported data
 					for(var i in data)
@@ -103,7 +95,6 @@ $(document).ready(function()
 							// mark each users' pick cell for easier access upon next database query
 							$("#" + tag).append('<td style="max-width:47px; min-width:47px;" id="' + tag + '-' + j + '"></td>');
 							$("#" + tag).append('<td style="text-align: center; max-width:25px; min-width:25px;" id="' + tag + '-' + j + '-points"></td>');
-=======
 					var name = Names[i];
 					var tag = Users[i].replace('@','').replace('_','');	// remove illegal characters
 					$("#body").append('<tr id=' + tag + '></tr>');
@@ -124,7 +115,6 @@ $(document).ready(function()
 							$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder">' + getQuarter(Games[j].getAttribute('q')) + '</td>');
 							$("#home-score").append('<td style="text-align: center;" colspan="2">' + ((Games[j].getAttribute('hs') === '') ? 0 : Games[j].getAttribute('hs')) + '</td>');
 							$("#home-teams").append('<td style="text-align: center; border-bottom: thin solid #d0d0d0;" colspan="2" id="home-' + j + '">' + teamLogo(Games[j].getAttribute('h')) + '</td>');
->>>>>>> parent of 4e7ddde... Update for Carl's Email
 						}
 						$("#" + tag).append('<td id="' + tag + '-total-points" class="points"></td>');
 						$("#" + tag).append('<td id="' + tag + '-win-pct" class="win-pct"></td>');

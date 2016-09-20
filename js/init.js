@@ -29,20 +29,13 @@ if(sPage !== "register")
 		{
 			curUser = user;
 			UID = createUID(user.email);
-<<<<<<< HEAD
-<<<<<<< HEAD
 			if(UID === SUPERUSER)
 			{
 				$("#menu-nav").append('<li id="non-user-li">\n\
 					<a id="non-user-link" class="waves-effect"><i class="mdi mdi-account-alert left"></i><b>Non-Users\' Picks</b></a></li>');
 				if(sPage === "non-user-picks") $('.show-me').toggle();
 			}
-			if(sPage === "index.html" || sPage == "" || (sPage === "non-user-picks" && UID !== SUPERUSER))	//user is logged in
-=======
-=======
->>>>>>> parent of 4e7ddde... Update for Carl's Email
 			if(sPage === "index.html" || sPage == "")	//user is logged in
->>>>>>> parent of 4e7ddde... Update for Carl's Email
 				window.location.href = "standings";
 			else if(sPage === "change-password")
 				$("#current-user").html("Current user: <b>" + user.email + "</b>");

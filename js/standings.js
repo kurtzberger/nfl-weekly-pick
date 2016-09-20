@@ -65,14 +65,7 @@ $(document).ready(function()
 						for(var i=0; i<Sorted.length; i++)
 						{
 							var name = Sorted[i].name;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 							var tag = Users[i].replace('@','').replace('_','');	// remove illegal characters
->>>>>>> parent of 4e7ddde... Update for Carl's Email
-=======
-							var tag = Users[i].replace('@','').replace('_','');	// remove illegal characters
->>>>>>> parent of 4e7ddde... Update for Carl's Email
 							var winPct = (Sorted[i].wins * 100.0 / completedGames).toFixed(2);
 							$("#body").append('<tr id="' + i + '"></tr>');
 							//player's position
@@ -152,12 +145,7 @@ function processLoop(n, week, Games, Standings)
 				processLoop(n+1, week, uGames, uStandings);
 			else
 				finished = true;
-=======
 			finished = (n === week);
->>>>>>> parent of 4e7ddde... Update for Carl's Email
-=======
-			finished = (n === week);
->>>>>>> parent of 4e7ddde... Update for Carl's Email
 			
 		});
 	});

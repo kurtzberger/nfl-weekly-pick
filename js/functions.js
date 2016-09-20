@@ -408,7 +408,6 @@ function userPicks(Picks, Winners, callback)
 		{
 			debugger;
 			var now = new Date(result.dateString);
-<<<<<<< HEAD
 			var gameTime, tag, wins, finals = 0;
 			$(".points").text("0");	// clear points
 			$(".win-pct").text("0.00%");	// clear win %
@@ -419,30 +418,15 @@ function userPicks(Picks, Winners, callback)
 				if(Winners[i] !== "-")
 					finals++;
 			}
-			
-=======
 			var gameTime, tag;
-
-<<<<<<< HEAD
->>>>>>> parent of 4e7ddde... Update for Carl's Email
-=======
->>>>>>> parent of 4e7ddde... Update for Carl's Email
 			for(var i in Picks)
 			{
 				for(var j in Picks[i])
 				{
 					gameTime = Date.parse($("#date-" + Picks[i][j].game).text());
-<<<<<<< HEAD
-<<<<<<< HEAD
 					tag = replaceAll(j + '-' + Picks[i][j].game, '@', '');
 					tag = replaceAll(tag, '_', '');	// remove illegal characters
 					if((gameTime > now && j !== UID) && !nonUserCheck(j)) 
-=======
-=======
->>>>>>> parent of 4e7ddde... Update for Carl's Email
-					tag = (j + '-' + Picks[i][j].game).replace('@', '').replace('_','');	// remove illegal characters
-					if(gameTime > now && j !== UID)
->>>>>>> parent of 4e7ddde... Update for Carl's Email
 					{
 						$('#' + tag).text("HIDDEN");
 						$("#" + tag + '-points').text("");
@@ -495,8 +479,6 @@ function userPicks(Picks, Winners, callback)
 			callback();
 		}
 	});
-<<<<<<< HEAD
-<<<<<<< HEAD
 };
 
 function nonUserCheck(user)
@@ -518,8 +500,4 @@ function filterFloat (value) {
       .test(value))
       return Number(value);
   return NaN;
-=======
->>>>>>> parent of 4e7ddde... Update for Carl's Email
-=======
->>>>>>> parent of 4e7ddde... Update for Carl's Email
 };
