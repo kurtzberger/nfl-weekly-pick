@@ -8,9 +8,6 @@ $(document).ready(function()
 		localURL = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
 		
 		$('.your-picks').addClass("deep-orange lighten-3");
-		$("#user-picks-week" + week + "-link").addClass("deep-orange lighten-3");
-		
-		$("#user-picks-link").addClass("deep-orange lighten-3");
 
 		// Get a reference to the database service
 		var database = firebase.database();
@@ -26,7 +23,7 @@ $(document).ready(function()
 			disableStartedGames(function() 
 			{
 				//remove loader animation
-				$(".loader").remove();
+				$(".remove-me").remove();
 				$(".show-me").toggle();
 			});
 		});
