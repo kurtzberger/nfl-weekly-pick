@@ -22,11 +22,6 @@ firebase.initializeApp(config);
 var sPath = window.location.pathname;
 var sPage = sPath.substring(sPath.lastIndexOf('pick/') + 5).slice(0, -1);	// get just the page name with no slashes
 
-if(sPage === "")
-	$('head').append('<link rel="icon" type="image/ico" href="favicon.ico">');
-else
-	$('head').append('<link rel="icon" type="image/ico" href="../favicon.ico">');
-
 if(sPage !== "register")
 {
 	firebase.auth().onAuthStateChanged(function(user)	// on log in or log out
