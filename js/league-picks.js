@@ -2,8 +2,24 @@ $(document).ready(function()
 {
 	$("#header").load("../header.html", function()
 	{
+<<<<<<< HEAD
 		// wait 2 seconds to allow CUR_WEEK to get set
 		setTimeout( function()
+=======
+		debugger;
+		var week, Games, localURL;
+		week = location.search.substring(1).split("&")[0].split("=")[1];
+		// this URL is used just for this webpage
+		localURL = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
+		$('.league-picks').addClass("deep-orange lighten-3");
+		$("#week" + week + "-link").addClass("deep-orange lighten-3");
+		$("#title").text(season + " Week " + week + " League Picks");
+		
+		// Get a reference to the database service
+		var database = firebase.database();
+		
+		$.get(localURL, function( data )
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
 		{
 			var week, Games, localURL;
 			week = location.search.substring(1).split("&")[0].split("=")[1];
@@ -34,6 +50,7 @@ $(document).ready(function()
 				// users' picks will be handled in a seperate database query
 				database.ref('users').once('value').then(function(snapshot)
 				{
+<<<<<<< HEAD
 					var data = snapshot.val();
 					// get all display names from imported data
 					for(var i in data)
@@ -83,6 +100,28 @@ $(document).ready(function()
 							// mark each users' pick cell for easier access upon next database query
 							$("#" + tag).append('<td style="max-width:47px; min-width:47px;" id="' + tag + '-' + j + '"></td>');
 							$("#" + tag).append('<td style="text-align: center; max-width:25px; min-width:25px;" id="' + tag + '-' + j + '-points"></td>');
+=======
+					var name = Names[i];
+					var tag = Users[i].replace('@','').replace('_','');	// remove illegal characters
+					$("#body").append('<tr id=' + tag + '></tr>');
+					//player's name in the table
+					$("#" + tag).append('<td>'+name+'</td>');
+				
+					for(var j=0; j<Games.length; j++)
+					{				
+						
+						// only do this the first time through the outer loop
+						if(i===0)
+						{
+							//place the game start time as a header of the game
+							$("#nfl-games-headers").append('<th colspan="2" style="font-size: 14px; font-weight: 400; max-width:72px; min-width:72px; text-align: center;" id="date-' + j +'">' + 
+									gameStartTime(Games[j].getAttribute('eid'), Games[j].getAttribute('t'), Games[j].getAttribute('d')) + '</th>');
+							$("#away-teams").append('<td style="text-align: center;" colspan="2" id="visitor-' + j + '">' + teamLogo(Games[j].getAttribute('v')) + '</td>');
+							$("#away-score").append('<td style="text-align: center;" colspan="2">' + ((Games[j].getAttribute('vs') === '') ? 0 : Games[j].getAttribute('vs')) + '</td>');
+							$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder">' + getQuarter(Games[j].getAttribute('q')) + '</td>');
+							$("#home-score").append('<td style="text-align: center;" colspan="2">' + ((Games[j].getAttribute('hs') === '') ? 0 : Games[j].getAttribute('hs')) + '</td>');
+							$("#home-teams").append('<td style="text-align: center; border-bottom: thin solid #d0d0d0;" colspan="2" id="home-' + j + '">' + teamLogo(Games[j].getAttribute('h')) + '</td>');
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
 						}
 						$("#" + tag).append('<td id="' + tag + '-total-points" class="points"></td>');
 						$("#" + tag).append('<td id="' + tag + '-win-pct" class="win-pct"></td>');

@@ -5,7 +5,6 @@
  */
 
 const LOAD_DELAY = 750; // in milliseconds
-var SUPERUSER = "kurtzberger@gmail_com";	// allows to make picks for random, home, and away games
 var curUser = null;
 var UID = null;
 var season = 2016; // update this each season. This is used for the individual week league picks.
@@ -30,6 +29,7 @@ if(sPage !== "register")
 		{
 			curUser = user;
 			UID = createUID(user.email);
+<<<<<<< HEAD
 			if(UID === SUPERUSER)
 			{
 				$("#menu-nav").append('<li id="non-user-li">\n\
@@ -37,6 +37,9 @@ if(sPage !== "register")
 				if(sPage === "non-user-picks") $('.show-me').toggle();
 			}
 			if(sPage === "index.html" || sPage == "" || (sPage === "non-user-picks" && UID !== SUPERUSER))	//user is logged in
+=======
+			if(sPage === "index.html" || sPage == "")	//user is logged in
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
 				window.location.href = "standings";
 			else if(sPage === "change-password")
 				$("#current-user").html("Current user: <b>" + user.email + "</b>");

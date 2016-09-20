@@ -20,39 +20,39 @@ Date.prototype.dst = function() {
  */
 function teamName(name)
 {
-	if(name==="ARI") 	 return "Arizona Cardinals";
-	else if(name==="ATL")return "Atlanta Falctions";
-	else if(name==="BAL")return "Baltimore Ravens";
-	else if(name==="BUF")return "Buffalo Bills";
-	else if(name==="CAR")return "Carolina Panthers";
-	else if(name==="CHI")return "Chicago Bears";
-	else if(name==="CIN")return "Cincinnati Bengals";
-	else if(name==="CLE")return "Cleveland Browns";
-	else if(name==="DAL")return "Dallas Cowboys";
-	else if(name==="DEN")return "Denver Broncos";
-	else if(name==="DET")return "Detroit Lions";
-	else if(name==="GB") return "Green Bay Packers";
-	else if(name==="HOU")return "Houston Texans";
-	else if(name==="IND")return "Indianapolis Colts";
-	else if(name==="JAX")return "Jacksonville Jaguars";
-	else if(name==="KC") return "Kansas City Chiefs";
-	else if(name==="LA") return "Los Angeles Rams";
-	else if(name==="MIA")return "Miami Dolphins";
-	else if(name==="MIN")return "Minnesota Vikings";
-	else if(name==="NE") return "New England Patriots";
-	else if(name==="NO") return "New Orleans Saints";
-	else if(name==="NYG")return "New York Giants";
-	else if(name==="NYJ")return "New York Jets";
-	else if(name==="OAK")return "Oakland Raiders";
-	else if(name==="PHI")return "Philadelphia Eagles";
-	else if(name==="PIT")return "Pittsburgh Steelers";
-	else if(name==="SD") return "San Diego Chargers";
-	else if(name==="SF") return "San Francisco 49ers";
-	else if(name==="SEA")return "Seattle Seahawks";
-	else if(name==="TB") return "Tampa Bay Buccaneers";
-	else if(name==="TEN")return "Tennessee Titans";
-	else if(name==="WAS")return "Washington Redskins";
-	else				 return "Unknown Team";
+	if(name=="ARI") 	return "Arizona Cardinals";
+	else if(name=="ATL")return "Atlanta Falctions";
+	else if(name=="BAL")return "Baltimore Ravens";
+	else if(name=="BUF")return "Buffalo Bills";
+	else if(name=="CAR")return "Carolina Panthers";
+	else if(name=="CHI")return "Chicago Bears";
+	else if(name=="CIN")return "Cincinnati Bengals";
+	else if(name=="CLE")return "Cleveland Browns";
+	else if(name=="DAL")return "Dallas Cowboys";
+	else if(name=="DEN")return "Denver Broncos";
+	else if(name=="DET")return "Detroit Lions";
+	else if(name=="GB")	return "Green Bay Packers";
+	else if(name=="HOU")return "Houston Texans";
+	else if(name=="IND")return "Indianapolis Colts";
+	else if(name=="JAX")return "Jacksonville Jaguars";
+	else if(name=="KC") return "Kansas City Chiefs";
+	else if(name=="LA") return "Los Angeles Rams";
+	else if(name=="MIA")return "Miami Dolphins";
+	else if(name=="MIN")return "Minnesota Vikings";
+	else if(name=="NE")	return "New England Patriots";
+	else if(name=="NO")	return "New Orleans Saints";
+	else if(name=="NYG")return "New York Giants";
+	else if(name=="NYJ")return "New York Jets";
+	else if(name=="OAK")return "Oakland Raiders";
+	else if(name=="PHI")return "Philadelphia Eagles";
+	else if(name=="PIT")return "Pittsburgh Steelers";
+	else if(name=="SD")	return "San Diego Chargers";
+	else if(name=="SF")	return "San Francisco 49ers";
+	else if(name=="SEA")return "Seattle Seahawks";
+	else if(name=="TB")	return "Tampa Bay Buccaneers";
+	else if(name=="TEN")return "Tennessee Titans";
+	else if(name=="WAS")return "Washington Redskins";
+	else				return "Unknown Team";
 };
 
 /**
@@ -346,22 +346,16 @@ function funnyPhrase()
 function createUID(user)
 {
 	var tempUID = '';
-	tempUID = replaceAll(user, '.', '_');
-	tempUID = replaceAll(tempUID, '$', '_');
-	tempUID = replaceAll(tempUID, '#', '_');
-	tempUID = replaceAll(tempUID, '[', '_');
-	tempUID = replaceAll(tempUID, ']', '_');
-	tempUID = replaceAll(tempUID, '/', '_');
+
+	tempUID = user.replace('.', '_')
+				  .replace('$', '_')
+				  .replace('#', '_')
+				  .replace('[', '_')
+				  .replace(']', '_')
+				  .replace('/', '_');
+
 	return tempUID.toLowerCase();
 };
-
-function escapeRegExp(str) {
-    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-};
-
-function replaceAll(str, find, replace) {
-  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
-}
 
 /**
  * A function used to determine winner's of a given team. This function is meant only to work on the league picks' page
@@ -412,7 +406,9 @@ function userPicks(Picks, Winners, callback)
 		url:		'http://www.timeapi.org/utc/now.json',
 		success:	function(result)
 		{
+			debugger;
 			var now = new Date(result.dateString);
+<<<<<<< HEAD
 			var gameTime, tag, wins, finals = 0;
 			$(".points").text("0");	// clear points
 			$(".win-pct").text("0.00%");	// clear win %
@@ -424,14 +420,23 @@ function userPicks(Picks, Winners, callback)
 					finals++;
 			}
 			
+=======
+			var gameTime, tag;
+
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
 			for(var i in Picks)
 			{
 				for(var j in Picks[i])
 				{
 					gameTime = Date.parse($("#date-" + Picks[i][j].game).text());
+<<<<<<< HEAD
 					tag = replaceAll(j + '-' + Picks[i][j].game, '@', '');
 					tag = replaceAll(tag, '_', '');	// remove illegal characters
 					if((gameTime > now && j !== UID) && !nonUserCheck(j)) 
+=======
+					tag = (j + '-' + Picks[i][j].game).replace('@', '').replace('_','');	// remove illegal characters
+					if(gameTime > now && j !== UID)
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
 					{
 						$('#' + tag).text("HIDDEN");
 						$("#" + tag + '-points').text("");
@@ -484,6 +489,7 @@ function userPicks(Picks, Winners, callback)
 			callback();
 		}
 	});
+<<<<<<< HEAD
 };
 
 function nonUserCheck(user)
@@ -505,4 +511,6 @@ function filterFloat (value) {
       .test(value))
       return Number(value);
   return NaN;
+=======
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
 };

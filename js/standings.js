@@ -52,6 +52,7 @@ $(document).ready(function()
 						var Sorted = [];
 						for(var i in Standings)
 							Sorted.push(Standings[i]);
+						
 						// sort standings by points from highest points to lowest points. Win % is tie breaker
 						Sorted.sort(function(a,b)
 						{ 
@@ -64,6 +65,10 @@ $(document).ready(function()
 						for(var i=0; i<Sorted.length; i++)
 						{
 							var name = Sorted[i].name;
+<<<<<<< HEAD
+=======
+							var tag = Users[i].replace('@','').replace('_','');	// remove illegal characters
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
 							var winPct = (Sorted[i].wins * 100.0 / completedGames).toFixed(2);
 							$("#body").append('<tr id="' + i + '"></tr>');
 							//player's position
@@ -136,11 +141,15 @@ function processLoop(n, week, Games, Standings)
 			var Picks = snapshot.val();
 			Standings = calcStandings(Picks, uGames, finals, uStandings);
 			completedGames += finals;
+<<<<<<< HEAD
 			if(n < parseInt(week))
 				// recursively call this function again until base case (n greater than or equal to current week) is reached.
 				processLoop(n+1, week, uGames, uStandings);
 			else
 				finished = true;
+=======
+			finished = (n === week);
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
 			
 		});
 	});
