@@ -66,6 +66,10 @@ $(document).ready(function()
 						{
 							var name = Sorted[i].name;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+							var tag = Users[i].replace('@','').replace('_','');	// remove illegal characters
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
 =======
 							var tag = Users[i].replace('@','').replace('_','');	// remove illegal characters
 >>>>>>> parent of 4e7ddde... Update for Carl's Email
@@ -142,11 +146,15 @@ function processLoop(n, week, Games, Standings)
 			Standings = calcStandings(Picks, uGames, finals, uStandings);
 			completedGames += finals;
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if(n < parseInt(week))
 				// recursively call this function again until base case (n greater than or equal to current week) is reached.
 				processLoop(n+1, week, uGames, uStandings);
 			else
 				finished = true;
+=======
+			finished = (n === week);
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
 =======
 			finished = (n === week);
 >>>>>>> parent of 4e7ddde... Update for Carl's Email

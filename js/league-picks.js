@@ -3,9 +3,12 @@ $(document).ready(function()
 	$("#header").load("../header.html", function()
 	{
 <<<<<<< HEAD
+<<<<<<< HEAD
 		// wait 2 seconds to allow CUR_WEEK to get set
 		setTimeout( function()
 =======
+=======
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
 		debugger;
 		var week, Games, localURL;
 		week = location.search.substring(1).split("&")[0].split("=")[1];

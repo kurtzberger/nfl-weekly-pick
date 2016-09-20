@@ -423,6 +423,9 @@ function userPicks(Picks, Winners, callback)
 =======
 			var gameTime, tag;
 
+<<<<<<< HEAD
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
+=======
 >>>>>>> parent of 4e7ddde... Update for Carl's Email
 			for(var i in Picks)
 			{
@@ -430,10 +433,13 @@ function userPicks(Picks, Winners, callback)
 				{
 					gameTime = Date.parse($("#date-" + Picks[i][j].game).text());
 <<<<<<< HEAD
+<<<<<<< HEAD
 					tag = replaceAll(j + '-' + Picks[i][j].game, '@', '');
 					tag = replaceAll(tag, '_', '');	// remove illegal characters
 					if((gameTime > now && j !== UID) && !nonUserCheck(j)) 
 =======
+=======
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
 					tag = (j + '-' + Picks[i][j].game).replace('@', '').replace('_','');	// remove illegal characters
 					if(gameTime > now && j !== UID)
 >>>>>>> parent of 4e7ddde... Update for Carl's Email
@@ -490,6 +496,7 @@ function userPicks(Picks, Winners, callback)
 		}
 	});
 <<<<<<< HEAD
+<<<<<<< HEAD
 };
 
 function nonUserCheck(user)
@@ -511,6 +518,8 @@ function filterFloat (value) {
       .test(value))
       return Number(value);
   return NaN;
+=======
+>>>>>>> parent of 4e7ddde... Update for Carl's Email
 =======
 >>>>>>> parent of 4e7ddde... Update for Carl's Email
 };
