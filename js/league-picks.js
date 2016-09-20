@@ -2,7 +2,7 @@ $(document).ready(function()
 {
 	$("#header").load("../header.html", function()
 	{
-		// wait 2 seconds to allow CUR_WEEK to get set
+		// wait to allow CUR_WEEK to get set
 		setTimeout( function()
 		{
 			var week, Games, localURL;
