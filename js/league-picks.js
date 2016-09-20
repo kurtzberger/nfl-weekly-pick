@@ -98,7 +98,7 @@ $(document).ready(function()
 						userPicks(Picks, Winners, function()
 						{															
 							// remove loading animation
-							$(".loader").remove();
+							$(".remove-me").remove();
 							// toggle hidden content
 							$(".show-me").toggle();
 	
