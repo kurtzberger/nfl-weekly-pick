@@ -5,6 +5,7 @@
  */
 
 const LOAD_DELAY = 750; // in milliseconds
+var SUPERUSER = "kurtzberger@gmail_com";	// allows to make picks for random, home, and away games
 var curUser = null;
 var UID = null;
 var season = 2016; // update this each season. This is used for the individual week league picks.
@@ -21,6 +22,11 @@ firebase.initializeApp(config);
 var sPath = window.location.pathname;
 var sPage = sPath.substring(sPath.lastIndexOf('pick/') + 5).slice(0, -1);	// get just the page name with no slashes
 
+if(sPage === "")
+	$('head').append('<link rel="icon" type="image/ico" href="favicon.ico">');
+else
+	$('head').append('<link rel="icon" type="image/ico" href="../favicon.ico">');
+
 if(sPage !== "register")
 {
 	firebase.auth().onAuthStateChanged(function(user)	// on log in or log out
@@ -35,7 +41,7 @@ if(sPage !== "register")
 					<a id="non-user-link" class="waves-effect"><i class="mdi mdi-account-alert left"></i><b>Non-Users\' Picks</b></a></li>');
 				if(sPage === "non-user-picks") $('.show-me').toggle();
 			}
-			if(sPage === "index.html" || sPage == "")	//user is logged in
+			if(sPage === "index.html" || sPage == "" || (sPage === "non-user-picks" && UID !== SUPERUSER))	//user is logged in
 				window.location.href = "standings";
 			else if(sPage === "change-password")
 				$("#current-user").html("Current user: <b>" + user.email + "</b>");
