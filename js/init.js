@@ -37,8 +37,10 @@ if(sPage !== "register")
 			UID = createUID(user.email);
 			if(UID === SUPERUSER)
 			{
-				$("#menu-nav").append('<li id="non-user-li">\n\
-					<a id="non-user-link" class="waves-effect"><i class="mdi mdi-account-alert left"></i><b>Non-Users\' Picks</b></a></li>');
+				debugger;
+				if($('#non-user-link').length === 0)	// only add this once
+					$("#menu-nav").append('<li id="non-user-li">\n\
+						<a id="non-user-link" class="waves-effect"><i class="mdi mdi-account-alert left"></i><b>Non-Users\' Picks</b></a></li>');
 				if(sPage === "non-user-picks") $('.show-me').toggle();
 			}
 			if(sPage === "index.html" || sPage == "" || (sPage === "non-user-picks" && UID !== SUPERUSER))	//user is logged in
