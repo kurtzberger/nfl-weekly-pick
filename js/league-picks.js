@@ -95,44 +95,7 @@ $(document).ready(function()
 						Winners = determineWinners(xmlDoc.find('g'));
 						// put all users' picks into the table, and hide other users' picks of games that haven't started
 						// mark the users games correct (green) or wrong (red) as well if the games are complete.
-						userPicks(Picks, Winners, function()
-						{															
-							// remove loading animation
-							$(".remove-me").remove();
-							// toggle hidden content
-							$(".show-me").toggle();
-	
-							// call this function regularly to reveal other user's picks after the games start
-							var timeID = setInterval(function()
-							{
-								userPicks(Picks, Winners, function()
-								{
-									// update Winners
-									$.get(localURL, function( newData )
-									{
-										Winners = determineWinners($(newData).find('g'));
-										if($(newData).find('g[q="F"], g[q="FO"]').length === Games.length)
-										{
-											clearInterval(timeID);
-										}
-									});
-								}); 
-							}, 10000);
-							
-							//regularly update nfl scores if it's the current week
-							if(week === CUR_WEEK)
-							{
-								var id = setInterval(function()
-								{
-									if(xmlDoc.find('g[q="F"], g[q="FO"]').length === Games.length)
-									{
-										clearInterval(id);
-										return;
-									}
-									updateNFLScores();
-								}, 60000);
-							}
-						});
+						userPicks(Picks, Winners, xmlDoc);
 					});
 				});
 			});
@@ -164,32 +127,158 @@ function getQuarter(quarter)
 /**
  * Function that will update the NFL scores on the webpage
  */
-function updateNFLScores()
+function updateNFLScores(Picks)
 {
-	$.get('http://www.nfl.com/liveupdate/scorestrip/ss.xml', function( data )
-	{
-		//delete all scores in table first and quarter
-		$("#away-score").find('td:gt(0)').remove();
-		$("#quarter").find('td:gt(0)').remove();
-		$("#home-score").find('td:gt(0)').remove();
-		
-		var Games = $(data).find('g');
-		//update scores now
-		for(var i=0; i<Games.length; i++)
+	var Games, xmlDoc;	// declare this outside the scope of AJAX so we may use it throughout the function
+	$.ajax({
+		url:		'http://www.nfl.com/liveupdate/scorestrip/ss.xml',
+		success:	function(data)
 		{
-			// away score
-			$("#away-score").append('<td style="text-align: center;" colspan="2">' + Games[i].getAttribute('vs') + '</td>');
-			// quarter
-			var time = Games[i].getAttribute('k');
-			if(time !== null && time !== "")
-				$("#quarter").append('<td style="text-align: center;" class="quarterBorder">' + getQuarter(Games[i].getAttribute('q')) + '</td>' +
-									 '<td style="text-align: center;" class="quarterBorder verticalLine">' + time + '</td>');
-			else if (i < Games.length - 1)
-				$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">' + getQuarter(Games[i].getAttribute('q')) + '</td>');
-			else
-				$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder">' + getQuarter(Games[i].getAttribute('q')) + '</td>');
-			// home score
-			$("#home-score").append('<td style="text-align: center;" colspan="2">' + Games[i].getAttribute('hs') + '</td>');
+			//delete all scores in table first and quarter
+			$("#away-score").find('td:gt(0)').remove();
+			$("#quarter").find('td:gt(0)').remove();
+			$("#home-score").find('td:gt(0)').remove();
+
+			xmlDoc = $(data);
+			Games = xmlDoc.find('g');
+			//update scores now
+			for(var i=0; i<Games.length; i++)
+			{
+				// away score
+				$("#away-score").append('<td style="text-align: center;" colspan="2">' + Games[i].getAttribute('vs') + '</td>');
+				// quarter
+				var time = Games[i].getAttribute('k');
+				if(time !== null && time !== "")
+					$("#quarter").append('<td style="text-align: center;" class="quarterBorder">' + getQuarter(Games[i].getAttribute('q')) + '</td>' +
+										 '<td style="text-align: center;" class="quarterBorder verticalLine">' + time + '</td>');
+				else if (i < Games.length - 1)
+					$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">' + getQuarter(Games[i].getAttribute('q')) + '</td>');
+				else
+					$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder">' + getQuarter(Games[i].getAttribute('q')) + '</td>');
+				// home score
+				$("#home-score").append('<td style="text-align: center;" colspan="2">' + Games[i].getAttribute('hs') + '</td>');
+			}
+		},
+		complete:	function()
+		{
+			// update Winners
+			var UpdatedWinners = determineWinners(Games);
+			// set the timeout for the next request
+			setTimeout(function()
+			{
+				userPicks(Picks, UpdatedWinners, xmlDoc);
+			}, 10000);
+		}
+	});
+};
+
+/**
+ * Fills in all user's picks according to the currently logged in user. The function will hide other users' picks if that pick's game hasn't started
+ * @param Picks Object of all the user's picks and point assignments
+ * @param {Array} Winners Array of winners (returned from determine winners function
+ * @param {function} callback a function to be called upon completion
+ * @returns
+ */
+function userPicks(Picks, Winners, data)
+{
+	$.ajax({
+		dataType:	'jsonp',	// use JSON w/padding to work around the cross-domain policies 
+		url:		'http://www.timeapi.org/utc/now.json',
+		success:	function(result)
+		{
+			var now = new Date(result.dateString);
+			var gameTime, tag, wins, finals = 0;
+			$(".points").text("0");	// clear points
+			$(".win-pct").text("0.00%");	// clear win %
+			
+			// determine number of final games
+			for(var i=0; i<Winners.length; i++)
+			{
+				if(Winners[i] !== "-")
+					finals++;
+			}
+			
+			for(var i in Picks)
+			{
+				for(var j in Picks[i])
+				{
+					gameTime = Date.parse($("#date-" + Picks[i][j].game).text());
+					tag = replaceAll(j + '-' + Picks[i][j].game, '@', '');
+					tag = replaceAll(tag, '_', '');	// remove illegal characters
+					if((gameTime > now && j !== UID) && !nonUserCheck(j)) 
+					{
+						$('#' + tag).text("HIDDEN");
+						$("#" + tag + '-points').text("");
+						continue;
+					}
+					$("#" + tag).html(teamLogo(Picks[i][j].pick));
+					$("#" + tag + "-points").html(Picks[i][j].points);
+					if(Winners[Picks[i][j].game] !== "-")	// game is a final
+					{
+						if(Picks[i][j].pick === Winners[Picks[i][j].game])
+						{
+							$("#" + tag + ", #" + tag + "-points").css("background-color", "#00d05e");
+						}
+						else
+						{
+							$("#" + tag + ", #" + tag + "-points").css("background-color", "#da9694");
+						}
+					} else if(Winners[Picks[i][j].game] === "-" && $("#" + tag).css("background-color") !== "rgba(0, 0, 0, 0)")
+					{
+						$("#" + tag + ", #" + tag + "-points").css("background-color", "rgba(0, 0, 0, 0)");
+					}
+				}
+			}
+
+			//take care of empty picks
+			$("td:empty").each(function ()
+			{
+				var index = Math.floor(((this.cellIndex % 2 === 0) ? this.cellIndex - 1 : this.cellIndex) / 2);
+				var quarter = $("#quarter").find('td').eq(index).text();
+				if(Winners[index] !== "-" && (quarter === "Final" || quarter === "Final OT"))	// game is a final
+					$(this).css("background-color", "#da9694");
+				else if(Winners[index] === "-" && $(this).css("background-color") !== "rgba(0, 0, 0, 0)")
+					$(this).css("background-color", "rgba(0, 0, 0, 0)");
+			});
+
+			$("#league-picks-table").find('tr:not(#headers)').each(function()
+			{
+				var Cells = $(this).find('td');	// get all cells in this row
+				wins = 0;	// reset number of wins for this row
+				for(var i=2; i<Cells.length-2; i+=2)
+				{
+					if(Cells.eq(i).css("background-color") === 'rgb(0, 208, 94)')	// pick was correct
+					{
+						wins++;
+						Cells.eq(Cells.length-2).text(filterFloat(Cells.eq(Cells.length-2).text()) + filterFloat(Cells.eq(i).text()));
+					}
+					else if(Cells.eq(i).css("background-color") === 'rgb(218, 150, 148)')	// pick was incorrect
+					{
+						Cells.eq(Cells.length-2).text(filterFloat(Cells.eq(Cells.length-2).text()) - filterFloat(Cells.eq(i).text()));
+					}
+				}
+				Cells.eq(Cells.length-1).text((finals === 0 ? '0.00' : (wins / finals * 100).toFixed(2)) + "%");	// calculate win percent
+			});
+		},
+		complete: function()
+		{
+			var week = location.search.substring(1).split("&")[0].split("=")[1];
+			if($(".show-me").css('display') === "none")
+			{
+				// remove loading animation
+				$(".remove-me").remove();
+				// toggle hidden content
+				$(".show-me").toggle();
+			}
+			//regularly update nfl scores if it's the current week and not all games are complete
+			if(week === CUR_WEEK && data.find('g[q="F"], g[q="FO"]').length !== data.find('g').length)
+				updateNFLScores(Picks);
+		},
+		error:	function(xhr, textStatus, errorThrown)
+		{
+			console.log(xhr.responseText);
+			console.log(textStatus);
+			console.log(errorThrown);
 		}
 	});
 };
