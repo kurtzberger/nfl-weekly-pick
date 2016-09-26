@@ -158,6 +158,12 @@ function getGames(n, Games, Standings, callback)
 		var finals = xmlDoc.find('g[q="F"], g[q="FO"]').length;
 		Games = xmlDoc.find('g');
 		
+		// sort games by game ID
+		Games.sort(function(a,b)
+		{ 
+			return (a.getAttribute('eid') > b.getAttribute('eid'))	?  1 : -1; 
+		});
+		
 		// callback function returning the modified standings
 		callback(n, Games, finals, Standings);
 	});
@@ -177,6 +183,7 @@ function calcStandings(Picks, Games, finals, Standings)
 	// outer loop is games
 	for(var i in Picks)
 	{
+		debugger;
 		// inner loop is user picks
 		for(var j in Picks[i])
 		{

@@ -2,7 +2,6 @@ $(document).ready(function()
 {
 	$("#header").load("../header.html", function()
 	{
-		// wait to allow CUR_WEEK to get set
 		setTimeout( function()
 		{
 			var week, Games, localURL;
@@ -73,6 +72,18 @@ $(document).ready(function()
 								$("#nfl-games-headers").append('<th colspan="2" style="font-size: 14px; font-weight: 400; max-width:72px; min-width:72px; text-align: center;" id="date-' + j +'">' + 
 										gameStartTime(Games[j].getAttribute('eid'), Games[j].getAttribute('t'), Games[j].getAttribute('d')) + '</th>');
 								$("#away-teams").append('<td style="text-align: center;" colspan="2" id="visitor-' + j + '">' + teamLogo(Games[j].getAttribute('v')) + '</td>');
+								$("#away-score").append('<td style="text-align: center;" colspan="2">' + ((Games[j].getAttribute('vs') === '') ? 0 : Games[j].getAttribute('vs')) + '</td>');
+								var time = Games[j].getAttribute('k');
+								if(Games[j].getAttribute('q') === "Suspended" && j < Games.length - 1)
+									$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">' + getQuarter(Games[j].getAttribute('q')) + '</td>');
+								else if(time !== null && time !== "")
+									$("#quarter").append('<td style="text-align: center;" class="quarterBorder">' + getQuarter(Games[j].getAttribute('q')) + '</td>' +
+														 '<td style="text-align: center;" class="quarterBorder verticalLine">' + time + '</td>');
+								else if(j < Games.length-1)
+									$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">' + getQuarter(Games[j].getAttribute('q')) + '</td>');
+								else
+									$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder">' + getQuarter(Games[j].getAttribute('q')) + '</td>');
+								$("#home-score").append('<td style="text-align: center;" colspan="2">' + ((Games[j].getAttribute('hs') === '') ? 0 : Games[j].getAttribute('hs')) + '</td>');
 								$("#home-teams").append('<td style="text-align: center; border-bottom: thin solid #d0d0d0;" colspan="2" id="home-' + j + '">' + teamLogo(Games[j].getAttribute('h')) + '</td>');
 							}
 							
@@ -88,12 +99,10 @@ $(document).ready(function()
 					database.ref(path).once('value').then(function(snapshot)
 					{
 						Picks = snapshot.val();
-						Winners = determineWinners(xmlDoc.find('g'));
+						Winners = determineWinners(Games);
 						// put all users' picks into the table, and hide other users' picks of games that haven't started
 						// mark the users games correct (green) or wrong (red) as well if the games are complete.
-						// update NFL scores first then it will call user picks function
-						//userPicks(Picks, Winners, xmlDoc);
-						updateNFLScores(Picks);
+						userPicks(Picks, Winners, xmlDoc);
 					});
 				});
 			});
