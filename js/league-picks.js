@@ -69,7 +69,7 @@ $(document).ready(function()
 						var name = Names[i];
 						var tag = replaceAll(Users[i], '@', '');
 						tag = replaceAll(tag, '_', '');	// remove illegal characters
-						$("#body").append('<tr id=' + tag + '></tr>');
+						$("#league-picks-table").append('<tr id=' + tag + '></tr>');
 						//player's name in the table
 						$("#" + tag).append('<td>'+name+'</td>');
 					
@@ -156,11 +156,6 @@ function updateNFLScores(Picks)
 		url:		'http://www.nfl.com/liveupdate/scorestrip/ss.xml',
 		success:	function(data)
 		{
-			//delete all scores in table first and quarter
-			$("#away-score").find('td:gt(0)').remove();
-			$("#quarter").find('td:gt(0)').remove();
-			$("#home-score").find('td:gt(0)').remove();
-
 			xmlDoc = $(data);
 			Games = xmlDoc.find('g');
 			// sort games by game ID
@@ -172,20 +167,12 @@ function updateNFLScores(Picks)
 			for(var i=0; i<Games.length; i++)
 			{
 				// away score
-				$("#away-score").append('<td style="text-align: center;" colspan="2">' + Games[i].getAttribute('vs') + '</td>');
+				$("#away-score").find('td:gt(0)').eq(i).text(Games[i].getAttribute('vs'));
 				// quarter
 				var time = Games[i].getAttribute('k');
-				if(Games[i].getAttribute('q') === "Suspended" && i < Games.length - 1)
-					$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">' + getQuarter(Games[i].getAttribute('q')) + '</td>');
-				else if(time !== null && time !== "")
-					$("#quarter").append('<td style="text-align: center;" class="quarterBorder">' + getQuarter(Games[i].getAttribute('q')) + '</td>' +
-										 '<td style="text-align: center;" class="quarterBorder verticalLine">' + time + '</td>');
-				else if (i < Games.length - 1)
-					$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">' + getQuarter(Games[i].getAttribute('q')) + '</td>');
-				else
-					$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder">' + getQuarter(Games[i].getAttribute('q')) + '</td>');
+				$("#quarter").find('td:gt(0)').eq(i).text(getQuarter(Games[i].getAttribute('q')) + (time !== null && time !== "" ? time : ""));
 				// home score
-				$("#home-score").append('<td style="text-align: center;" colspan="2">' + Games[i].getAttribute('hs') + '</td>');
+				$("#home-score").find('td:gt(0)').eq(i).text(Games[i].getAttribute('hs'));
 			}
 		},
 		complete:	function()
@@ -241,11 +228,11 @@ function userPicks(Picks, Winners, data)
 					$("#" + tag + "-points").html(Picks[i][j].points);
 					if(Winners[Picks[i][j].game] !== "-")	// game is a final
 					{
-						if(Picks[i][j].pick === Winners[Picks[i][j].game])
+						if(Picks[i][j].pick === Winners[Picks[i][j].game])	// pick was correct
 						{
 							$("#" + tag + ", #" + tag + "-points").css("background-color", "#00d05e");
 						}
-						else
+						else	// pick was incorrect
 						{
 							$("#" + tag + ", #" + tag + "-points").css("background-color", "#da9694");
 						}
@@ -257,7 +244,7 @@ function userPicks(Picks, Winners, data)
 			}
 
 			//take care of empty picks
-			$("td:empty").each(function ()
+			$("#league-picks-table td:empty").each(function ()
 			{
 				var index = Math.floor(((this.cellIndex % 2 === 0) ? this.cellIndex - 1 : this.cellIndex) / 2);
 				var quarter = $("#quarter").find('td').eq(index).text();
