@@ -398,6 +398,57 @@ function determineWinners(Games)
 	return Winners;
 };
 
+/**
+ * 
+ * @param {Object} Games imported from NFL.com
+ * @returns {Array} Array of strings of all teams on bye week
+ */
+function byeTeams(Games)
+{
+	// Start the list with all NFL teams
+	var ByeTeams = {
+		ARI:	undefined,
+		ATL:	undefined,
+		BAL:	undefined,
+		BUF:	undefined,
+		CAR:	undefined,
+		CHI:	undefined,
+		CIN:	undefined,
+		CLE:	undefined,
+		DAL:	undefined,
+		DEN:	undefined,
+		DET:	undefined,
+		GB:		undefined,
+		HOU:	undefined,
+		IND:	undefined,
+		JAX:	undefined,
+		KC:		undefined,
+		LA:		undefined,
+		MIA:	undefined,
+		MIN:	undefined,
+		NE:		undefined,
+		NO:		undefined,
+		NYG:	undefined,
+		NYJ:	undefined,
+		OAK:	undefined,
+		PHI:	undefined,
+		PIT:	undefined,
+		SD:		undefined,
+		SF:		undefined,
+		SEA:	undefined,
+		TB:		undefined,
+		TEN:	undefined,
+		WAS:	undefined
+	};
+	// remove teams that are playing a game
+	for(var i=0; i<Games.length; i++)
+	{
+		delete ByeTeams[Games[i].getAttribute('v')];
+		delete ByeTeams[Games[i].getAttribute('h')];
+	}
+	return Object.keys(ByeTeams);
+};
+
 function nonUserCheck(user)
 {
 	return	user === "placeholder@1_com" ||

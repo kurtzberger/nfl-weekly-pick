@@ -4,7 +4,7 @@ $(document).ready(function()
 	{
 		setTimeout( function()
 		{
-			var week, Games, localURL;
+			var week, Byes, Games, localURL;
 			week = location.search.substring(1).split("&")[0].split("=")[1];
 			
 			// this URL is used just for this webpage
@@ -25,6 +25,7 @@ $(document).ready(function()
 				var xmlDoc = $(data);
 				week = xmlDoc.find('gms')[0].getAttribute('w');
 				Games = xmlDoc.find('g');
+				Byes = byeTeams(Games);
 				
 				// sort games by game ID
 				Games.sort(function(a,b)
@@ -47,10 +48,20 @@ $(document).ready(function()
 						Names.push(data[i].displayName);
 					}
 					
+					// span the length of number of games divided by bye teams. if there are no teams on bye, then "None" is placed here
+					if(Byes.length > 0)
+					{
+						for(var i=0; i<Byes.length; i++)
+							$("#byes").append('<td colspan="' + Games.length*2/Byes.length + '" style="text-align: center;">' + teamLogo(Byes[i]) + '</td>');
+					} else
+					{
+						$("#byes").append('<td colspan="' + Games.length*2 + '" style="text-align: center;">None</td>');
+					}
+					
 					// span the length of number of games for the picks header
-					$("#headers").append('<th colspan="' + Games.length*2 + '" data-field="picks">Picks</th>');
-					$("#headers").append('<th data-field="total-points" style="max-width:72px; min-width:72px;">Points</th>');
-					$("#headers").append('<th data-field="win-pct" style="max-width:72px; min-width:72px;">Win %</th>');
+					$("#headers").append('<th colspan="' + Games.length*2 + '" data-field="picks" class="cellHeader" style="text-align: center;">Picks</th>');
+					$("#headers").append('<th data-field="total-points" class="cellHeader" style="max-width:72px; min-width:72px; text-align: center;">Points</th>');
+					$("#headers").append('<th data-field="win-pct" class="cellHeader" style="max-width:72px; min-width:72px; text-align: center;">Win %</th>');
 					
 					// place the user's display name in the table. each iteration is a new row in the table
 					for(var i=0; i<Names.length; i++)
@@ -135,6 +146,8 @@ function getQuarter(quarter)
 
 /**
  * Function that will update the NFL scores on the webpage
+ * @param {JSON Object} Picks imported from Firebase database
+ * @returns {undefined} None
  */
 function updateNFLScores(Picks)
 {

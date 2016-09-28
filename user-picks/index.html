@@ -20,8 +20,11 @@
 			margin-left: auto;
 			margin-right: auto;
 		}
-		th{
+		th {
 			text-align: center;
+		}
+		tr[id="byes"] {
+			border-bottom: thin solid #d0d0d0;
 		}
 	</style>
 </head>
@@ -41,15 +44,25 @@
 	<script type="text/javascript" src="../js/user-picks.js"></script>
 	
 	<div id="main-content" class="container" style="width:auto;">
+		<div class="row show-me" style="display: none;">
+			<table>
+				<thead>
+					<tr>
+						<th id="bye-header" class="cellHeader" style="text-align: center;">Bye Week</th>
+					</tr>
+				</thead>
+				<tbody id="byes-body">
+					<tr id="byes"></tr>
+				</tbody>
+			</table>
+		</div>
 		<div class="row">
 			<table id="picks" class="striped responsive-table show-me" style="display: none;">
 				<thead>
 					<tr>
 						<th data-field="date">Date</th>
 						<th data-field="away" colspan="2">Away</th>
-						<!-- <th data-field="awayName"></th> -->
 						<th data-field="home" colspan="2">Home</th>
-						<!-- <th data-field="homeName"></th> -->
 						<th data-field="points">Assigned Points*</th>
 						<th data-field="reset">Reset</th>
 					</tr>

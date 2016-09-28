@@ -20,27 +20,24 @@
 			margin-left: auto;
 			margin-right: auto;
 		}
-		.spacer {
-			min-width: 150px;
-			max-width: 150px;
-			text-align: right;
-			padding-right: 10px;
-		}
 		td {
 			font-size: 14px;
 			border-radius: 0px;
+			text-align: center;
 		}
-		.cellHeader {
-			font-size: 17px;
-		}
-		
 		.verticalLine {
 			border-right: thin solid #d0d0d0;
 		}
 
-		.quarterBorder {
+		.quarterBorder, tr[id="headers"], tr[id="nfl-games-headers"] th {
 			border-bottom: thin solid #d0d0d0;
 			border-top: thin solid #d0d0d0;
+		}
+		tbody[id="body"] td {
+			border-bottom: thin solid #d0d0d0;
+		}
+		tbody[id="body"] tr:not([id="headers"]) {
+			height: 77px;
 		}
 	</style>
 </head>
@@ -61,38 +58,36 @@
 	<div id="main-content" class="container" style="width:auto;">
 		<div class="row center show-me" style="display: none">
 			<table id="nfl-games">
-				<thead>
-					<tr id="nfl-games-headers">
-						<th class="spacer verticalLine">Date</th>
-					</tr>
-				</thead>
-				<tbody id="nfl-games-body">
-					<tr id="away-teams">
-						<td class="spacer verticalLine cellHeader"><b>Visiting Team</b></td>
-					</tr>
-					<tr id="away-score">
-						<td class="spacer verticalLine cellHeader"><b>Score</b></td>
-					</tr>
-					<tr id="quarter">
-						<td class="spacer verticalLine quarterBorder cellHeader"><b>Quarter</b></td>
-					</tr>
-					<tr id="home-score">
-						<td class="spacer verticalLine cellHeader"><b>Score</b></td>
-					</tr>
-					<tr id="home-teams">
-						<td class="spacer verticalLine cellHeader" style="border-bottom: thin solid #d0d0d0;"><b>Home Team</b></td>
+				<tbody id="byes-body">
+					<tr id="byes">
+						<td class="cellHeader spacer">Bye Week</td>
 					</tr>
 				</tbody>
-			</table>
-		</div>
-		<div class="row center show-me" style="display: none;">
-			<table id="league-picks-table" class="bordered centered">
-				<thead>
-					<tr id="headers">
-						<th data-field="name" class="spacer">Name</th>
+				<tbody id="nfl-games-body">
+					<tr id="nfl-games-headers">
+						<th class="spacer verticalLine cellHeader">Date</th>
 					</tr>
-				</thead>
-				<tbody id="body"></tbody>
+					<tr id="away-teams">
+						<td class="spacer verticalLine cellHeader">Visiting Team</td>
+					</tr>
+					<tr id="away-score">
+						<td class="spacer verticalLine cellHeader">Score</td>
+					</tr>
+					<tr id="quarter">
+						<td class="spacer verticalLine quarterBorder cellHeader">Quarter</td>
+					</tr>
+					<tr id="home-score">
+						<td class="spacer verticalLine cellHeader">Score</td>
+					</tr>
+					<tr id="home-teams">
+						<td class="spacer verticalLine cellHeader" style="border-bottom: thin solid #d0d0d0;">Home Team</td>
+					</tr>
+				</tbody>
+				<tbody id="body">
+					<tr id="headers">
+						<th data-field="name" valign="bottom" style="text-align: center" class="cellHeader">Name</th>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 		<div class="vertical-align remove-me">

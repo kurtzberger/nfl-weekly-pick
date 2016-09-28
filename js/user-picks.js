@@ -2,7 +2,7 @@ $(document).ready(function()
 {
 	$("#header").load("../header.html", function()
 	{
-		var week, localURL, seasonType, path;
+		var week, Byes, localURL, seasonType, path;
 		week = location.search.substring(1).split("&")[0].split("=")[1];
 		// this URL is used just for this webpage
 		localURL = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
@@ -17,6 +17,21 @@ $(document).ready(function()
 		{
 			seasonType = $(data).find('gms')[0].getAttribute('t');
 			path = season + '/picks/week' + week;
+			Byes = byeTeams($(data).find('g'));
+			// span the length of number of by teams.
+			$("#bye-header").attr('colspan', Byes.length);
+			//if there are no teams on bye, then "None" is placed here
+			if(Byes.length > 0)
+			{
+				for(var i=0; i<Byes.length; i++)
+				{
+					$("#byes").append('<td style="text-align: center;">' + teamLogo(Byes[i]) + teamName(Byes[i]) + '</td>');
+				}
+					
+			} else
+			{
+				$("#byes").append('<td colspan="' + 7 + '" class="flow-text" style="text-align: center;">None</td>');
+			}
 			// load xml data into the table
 			xmlImport(data);
 			databaseImport(database, path, UID);
