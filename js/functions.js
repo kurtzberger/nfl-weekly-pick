@@ -112,7 +112,8 @@ function gameStartTime(day, time, weekday, short=true)
 	var minute = parseInt(time.substr(time.indexOf(":") + 1, 2));
 	// check if AM or PM and change times to UTC timezone (Times from NFL.com are EST)
 	// A London game will be played only on Sunday's in which case the time reported from NFL.com is AM and not PM
-	if(weekday=="Sun" && day.substr(day.length - 2)=="00" && hour > 8)
+	if(weekday==="Sun" && day.substr(day.length - 2)==="00" && hour > 8 ||
+			weekday==="Thu" && hour===12)
 		hour += 4;
 	else
 		hour += 16;
