@@ -183,7 +183,6 @@ function calcStandings(Picks, Games, finals, Standings)
 	// outer loop is games
 	for(var i in Picks)
 	{
-		debugger;
 		// inner loop is user picks
 		for(var j in Picks[i])
 		{

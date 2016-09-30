@@ -88,8 +88,7 @@ $(document).ready(function()
 								if(Games[j].getAttribute('q') === "Suspended" && j < Games.length - 1)
 									$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">' + getQuarter(Games[j].getAttribute('q')) + '</td>');
 								else if(time !== null && time !== "")
-									$("#quarter").append('<td style="text-align: center;" class="quarterBorder">' + getQuarter(Games[j].getAttribute('q')) + '</td>' +
-														 '<td style="text-align: center;" class="quarterBorder verticalLine">' + time + '</td>');
+									$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">' + getQuarter(Games[j].getAttribute('q')) + ' ' + time + '</td>');
 								else if(j < Games.length-1)
 									$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">' + getQuarter(Games[j].getAttribute('q')) + '</td>');
 								else
@@ -140,7 +139,7 @@ function getQuarter(quarter)
 				else if(isNaN(quarter))
 					return quarter;
 				else
-					return quarter + "Q";
+					return "Q" + quarter;
 	}
 };
 
@@ -170,7 +169,7 @@ function updateNFLScores(Picks)
 				$("#away-score").find('td:gt(0)').eq(i).text(Games[i].getAttribute('vs'));
 				// quarter
 				var time = Games[i].getAttribute('k');
-				$("#quarter").find('td:gt(0)').eq(i).text(getQuarter(Games[i].getAttribute('q')) + (time !== null && time !== "" ? time : ""));
+				$("#quarter").find('td:gt(0)').eq(i).text(getQuarter(Games[i].getAttribute('q')) + ' ' + (time !== null && time !== "" ? time : ""));
 				// home score
 				$("#home-score").find('td:gt(0)').eq(i).text(Games[i].getAttribute('hs'));
 			}
