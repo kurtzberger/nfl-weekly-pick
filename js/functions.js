@@ -137,6 +137,11 @@ function xmlImport(xml)
 {
 	var xmlDoc = $(xml);
 	var g = xmlDoc.find('g');
+	debugger;
+	g.sort(function(a,b)
+	{ 
+		return (a.getAttribute('eid') > b.getAttribute('eid'))	?  1 : -1; 
+	});
 	var home, away, day, time, weekday, dateString;
     //var week = xmlDoc.find('gms')[0].getAttribute('w');
     //var season = xmlDoc.find('gms')[0].getAttribute('y');
