@@ -62,7 +62,7 @@ function teamName(name)
  */
 function teamLogo(name)
 {
-	if(name==="ARI") 	return '<img alt="Arizona Cardinals" src="http://content.sportslogos.net/logos/7/177/full/kwth8f1cfa2sch5xhjjfaof90.gif">';
+	if(name==="ARI")	 return '<img alt="Arizona Cardinals" src="http://content.sportslogos.net/logos/7/177/full/kwth8f1cfa2sch5xhjjfaof90.gif">';
 	else if(name==="ATL")return '<img alt="Atlanta Falctions" src="http://prod.static.falcons.clubs.nfl.com/nfl-assets/img/gbl-ico-team/ATL/logos/home/large.png" >';
 	else if(name==="BAL")return '<img alt="Baltimore Ravens" src="https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Baltimore_Ravens_logo.svg/415px-Baltimore_Ravens_logo.svg.png" >';
 	else if(name==="BUF")return '<img alt="Buffalo Bills" src="http://upload.wikimedia.org/wikipedia/en/thumb/7/77/Buffalo_Bills_logo.svg/279px-Buffalo_Bills_logo.svg.png" >';
@@ -76,7 +76,7 @@ function teamLogo(name)
 	else if(name==="GB") return '<img alt="Green Bay Packers" src="http://content.sportslogos.net/logos/7/171/full/dcy03myfhffbki5d7il3.gif" >';
 	else if(name==="HOU")return '<img alt="Houston Texans" src="http://upload.wikimedia.org/wikipedia/en/thumb/2/28/Houston_Texans_logo.svg/100px-Houston_Texans_logo.svg.png" >';
 	else if(name==="IND")return '<img alt="Indianapolis Colts" src="http://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Indianapolis_Colts_logo.svg/100px-Indianapolis_Colts_logo.svg.png" >';
-	else if(name==="JAX")return '<img alt="Jacksonville Jaguars" src="http://upload.wikimedia.org/wikipedia/en/thumb/4/4e/Jacksonville_Jaguars_2013_logo.png/100px-Jacksonville_Jaguars_2013_logo.png" >';
+	else if(name==="JAX")return '<img alt="Jacksonville Jaguars" src="https://upload.wikimedia.org/wikipedia/en/thumb/7/74/Jacksonville_Jaguars_logo.svg/100px-Jacksonville_Jaguars_logo.svg.png" >';
 	else if(name==="KC") return '<img alt="Kansas City Chiefs" src="http://content.sportslogos.net/logos/7/162/full/857.gif" >';
 	else if(name==="LA") return '<img alt="Los Angeles Rams" src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8b/NFL_Rams_logo.svg/281px-NFL_Rams_logo.svg.png" >';
 	else if(name==="MIA")return '<img alt="Miami Dolphins" src="http://upload.wikimedia.org/wikipedia/en/thumb/8/81/Miami_Dolphins_2013_Logo.svg/100px-Miami_Dolphins_2013_Logo.svg.png" >';
@@ -137,7 +137,6 @@ function xmlImport(xml)
 {
 	var xmlDoc = $(xml);
 	var g = xmlDoc.find('g');
-	debugger;
 	g.sort(function(a,b)
 	{ 
 		return (a.getAttribute('eid') > b.getAttribute('eid'))	?  1 : -1; 
