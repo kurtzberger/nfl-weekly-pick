@@ -80,7 +80,7 @@ function teamLogo(name)
 	else if(name==="KC") return '<img alt="Kansas City Chiefs" src="http://content.sportslogos.net/logos/7/162/full/857.gif" >';
 	else if(name==="LA") return '<img alt="Los Angeles Rams" src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8b/NFL_Rams_logo.svg/281px-NFL_Rams_logo.svg.png" >';
 	else if(name==="MIA")return '<img alt="Miami Dolphins" src="http://upload.wikimedia.org/wikipedia/en/thumb/8/81/Miami_Dolphins_2013_Logo.svg/100px-Miami_Dolphins_2013_Logo.svg.png" >';
-	else if(name==="MIN")return '<img alt="Minnesota Vikings" src="http://upload.wikimedia.org/wikipedia/en/thumb/b/b0/Minnesota_Vikings_Logo_2013.png/100px-Minnesota_Vikings_Logo_2013.png" >';
+	else if(name==="MIN")return '<img alt="Minnesota Vikings" src="http://prod.static.vikings.clubs.nfl.com/nfl-assets/img/gbl-ico-team/MIN/logos/home/large.png" >';
 	else if(name==="NE") return '<img alt="New England Patriots" src="http://upload.wikimedia.org/wikipedia/en/thumb/b/b9/New_England_Patriots_logo.svg/100px-New_England_Patriots_logo.svg.png" >';
 	else if(name==="NO") return '<img alt="New Orleans Saints" src="http://content.sportslogos.net/logos/7/175/full/907.gif" >';
 	else if(name==="NYG")return '<img alt="New York Giants" src="http://content.sportslogos.net/logos/7/166/full/919.gif" >';
@@ -91,7 +91,7 @@ function teamLogo(name)
 	else if(name==="SD") return '<img alt="San Diego Chargers" src="http://upload.wikimedia.org/wikipedia/en/thumb/0/06/San_Diego_Chargers_logo.svg/100px-San_Diego_Chargers_logo.svg.png" >';
 	else if(name==="SF") return '<img alt="San Francisco 49ers" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/49ers_Logo.svg/460px-49ers_Logo.svg.png" >';
 	else if(name==="SEA")return '<img alt="Seattle Seahawks" src="http://upload.wikimedia.org/wikipedia/it/0/01/Seattle_Seahawks_Logo_2012.png" >';
-	else if(name==="TB") return '<img alt="Tampa Bay Buccaneers" src="http://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Tampa_Bay_Buccaneers_2014.png/100px-Tampa_Bay_Buccaneers_2014.png" >';
+	else if(name==="TB") return '<img alt="Tampa Bay Buccaneers" src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Tampa_Bay_Buccaneers_logo.svg/191px-Tampa_Bay_Buccaneers_logo.svg.png" >';
 	else if(name==="TEN")return '<img alt="Tennessee Titans" src="http://upload.wikimedia.org/wikipedia/en/thumb/c/c1/Tennessee_Titans_logo.svg/100px-Tennessee_Titans_logo.svg.png" >';
 	else if(name==="WAS")return '<img alt="Washington Redskins" src="http://content.sportslogos.net/logos/7/168/full/im5xz2q9bjbg44xep08bf5czq.gif" >';
 	else				 return 'Unknown Logo';
