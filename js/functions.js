@@ -80,7 +80,7 @@ function teamLogo(name)
 	else if(name==="KC") return '<img alt="Kansas City Chiefs" src="http://content.sportslogos.net/logos/7/162/full/857.gif" >';
 	else if(name==="LA") return '<img alt="Los Angeles Rams" src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8b/NFL_Rams_logo.svg/281px-NFL_Rams_logo.svg.png" >';
 	else if(name==="MIA")return '<img alt="Miami Dolphins" src="http://upload.wikimedia.org/wikipedia/en/thumb/8/81/Miami_Dolphins_2013_Logo.svg/100px-Miami_Dolphins_2013_Logo.svg.png" >';
-	else if(name==="MIN")return '<img alt="Minnesota Vikings" src="http://prod.static.vikings.clubs.nfl.com/nfl-assets/img/gbl-ico-team/MIN/logos/home/large.png" >';
+	else if(name==="MIN")return '<img alt="Minnesota Vikings" src="https://upload.wikimedia.org/wikipedia/en/thumb/4/48/Minnesota_Vikings_logo.svg/95px-Minnesota_Vikings_logo.svg.png" >';
 	else if(name==="NE") return '<img alt="New England Patriots" src="http://upload.wikimedia.org/wikipedia/en/thumb/b/b9/New_England_Patriots_logo.svg/100px-New_England_Patriots_logo.svg.png" >';
 	else if(name==="NO") return '<img alt="New Orleans Saints" src="http://content.sportslogos.net/logos/7/175/full/907.gif" >';
 	else if(name==="NYG")return '<img alt="New York Giants" src="http://content.sportslogos.net/logos/7/166/full/919.gif" >';
