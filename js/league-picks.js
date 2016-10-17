@@ -154,11 +154,10 @@ function updateNFLScores(Picks)
 		{
 			xmlDoc = $(data);
 			Games = xmlDoc.find('g');
-			// sort games by game ID
-			Games.sort(function(a,b)
-			{ 
-				return (a.getAttribute('eid') > b.getAttribute('eid'))	?  1 : -1; 
-			});
+
+			// sort games via kickoffStartTime function
+			kickoffStartTime(Games);
+			
 			//update scores now
 			for(var i=0; i<Games.length; i++)
 			{
