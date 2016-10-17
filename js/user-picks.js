@@ -2,15 +2,16 @@ $(document).ready(function()
 {
 	$("#header").load("../header.html", function()
 	{
+		// Get a reference to the database service
+		var database = firebase.database();
+		
 		var week, Byes, localURL, seasonType, path;
 		week = location.search.substring(1).split("&")[0].split("=")[1];
+		
 		// this URL is used just for this webpage
 		localURL = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
 		
 		$('.your-picks').addClass("deep-orange lighten-3");
-
-		// Get a reference to the database service
-		var database = firebase.database();
 		
 		// read from nfl.com all the games
 		$.get(localURL, function( data )

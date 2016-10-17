@@ -27,11 +27,8 @@ $(document).ready(function()
 				Games = xmlDoc.find('g');
 				Byes = byeTeams(Games);
 				
-				// sort games by game ID
-				Games.sort(function(a,b)
-				{ 
-					return (a.getAttribute('eid') > b.getAttribute('eid'))	?  1 : -1; 
-				});
+				// sort games via kickoffStartTime function
+				kickoffStartTime(Games);
 				
 				path = season + '/picks/week' + week;
 				var Names = [], Users = [], Picks = {}, Winners = [];
@@ -81,7 +78,7 @@ $(document).ready(function()
 							{
 								//place the game start time as a header of the game
 								$("#nfl-games-headers").append('<th colspan="2" style="font-size: 14px; font-weight: 400; max-width:72px; min-width:72px; text-align: center;" id="date-' + j +'">' + 
-										gameStartTime(Games[j].getAttribute('eid'), Games[j].getAttribute('t'), Games[j].getAttribute('d')) + '</th>');
+										Games[j].dateStringShort + '</th>');
 								$("#away-teams").append('<td style="text-align: center;" colspan="2" id="visitor-' + j + '">' + teamLogo(Games[j].getAttribute('v')) + '</td>');
 								$("#away-score").append('<td style="text-align: center;" colspan="2">' + ((Games[j].getAttribute('vs') === '') ? 0 : Games[j].getAttribute('vs')) + '</td>');
 								var time = Games[j].getAttribute('k');

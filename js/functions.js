@@ -99,34 +99,48 @@ function teamLogo(name)
 };
 
 /**
- * A function that takes a day and time from NFL's xml file
- * @param day - String that must be in the format yyyymmddgg; where 'gg' represents the game number of that day.
- * @param time - String that must be in the format hh:mm or h:mm
- * @returns dateString - DateString in the form "weekday, mmm dd, yyyy hh:mm AM/PM timezone"
+ * This function updates and sorts the NFL Games via date. Two keys are added to the object with date string values (short and long).
+ * @param {Object} Games - Object imported from NFL.com XML file
+ * @returns {undefined} - Nothing
  */
-function gameStartTime(day, time, weekday, short=true)
+function kickoffStartTime(Games)
 {
-	// parse the hour part of time into an integer
-	var hour = parseInt(time.substring(0, time.indexOf(":")));
-	// pare the minute part of time into an integer
-	var minute = parseInt(time.substr(time.indexOf(":") + 1, 2));
-	// check if AM or PM and change times to UTC timezone (Times from NFL.com are EST)
-	// A London game will be played only on Sunday's in which case the time reported from NFL.com is AM and not PM
-	if(weekday==="Sun" && day.substr(day.length - 2)==="00" && hour > 8 ||
+	var time, day, weekday, Dates = [];
+	for(var i=0; i<Games.length; i++)
+	{
+		time = Games[i].getAttribute('t');
+		day = Games[i].getAttribute('eid');
+		weekday = Games[i].getAttribute('d');
+
+		// parse the hour part of time into an integer
+		var hour = parseInt(time.substring(0, time.indexOf(":")));
+		// parse the minute part of time into an integer
+		var minute = parseInt(time.substr(time.indexOf(":") + 1, 2));
+		if(weekday==="Sun" && day.substr(day.length - 2)==="00" && hour > 8 ||
 			weekday==="Thu" && hour===12)
-		hour += 4;
-	else
-		hour += 16;
-	// check for daylight savings
-	var date = new Date(Date.UTC(parseInt(day.substr(0, 4)), parseInt(day.substr(4, 2))-1, parseInt(day.substr(6, 2)), hour, minute));
-	if(!date.dst())
-		date.setHours(date.getHours() + 1);
-	if(!short)
-		return date.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }) + " " +
-			date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short'});
-	else
-		return date.toLocaleString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' }) + " " +
-			date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric',});
+			hour += 4;
+		else
+			hour += 16;
+		// check for daylight savings
+		Dates[i] = new Date(Date.UTC(parseInt(day.substr(0, 4)), parseInt(day.substr(4, 2))-1, parseInt(day.substr(6, 2)), hour, minute));
+		if(!Dates[i].dst())
+			Dates[i].setHours(Dates[i].getHours() + 1);
+		Games[i].kickoff = Dates[i];
+		
+		// add date strings to the object; both long and short
+		Games[i].dateStringLong = Dates[i].toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }) + " " +
+			Dates[i].toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short'});
+		Games[i].dateStringShort = Dates[i].toLocaleString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' }) + " " +
+			Dates[i].toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric',});
+	}
+	// sort the games by kickoff time
+	Games.sort(function(a,b)
+	{
+		if(a.kickoff.getTime() !== b.kickoff.getTime())
+			return a.kickoff.getTime() - b.kickoff.getTime();
+		else
+			return parseInt(a.getAttribute('eid')) - parseInt(b.getAttribute('eid'));
+	});
 };
 
 /**
@@ -137,25 +151,23 @@ function xmlImport(xml)
 {
 	var xmlDoc = $(xml);
 	var g = xmlDoc.find('g');
-	g.sort(function(a,b)
-	{ 
-		return (a.getAttribute('eid') > b.getAttribute('eid'))	?  1 : -1; 
-	});
-	var home, away, day, time, weekday, dateString;
-    //var week = xmlDoc.find('gms')[0].getAttribute('w');
-    //var season = xmlDoc.find('gms')[0].getAttribute('y');
-    
+	var home, away, day;
+	
+	kickoffStartTime(g);
+	
 	for(var i=0; i<g.length; i++)
 	{
 		home = g[i].getAttribute('h');
 		away = g[i].getAttribute('v');
 		day = g[i].getAttribute('eid');
-		weekday = g[i].getAttribute('d');
-		time = g[i].getAttribute('t');
-		dateString = gameStartTime(day, time, weekday, false);
+		//weekday = g[i].getAttribute('d');
+		//time = g[i].getAttribute('t');
+		//dateString = g[i].kickoff.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }) + " " +
+		//	g[i].kickoff.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short'});//gameStartTime(day, time, weekday, false);
+		
 		$("#body").append('<tr id=' + day + '></tr>');
 		//date in the table
-		$("#" + day).append('<td id="date' + i + '" style="text-align: center;">' + dateString + '</td>');
+		$("#" + day).append('<td id="date' + i + '" style="text-align: center;">' + g[i].dateStringLong + '</td>');
 		//away at home data in table
 		$("#" + day).append('<td>' + teamLogo(away) + '</td><td>' + '<input name="game' + i + '" type="radio" id="'+ away + '" value="' + away + '" />' +
 				'<label class="black-text" for='+ away +'>'+ teamName(away) +'</label></td>'+
@@ -176,6 +188,8 @@ function xmlImport(xml)
 
 /**
  * This function will disable all elements of a game that has already started (on user picks page).
+ * @param {type} callback - The call back function to be execuded after this one completes.
+ * @returns {undefined} - Nothing
  */
 function disableStartedGames(callback)
 {

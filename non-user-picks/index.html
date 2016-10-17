@@ -86,61 +86,65 @@
 			var path = season + '/picks/week' + week;
 			var url = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
 			var user = 'placeholder@1_com';	// random teams email
-
-			$.get(url, function(data)
+			
+			// get the api key from the database
+			database.ref('api-keys/random').once('value').then(function(snapshot)
 			{
-				var g = $(data).find('g');	// all games in given week
-
-				// json structure to request random array of points from Random.org
-				var requestPoints = {
-					jsonrpc: "2.0",
-					method: "generateIntegers",
-					params: {
-						apiKey: "acf28c33-d707-4e26-9b43-c41e43ea2a54",
-						n: g.length,
-						min: 1,
-						max: g.length,
-						replacement: false
-					},
-					id: 1
-				};
-				// json structure to request random array of picks (0=home 1=away) from Random.org
-				var requestPicks = {
-					jsonrpc: "2.0",
-					method: "generateIntegers",
-					params: {
-						apiKey: "acf28c33-d707-4e26-9b43-c41e43ea2a54",
-						n: g.length,
-						min: 0,
-						max: 1,
-					},
-					id: 1
-				};
-
-				// request points from random.org
-				$.post('https://api.random.org/json-rpc/1/invoke', JSON.stringify(requestPoints), function(pointsResult)
+				$.get(url, function(data)
 				{
-					Points = pointsResult.result.random.data;
-					$.post('https://api.random.org/json-rpc/1/invoke', JSON.stringify(requestPicks), function(picksResult)
+					var g = $(data).find('g');	// all games in given week
+
+					// json structure to request random array of points from Random.org
+					var requestPoints = {
+						jsonrpc: "2.0",
+						method: "generateIntegers",
+						params: {
+							apiKey: snapshot.val(),
+							n: g.length,
+							min: 1,
+							max: g.length,
+							replacement: false	// unique values only
+						},
+						id: 1
+					};
+					// json structure to request random array of picks (0=home 1=away) from Random.org
+					var requestPicks = {
+						jsonrpc: "2.0",
+						method: "generateIntegers",
+						params: {
+							apiKey: snapshot.val(),
+							n: g.length,
+							min: 0,
+							max: 1
+						},
+						id: 1
+					};
+					
+					// request points from random.org
+					$.post('https://api.random.org/json-rpc/1/invoke', JSON.stringify(requestPoints), function(pointsResult)
 					{
-						Picks = picksResult.result.random.data;
-						debugger;
-						for(var i=0; i<g.length; i++)
+						Points = pointsResult.result.random.data;
+						$.post('https://api.random.org/json-rpc/1/invoke', JSON.stringify(requestPicks), function(picksResult)
 						{
-							eid = g[i].getAttribute('eid');
-							database.ref(path + '/' + eid + '/' + user).update({
-								game:	i,
-								pick:	(Picks[i]===0) ? g[i].getAttribute('h') : g[i].getAttribute('v'),
-								points:	Points[i]
-							}).catch(function(error)
+							Picks = picksResult.result.random.data;
+							debugger;
+							for(var i=0; i<g.length; i++)
 							{
-								Materialize.toast('Submission failed ' + error.message, 6000, "red darken-1"); // 6000 is the duration of the toast in milliseconds
-								return;
-							});
-						}
-						alert('Random Pick: Week ' + week + ' picks submitted!');
-					}, "json");
-				}, "json");	
+								eid = g[i].getAttribute('eid');
+								database.ref(path + '/' + eid + '/' + user).update({
+									game:	i,
+									pick:	(Picks[i]===0) ? g[i].getAttribute('h') : g[i].getAttribute('v'),
+									points:	Points[i]
+								}).catch(function(error)
+								{
+									Materialize.toast('Submission failed ' + error.message, 6000, "red darken-1"); // 6000 is the duration of the toast in milliseconds
+									return;
+								});
+							}
+							alert('Random Pick: Week ' + week + ' picks submitted!');
+						}, "json");
+					}, "json");	
+				});
 			});
 		});
 
