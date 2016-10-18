@@ -3,7 +3,7 @@ $(document).ready(function()
 	$("#header").load("../header.html", function()
 	{
 		$("#change-password-link").addClass("deep-orange lighten-3");
-		$("#title").text("Change your password");
+		$("#headerTitle").text("Change your password");
 		
 		$("#retype-new-password").bind('keypress', function(e)
 		{

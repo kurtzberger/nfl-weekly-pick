@@ -15,7 +15,7 @@ $(document).ready(function()
 		localURL = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
 		
 		$("#standings-link").addClass("deep-orange lighten-3");
-		$("#title").text("Standings");
+		$("#headerTitle").text("Standings");
 		
 		// get all users and create a standings object for that user.
 		database.ref('users').once('value').then(function(snapshot)

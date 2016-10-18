@@ -15,7 +15,7 @@ $(document).ready(function()
 			
 			$('.league-picks').addClass("deep-orange lighten-3");
 			$("#week" + week + "-link").addClass("deep-orange lighten-3");
-			$("#title").text(season + " Week " + week + " League Picks");
+			$("#headerTitle").text(season + " Week " + week + " League Picks");
 			
 			// Get a reference to the database service
 			var database = firebase.database();

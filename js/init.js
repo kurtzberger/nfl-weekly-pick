@@ -49,8 +49,12 @@ if(sPage !== "register")
 			else if(sPage === "user-picks")
 			{
 				var week = location.search.substring(1).split("&")[0].split("=")[1];
-				$("#title").append(curUser.displayName + "'s " + season + " Week " + week + " Picks");
-				$('#user-picks-week' + week + '-link').addClass("deep-orange lighten-3");
+				// only do this once on inital load
+				if($("headerTitle").text() === "")
+				{
+					$("#headerTitle").text(curUser.displayName + "'s " + season + " Week " + week + " Picks");
+					$('#user-picks-week' + week + '-link').addClass("deep-orange lighten-3");
+				}
 			}		
 		}
 		else if(user === null)

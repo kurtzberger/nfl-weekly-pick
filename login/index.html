@@ -17,7 +17,7 @@
 <body>
 	<div id="header">
 		<nav class="top-nav deep-orange darken-4">
-			<a id="title" class="brand-logo center"></a>
+			<a id="headerTitle" class="brand-logo center"></a>
 			<a href="#!" data-activates="menu-nav" class="button-collapse show-on-large" style="transform: translateX(0px);"><i class="mdi mdi-menu mdi-48px"></i></a>
 			<ul id="menu-nav" class="side-nav orange lighten-5">
 				<li id="register-li">
@@ -48,7 +48,7 @@
 			$(".collapsible").collapsible({
 				accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
 			});
-			$("#title").text("Login");
+			$("#headerTitle").text("Login");
 			$("#password").bind('keypress', function(e)
 			{
 				if((e.keyCode || e.which) === 13)

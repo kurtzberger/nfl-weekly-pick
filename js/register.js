@@ -8,10 +8,10 @@ $(document).ready(function()
 		accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
 	});
 
-	$("#title").text("Register");
+	$("#headerTitle").text("Register");
 	$("#retype-password").bind('keypress', function(e)
 	{
-		if((e.keyCode || e.which) == 13)
+		if((e.keyCode || e.which) === 13)
 			$("#register-button").trigger("click");
 	});
 	$("#main-content").on("click", "#register-button", function()

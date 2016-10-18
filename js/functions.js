@@ -131,7 +131,7 @@ function kickoffStartTime(Games)
 		Games[i].dateStringLong = Dates[i].toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }) + " " +
 			Dates[i].toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short'});
 		Games[i].dateStringShort = Dates[i].toLocaleString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' }) + " " +
-			Dates[i].toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric',});
+			Dates[i].toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric'});
 	}
 	// sort the games by kickoff time
 	Games.sort(function(a,b)
@@ -160,10 +160,6 @@ function xmlImport(xml)
 		home = g[i].getAttribute('h');
 		away = g[i].getAttribute('v');
 		day = g[i].getAttribute('eid');
-		//weekday = g[i].getAttribute('d');
-		//time = g[i].getAttribute('t');
-		//dateString = g[i].kickoff.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }) + " " +
-		//	g[i].kickoff.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short'});//gameStartTime(day, time, weekday, false);
 		
 		$("#body").append('<tr id=' + day + '></tr>');
 		//date in the table
