@@ -34,7 +34,10 @@ $(document).ready(function()
 	$("#header").on("click", "#change-password-link", function()
 	{
 		setTimeout(function() { $(".button-collapse").sideNav("hide") }, 400);
-		if(sPage !== "change-password")	setTimeout(function() { window.location.href = "../change-password"; }, 600);
+		if(sPage !== "change-password")
+		{
+			setTimeout(function() { window.location.href = "../change-password"; }, 600);
+		}
 	});
 	
 	$("#header").on("click", '#login-li', function()
@@ -50,7 +53,10 @@ $(document).ready(function()
 				Materialize.toast(error.message, 4000, "red-darken-1");
 			});
 		}
-		if(sPage !== "login") setTimeout(function() { window.location.href = "../login"; }, 600);
+		if(sPage !== "login")
+		{
+			setTimeout(function() { window.location.href = "../login"; }, 600);
+		}
 	});
 	
 	/**
@@ -81,12 +87,18 @@ $(document).ready(function()
 	$("#header").on('click', '#rules-link', function()
 	{
 		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
-		if(sPage !== "rules") setTimeout(function() { window.location.href = "../rules"; }, 600);
+		if(sPage !== "rules")
+		{
+			setTimeout(function() { window.location.href = "../rules"; }, 600);
+		}
 	});
 	
 	$("#header").on('click', '#non-user-link', function()
 	{
 		setTimeout(function() { $(".button-collapse").sideNav("hide"); }, 400);
-		if(sPage !== "rules") setTimeout(function() { window.location.href = "../non-user-picks"; }, 600);
+		if(sPage !== "rules")
+		{
+			setTimeout(function() { window.location.href = "../non-user-picks"; }, 600);
+		}
 	});
 });

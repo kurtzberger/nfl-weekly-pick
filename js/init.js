@@ -23,9 +23,13 @@ var sPath = window.location.pathname;
 var sPage = sPath.substring(sPath.lastIndexOf('pick/') + 5).slice(0, -1);	// get just the page name with no slashes
 
 if(sPage === "")
+{
 	$('head').append('<link rel="icon" type="image/ico" href="favicon.ico">');
+}
 else
+{
 	$('head').append('<link rel="icon" type="image/ico" href="../favicon.ico">');
+}
 
 if(sPage !== "register")
 {
@@ -38,14 +42,23 @@ if(sPage !== "register")
 			if(UID === SUPERUSER)
 			{
 				if($('#non-user-link').length === 0)	// only add this once
+				{
 					$("#menu-nav").append('<li id="non-user-li">\n\
 						<a id="non-user-link" class="waves-effect"><i class="mdi mdi-account-alert left"></i><b>Non-Users\' Picks</b></a></li>');
-				if(sPage === "non-user-picks") $('.show-me').toggle();
+				}
+				if(sPage === "non-user-picks")
+				{
+					$('.show-me').toggle();
+				}
 			}
 			if(sPage === "index.html" || sPage == "" || (sPage === "non-user-picks" && UID !== SUPERUSER))	//user is logged in
+			{
 				window.location.href = "standings";
+			}
 			else if(sPage === "change-password")
+			{
 				$("#current-user").html("Current user: <b>" + user.email + "</b>");
+			}
 			else if(sPage === "user-picks")
 			{
 				var week = location.search.substring(1).split("&")[0].split("=")[1];
@@ -62,9 +75,17 @@ if(sPage !== "register")
 			if(sPage === "login/forgot-password.htm");
 			else if(sPage === "register");
 			else if( sPage !== "login")
+			{
 				// No user is signed in.
-				if(sPage === "index.html" || sPage === "") setTimeout(function() { window.location.href = "login"; }, 600);
-				else	setTimeout(function() { window.location.href = "../login"; }, 600);
+				if(sPage === "index.html" || sPage === "") 
+				{
+					setTimeout(function() { window.location.href = "login"; }, 600);
+				}
+				else
+				{
+					setTimeout(function() { window.location.href = "../login"; }, 600);
+				}
+			}
 		}
 	});
 }

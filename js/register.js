@@ -12,7 +12,9 @@ $(document).ready(function()
 	$("#retype-password").bind('keypress', function(e)
 	{
 		if((e.keyCode || e.which) === 13)
+		{
 			$("#register-button").trigger("click");
+		}
 	});
 	$("#main-content").on("click", "#register-button", function()
 	{
@@ -29,20 +31,25 @@ $(document).ready(function()
 			'<div class="circle"></div></div></div></div></div>');
 		setTimeout(function()
 		{ 	
-			if($("#display-name").val() === "") {
+			if($("#display-name").val() === "")
+			{
 				Materialize.toast('Please enter a display name.', 4000, "red darken-1");
 				flag = true;
 			}
-			else if(!isValidEmailAddress($('#email').val())) {
+			else if(!isValidEmailAddress($('#email').val()))
+			{
 				Materialize.toast('Please enter a valid email address', 4000, "red darken-1");
 				flag = true;
-			} else if($('#password').val() !== $('#retype-password').val()) {
+			} else if($('#password').val() !== $('#retype-password').val())
+			{
 				Materialize.toast('Passwords do not match! Please retype passwords.', 4000, "red darken-1");
 				flag = true;
-			} else if($('#password').val() === "") {
+			} else if($('#password').val() === "")
+			{
 				Materialize.toast('Passwords cannot be blank! Please retype passwords.', 4000, "red darken-1");
 				flag = true;
-			} else {
+			} else
+			{
 				firebase.auth().createUserWithEmailAndPassword($('#email').val(), $('#password').val()).then(function(user)
 				{
 					var name = $("#display-name").val()
@@ -64,7 +71,10 @@ $(document).ready(function()
 					$('#register-div').html('<a id="register-button" class="btn waves-effect waves-light blue-grey lighten-1 col s2 offset-s5">Register</a>');
 				});
 			}
-			if(flag) $('#register-div').html('<a id="register-button" class="btn waves-effect waves-light blue-grey lighten-1 col s2 offset-s5">Register</a>');
+			if(flag) 
+			{
+				$('#register-div').html('<a id="register-button" class="btn waves-effect waves-light blue-grey lighten-1 col s2 offset-s5">Register</a>');
+			}
 		}, LOAD_DELAY);
 	});
 });

@@ -7,8 +7,10 @@ $(document).ready(function()
 		
 		$("#retype-new-password").bind('keypress', function(e)
 		{
-			if((e.keyCode || e.which) == 13)
+			if((e.keyCode || e.which) === 13)
+			{
 				$("#password-change-button").trigger("click");
+			}
 		});
 		$("#main-content").on("click", "#password-change-button", function()
 		{
@@ -27,10 +29,12 @@ $(document).ready(function()
 			
 			setTimeout(function()
 			{
-				if($('#new-password').val() !== $('#retype-new-password').val()) {
+				if($('#new-password').val() !== $('#retype-new-password').val())
+				{
 						Materialize.toast('Passwords do not match! Please retype passwords.', 4000, "red darken-1");
 						flag = true;
-				} else if($('#new-password').val() === "") {
+				} else if($('#new-password').val() === "")
+				{
 						Materialize.toast('Passwords cannot be blank! Please retype passwords.', 4000, "red darken-1");
 						flag = true;
 				} else
@@ -62,7 +66,10 @@ $(document).ready(function()
 						$("#password-change-div").html('<a id="password-change-button" class="btn waves-effect waves-light blue-grey lighten-1 col s2 offset-s5">Change Password</a>');
 					});
 				}
-				if(flag) $("#password-change-div").html('<a id="password-change-button" class="btn waves-effect waves-light blue-grey lighten-1 col s2 offset-s5">Change Password</a>');
+				if(flag)
+				{
+					$("#password-change-div").html('<a id="password-change-button" class="btn waves-effect waves-light blue-grey lighten-1 col s2 offset-s5">Change Password</a>');
+				}
 			}, LOAD_DELAY);
 		});
 	});
