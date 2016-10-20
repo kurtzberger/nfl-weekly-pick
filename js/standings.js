@@ -1,101 +1,101 @@
+/* global CUR_WEEK, season, firebase, UID */
+
 // Get a reference to the database service
 var database = firebase.database();
-// Global flag to specify when standings are done processing
-var finished = false;
-// Global finished games variable since this is being accessed in multiple funtions after callback
-var completedGames = 0;
 
 $(document).ready(function()
 {
 	$("#header").load("../header.html", function()
 	{
-		var seasonType, week, localURL, games;
-		var names = [], standings = {};
-		// this URL is used just for this webpage
-		localURL = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
-		
-		$("#standings-link").addClass("deep-orange lighten-3");
-		$("#headerTitle").text("Standings");
-		
-		// get all users and create a standings object for that user.
-		database.ref('users').once('value').then(function(snapshot)
-		{
-			var data = snapshot.val();
-			// get all display names from imported data and initialize standings object
-			for(var i in data)
-			{
-				names.push(data[i].displayName);
-				standings[i] = {
-					name:				data[i].displayName,
-					points:				0,
-					unassignedPoints:	0,
-					wins:				0
-				};
-			}
-			
-			$.get(localURL, function( data )
-			{
-				seasonType = $(data).find('g')[0].getAttribute('gt');
-				if(seasonType === "PRE")
-				{
-					week = 1;
-				}
-				else if(seasonType === "REG")
-				{
-					week = $(data).find('gms')[0].getAttribute('w');
-				}
-				else
-				{
-					week = 17;
-				}
-			
-				processStandings(week, games, standings);
-				var timerID = setInterval( function()
-				{
-					if(finished)
-					{
-						// place objects into array
-						var Sorted = [];
-						for(var i in standings)
-						{
-							Sorted.push(standings[i]);
-						}
-						// sort standings by points from highest points to lowest points. Win % is tie breaker
-						Sorted.sort(function(a,b)
-						{ 
-							return (a.points < b.points)	?  1 : 
-								  ((a.points > b.points) 	? -1 :
-								  ((a.wins   < b.wins)		?  1 :
-								  ((a.wins   > b.wins)		? -1 : 0))); 
-						});
-						
-						for(var i=0; i<Sorted.length; i++)
-						{
-							var name = Sorted[i].name;
-							var winPct = (Sorted[i].wins * 100.0 / completedGames).toFixed(2);
-							$("#body").append('<tr id="' + i + '"></tr>');
-							//player's position
-							$("#" + i).append('<td style="text-align: left;">' + ordinalSuffixOf(i+1) + '</td>')
-							//player's name in the table
-							$("#" + i).append('<td>' + name + '</td>');
-							//player's score
-							$("#" + i).append('<td>' + Sorted[i].points + '</td>');
-							//player's win %
-							$("#" + i).append('<td>' + (isNaN(winPct) ? '0.00' : winPct) + '%</td>');
-						}
-						
-						// remove loading animation
-						$(".remove-me").remove();
-						// toggle hidden content
-						$(".show-me").toggle();
-						
-						clearInterval(timerID);
-					}
-				}, 1000);
-			});
-		});
+		wait();		// wait for global variables to be set
 	});
 });
+
+/**
+ * This function will wait for the global variable UID to be set before continuing to load the rest of the page.
+ * When UID is set to a value, this indicates all other global variables have been set. 
+ */
+function wait()
+{
+	if(UID === null)
+	{
+		setTimeout( function() { wait(); }, 500 );
+	} else
+	{
+		loadPage();
+	}
+}
+
+/**
+ * Load all page elements for this page
+ */
+function loadPage()
+{
+	var standings = {completedGames: 0};
+
+	$("#standings-link").addClass("deep-orange lighten-3");
+	$("#headerTitle").text("Standings");
+
+	// get all users and create a standings object for that user.
+	database.ref('users').once('value').then(function(snapshot)
+	{
+		var picks = snapshot.val();
+		// get all display names from imported data and initialize standings object
+		for(var i in picks)
+		{
+			standings[i] = 
+			{
+				name:				picks[i].displayName,
+				points:				0,
+				unassignedPoints:	0,
+				wins:				0
+			};
+		}
+		
+		processStandings(parseInt(CUR_WEEK), standings, function()
+		{
+			var sorted = [];
+			for(var i in standings)
+			{
+				if(i === 'completedGames')
+				{
+					continue;
+				}
+				sorted.push(standings[i]);
+			}
+			sorted.sort(function(a,b)
+			{
+				if(a.points !== b.points)
+				{
+					return b.points - a.points;
+				} else
+				{
+					return b.wins - a.wins;
+				}
+			});
+
+			for(var i=0; i<sorted.length; i++)
+			{
+				var name = sorted[i].name;
+				var winPct = (sorted[i].wins * 100.0 / standings.completedGames).toFixed(2);
+				$("#body").append('<tr id="' + i + '"></tr>');
+				//player's position
+				$("#" + i).append('<td style="text-align: left;">' + ordinalSuffixOf(i+1) + '</td>');
+				//player's name in the table
+				$("#" + i).append('<td>' + name + '</td>');
+				//player's score
+				$("#" + i).append('<td>' + sorted[i].points + '</td>');
+				//player's win %
+				$("#" + i).append('<td>' + (isNaN(winPct) ? '0.00' : winPct) + '%</td>');
+			}
+
+			// remove loading animation
+			$(".remove-me").remove();
+			// toggle hidden content
+			$(".show-me").toggle();			
+		});
+	});
+}
 
 /**
  * Ordinal suffix rules are as follows:
@@ -123,101 +123,93 @@ function ordinalSuffixOf(i) {
     return i + "th";
 };
 
-function processStandings(week, games, standings)
+function processStandings(n, standings, callback)
 {
-	var timeID = setInterval( function()
-	{
-		if(!isNaN(parseInt(CUR_WEEK)))	// wait until CUR_WEEK has been defined.
-		{
-			clearInterval(timeID);
-			processLoop(1, week, games, standings);
-		}
-	}, 100);
-};
-
-function processLoop(n, week, games, standings)
-{
-	// get games of current week (n) and then process those games with users' picks into standings
-	getGames(n, games, standings, function(uWeek, uGames, finals, uStandings)
-	{
-		database.ref(season + '/picks/week' + uWeek).once('value').then(function(snapshot)
-		{
-			var Picks = snapshot.val();
-			standings = calcStandings(Picks, uGames, finals, uStandings);
-			completedGames += finals;
-			if(n < parseInt(week))
-			{
-				// recursively call this function again until base case (n greater than or equal to current week) is reached.
-				processLoop(n+1, week, uGames, uStandings);
-			}
-			else
-			{
-				finished = true;
-			}
-			
-		});
-	});
-};
-
-function getGames(n, games, standings, callback)
-{
+	//processLoop(1, week, games, standings);
+	// get games of week (n) and then process those games with users' picks into standings
+	//getGames(n, games, standings, function(uWeek, uGames, finals, uStandings)
+	var url;
 	if(n === parseInt(CUR_WEEK))
 	{
-		localURL = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
+		url = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
 	}
 	else
 	{
-		localURL = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + n;
+		url = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + n;
 	}
-	$.get(localURL, function( data )
+	
+	$.get(url, function(xml)
 	{
-		var xmlDoc = $(data);
-		var finals = xmlDoc.find('g[q="F"], g[q="FO"]').length;
-		games = xmlDoc.find('g');
-		// sort games via kickoffStartTime function
-		kickoffStartTime(games);
-		
-		// callback function returning the modified standings
-		callback(n, games, finals, standings);
+		// create weekly data object from XML file imported
+		var weekData = new WeekGames(xml, function()
+		{
+			database.ref(season + '/picks/week' + weekData.week).once('value').then(function(snapshot)	// get all picks from database
+			{
+				var picks = snapshot.val();
+				standings = calcStandings(picks, weekData, standings);
+				standings.completedGames += weekData.completedGames;
+				if(n > 1)
+				{
+					// recursively call this function again until base case (n greater than or equal to current week) is reached.
+					processStandings(n-1, standings, callback);
+				}
+				else
+				{
+					callback();
+				}
+			});
+		});
 	});
-};
+}
 
-function calcStandings(Picks, games, finals, standings)
+function calcStandings(picks, weekData, standings)
 {
 	// enter possible unassigned points for this week, but if week is incomplete. Skip this.
-	if(finals === games.length)
+	if(weekData.completedGames === weekData.games.length)
 	{
 		for(var i in standings)
-			standings[i].unassignedPoints = (finals * (finals + 1)) / 2;
-	}
-	
-	var Winners = determineWinners(games);
-	
-	// outer loop is games
-	for(var i in Picks)
-	{
-		// inner loop is user picks
-		for(var j in Picks[i])
 		{
-			// if user's pick was correct credit them points and if they were wrong discredit them points
-			if(Picks[i][j].pick === Winners[Picks[i][j].game])
+			if(i === 'completedGames')
 			{
-				standings[j].points += Picks[i][j].points;
-				standings[j].wins++;
-			} else if(Winners[Picks[i][j].game] !== "-")	// skip over if game is incomplete
-				standings[j].points -= Picks[i][j].points;
-			// since a pick was found here, mark these points as "assigned", skip this if week is incomplete
-			if(finals === games.length)
-				standings[j].unassignedPoints -= Picks[i][j].points;
+				continue;
+			}
+			standings[i].unassignedPoints = (weekData.completedGames * (weekData.completedGames + 1)) / 2;
 		}
 	}
-	
+	for(var i in picks)	// outer loop is games
+	{
+		for(var j in picks[i])	// inner loop is user picks
+		{
+			// if user's pick was correct credit them points and if they were wrong discredit them points
+			if(weekData.games[picks[i][j].game].winner !== null)	// skip over if game is incomplete
+			{
+				if(picks[i][j].pick === weekData.games[picks[i][j].game].winner.abbrName)
+				{
+					standings[j].points += picks[i][j].points;
+					standings[j].wins++;
+				} else
+				{
+					standings[j].points -= picks[i][j].points;
+				}
+			}
+			// since a pick was found here, mark these points as "assigned", skip this if week is incomplete
+			if(weekData.completedGames === weekData.games.length)
+			{
+				standings[j].unassignedPoints -= picks[i][j].points;
+			}
+		}
+	}
 	// subtract any remaining unassigned points, but if week is incomplete. Skip this.
-	if(finals === games.length)
+	if(weekData.completedGames === weekData.games.length)
 	{
 		for(var i in standings)
+		{
+			if(i === 'completedGames')
+			{
+				continue;
+			}
 			standings[i].points -= standings[i].unassignedPoints;
+		}
 	}
-	
 	return standings;
-};
+}

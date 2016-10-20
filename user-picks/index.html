@@ -23,12 +23,13 @@
 		th {
 			text-align: center;
 		}
-		tr[id="byes"] {
+		tr[id="byeNames"] {
 			border-bottom: thin solid #d0d0d0;
 		}
-		td:not([id="byes"]) {
+		tbody[id="body"] td {
 			height:		100px;
 		}
+		
 	</style>
 </head>
 
@@ -45,6 +46,7 @@
 	<script type="text/javascript" src="../js/init.js"></script>
 	<script type="text/javascript" src="../js/links.js"></script>
 	<script type="text/javascript" src="../js/user-picks.js"></script>
+	<script type="text/javascript" src="../js/WeekGames.js"></script>
 	
 	<div id="main-content" class="container" style="width:auto;">
 		<div class="row show-me" style="display: none;">
@@ -55,7 +57,8 @@
 					</tr>
 				</thead>
 				<tbody id="byes-body">
-					<tr id="byes"></tr>
+					<tr id="byeLogos"></tr>
+					<tr id="byeNames"></tr>
 				</tbody>
 			</table>
 		</div>
@@ -78,7 +81,7 @@
 				<p class="col s12 ">*Points are uniquely assigned (i.e., no duplicates). Highest point value is dependent upon number of games to be played. See rules for more details.</p>
 			</div>
 			<div id="submit-div" class="col s2">
-				<a id="submit-picks" class="btn waves-effect waves-light blue-grey lighten-1 col s12"><i class="mdi mdi-send right"></i>Submit</a>
+				<a id="submit-picks" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s12"><i class="mdi mdi-send right"></i>Submit</a>
 			</div>
 		</div>
 		

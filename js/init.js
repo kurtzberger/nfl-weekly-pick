@@ -1,3 +1,5 @@
+/* global firebase */
+
 /**
  * Name:		init.js
  * Author: 		Eric Kurtzberg

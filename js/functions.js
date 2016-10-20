@@ -1,264 +1,20 @@
+/* global Materialize */
+
 /**
  * Name:		functions.js
  * Author: 		Eric Kurtzberg
  * Description:	javascript for all custom functions
  */
 
-Date.prototype.stdTimezoneOffset = function() {
-	var jan = new Date(this.getFullYear(), 0, 1);
-	var jul = new Date(this.getFullYear(), 6, 1);
-	return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
-};
-
-Date.prototype.dst = function() {
-    return this.getTimezoneOffset() < this.stdTimezoneOffset();
-};
-
-/** Returns the full name of an NFL team given a valid three letter abbreviation
- * @param name
- * @returns {String}
- */
-function teamName(name)
-{
-	if(name==="ARI") 	 return "Arizona Cardinals";
-	else if(name==="ATL")return "Atlanta Falctions";
-	else if(name==="BAL")return "Baltimore Ravens";
-	else if(name==="BUF")return "Buffalo Bills";
-	else if(name==="CAR")return "Carolina Panthers";
-	else if(name==="CHI")return "Chicago Bears";
-	else if(name==="CIN")return "Cincinnati Bengals";
-	else if(name==="CLE")return "Cleveland Browns";
-	else if(name==="DAL")return "Dallas Cowboys";
-	else if(name==="DEN")return "Denver Broncos";
-	else if(name==="DET")return "Detroit Lions";
-	else if(name==="GB") return "Green Bay Packers";
-	else if(name==="HOU")return "Houston Texans";
-	else if(name==="IND")return "Indianapolis Colts";
-	else if(name==="JAX")return "Jacksonville Jaguars";
-	else if(name==="KC") return "Kansas City Chiefs";
-	else if(name==="LA") return "Los Angeles Rams";
-	else if(name==="MIA")return "Miami Dolphins";
-	else if(name==="MIN")return "Minnesota Vikings";
-	else if(name==="NE") return "New England Patriots";
-	else if(name==="NO") return "New Orleans Saints";
-	else if(name==="NYG")return "New York Giants";
-	else if(name==="NYJ")return "New York Jets";
-	else if(name==="OAK")return "Oakland Raiders";
-	else if(name==="PHI")return "Philadelphia Eagles";
-	else if(name==="PIT")return "Pittsburgh Steelers";
-	else if(name==="SD") return "San Diego Chargers";
-	else if(name==="SF") return "San Francisco 49ers";
-	else if(name==="SEA")return "Seattle Seahawks";
-	else if(name==="TB") return "Tampa Bay Buccaneers";
-	else if(name==="TEN")return "Tennessee Titans";
-	else if(name==="WAS")return "Washington Redskins";
-	else				 return "Unknown Team";
-};
-
 /**
- * Returns an HTML image of an NFL team given a valid three letter abbreviation
- * @param name
- * @returns {String}
+ * 
+ * @param {type} emailAddress
+ * @returns {Boolean}
  */
-function teamLogo(name)
-{
-	if(name==="ARI")	 return '<img alt="Arizona Cardinals" src="http://content.sportslogos.net/logos/7/177/full/kwth8f1cfa2sch5xhjjfaof90.gif">';
-	else if(name==="ATL")return '<img alt="Atlanta Falctions" src="https://upload.wikimedia.org/wikipedia/en/thumb/c/c5/Atlanta_Falcons_logo.svg/1088px-Atlanta_Falcons_logo.svg.png" >';
-	else if(name==="BAL")return '<img alt="Baltimore Ravens" src="https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Baltimore_Ravens_logo.svg/415px-Baltimore_Ravens_logo.svg.png" >';
-	else if(name==="BUF")return '<img alt="Buffalo Bills" src="http://upload.wikimedia.org/wikipedia/en/thumb/7/77/Buffalo_Bills_logo.svg/279px-Buffalo_Bills_logo.svg.png" >';
-	else if(name==="CAR")return '<img alt="Carolina Panthers" src="http://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Carolina_Panthers_logo_2012.svg/100px-Carolina_Panthers_logo_2012.svg.png" >';
-	else if(name==="CHI")return '<img alt="Chicago Bears" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Chicago_Bears_logo.svg/400px-Chicago_Bears_logo.svg.png" >';
-	else if(name==="CIN")return '<img alt="Cincinnati Bengals" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Cincinnati_Bengals.svg/250px-Cincinnati_Bengals.svg.png" >';
-	else if(name==="CLE")return '<img alt="Cleveland Browns" src="https://upload.wikimedia.org/wikipedia/en/5/5a/Cleveland_Browns_Logo.svg" >';
-	else if(name==="DAL")return '<img alt="Dallas Cowboys" src="http://content.sportslogos.net/logos/7/165/full/406.gif" >';
-	else if(name==="DEN")return '<img alt="Denver Broncos" src="http://upload.wikimedia.org/wikipedia/en/thumb/4/44/Denver_Broncos_logo.svg/100px-Denver_Broncos_logo.svg.png" >';
-	else if(name==="DET")return '<img alt="Detroit Lions" src="http://content.sportslogos.net/logos/7/170/full/cwuyv0w15ruuk34j9qnfuoif9.gif" >';
-	else if(name==="GB") return '<img alt="Green Bay Packers" src="http://content.sportslogos.net/logos/7/171/full/dcy03myfhffbki5d7il3.gif" >';
-	else if(name==="HOU")return '<img alt="Houston Texans" src="http://upload.wikimedia.org/wikipedia/en/thumb/2/28/Houston_Texans_logo.svg/100px-Houston_Texans_logo.svg.png" >';
-	else if(name==="IND")return '<img alt="Indianapolis Colts" src="http://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Indianapolis_Colts_logo.svg/100px-Indianapolis_Colts_logo.svg.png" >';
-	else if(name==="JAX")return '<img alt="Jacksonville Jaguars" src="https://upload.wikimedia.org/wikipedia/en/thumb/7/74/Jacksonville_Jaguars_logo.svg/100px-Jacksonville_Jaguars_logo.svg.png" >';
-	else if(name==="KC") return '<img alt="Kansas City Chiefs" src="http://content.sportslogos.net/logos/7/162/full/857.gif" >';
-	else if(name==="LA") return '<img alt="Los Angeles Rams" src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8b/NFL_Rams_logo.svg/281px-NFL_Rams_logo.svg.png" >';
-	else if(name==="MIA")return '<img alt="Miami Dolphins" src="http://upload.wikimedia.org/wikipedia/en/thumb/8/81/Miami_Dolphins_2013_Logo.svg/100px-Miami_Dolphins_2013_Logo.svg.png" >';
-	else if(name==="MIN")return '<img alt="Minnesota Vikings" src="https://upload.wikimedia.org/wikipedia/en/thumb/4/48/Minnesota_Vikings_logo.svg/95px-Minnesota_Vikings_logo.svg.png" >';
-	else if(name==="NE") return '<img alt="New England Patriots" src="http://upload.wikimedia.org/wikipedia/en/thumb/b/b9/New_England_Patriots_logo.svg/100px-New_England_Patriots_logo.svg.png" >';
-	else if(name==="NO") return '<img alt="New Orleans Saints" src="http://content.sportslogos.net/logos/7/175/full/907.gif" >';
-	else if(name==="NYG")return '<img alt="New York Giants" src="http://content.sportslogos.net/logos/7/166/full/919.gif" >';
-	else if(name==="NYJ")return '<img alt="New York Jets" src="http://upload.wikimedia.org/wikipedia/en/thumb/6/6b/New_York_Jets_logo.svg/100px-New_York_Jets_logo.svg.png" >';
-	else if(name==="OAK")return '<img alt="Oakland Raiders" src="http://upload.wikimedia.org/wikipedia/en/thumb/9/9d/Oakland_Raiders.svg/100px-Oakland_Raiders.svg.png" >';
-	else if(name==="PHI")return '<img alt="Philadelphia Eagles" src="http://upload.wikimedia.org/wikipedia/en/thumb/7/7f/Philadelphia_Eagles_primary_logo.svg/100px-Philadelphia_Eagles_primary_logo.svg.png" >';
-	else if(name==="PIT")return '<img alt="Pittsburgh Steelers" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Pittsburgh_Steelers_logo.svg/135px-Pittsburgh_Steelers_logo.svg.png" >';
-	else if(name==="SD") return '<img alt="San Diego Chargers" src="http://upload.wikimedia.org/wikipedia/en/thumb/0/06/San_Diego_Chargers_logo.svg/100px-San_Diego_Chargers_logo.svg.png" >';
-	else if(name==="SF") return '<img alt="San Francisco 49ers" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/49ers_Logo.svg/460px-49ers_Logo.svg.png" >';
-	else if(name==="SEA")return '<img alt="Seattle Seahawks" src="http://upload.wikimedia.org/wikipedia/it/0/01/Seattle_Seahawks_Logo_2012.png" >';
-	else if(name==="TB") return '<img alt="Tampa Bay Buccaneers" src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Tampa_Bay_Buccaneers_logo.svg/191px-Tampa_Bay_Buccaneers_logo.svg.png" >';
-	else if(name==="TEN")return '<img alt="Tennessee Titans" src="http://upload.wikimedia.org/wikipedia/en/thumb/c/c1/Tennessee_Titans_logo.svg/100px-Tennessee_Titans_logo.svg.png" >';
-	else if(name==="WAS")return '<img alt="Washington Redskins" src="http://content.sportslogos.net/logos/7/168/full/im5xz2q9bjbg44xep08bf5czq.gif" >';
-	else				 return 'Unknown Logo';
-
-};
-
-/**
- * This function updates and sorts the NFL Games via date. Two keys are added to the object with date string values (short and long).
- * @param {Object} Games - Object imported from NFL.com XML file
- * @returns {undefined} - Nothing
- */
-function kickoffStartTime(Games)
-{
-	var time, day, weekday, Dates = [];
-	for(var i=0; i<Games.length; i++)
-	{
-		time = Games[i].getAttribute('t');
-		day = Games[i].getAttribute('eid');
-		weekday = Games[i].getAttribute('d');
-
-		// parse the hour part of time into an integer
-		var hour = parseInt(time.substring(0, time.indexOf(":")));
-		// parse the minute part of time into an integer
-		var minute = parseInt(time.substr(time.indexOf(":") + 1, 2));
-		if(weekday==="Sun" && day.substr(day.length - 2)==="00" && hour > 8 ||
-			weekday==="Thu" && hour===12)
-			hour += 4;
-		else
-			hour += 16;
-		// check for daylight savings
-		Dates[i] = new Date(Date.UTC(parseInt(day.substr(0, 4)), parseInt(day.substr(4, 2))-1, parseInt(day.substr(6, 2)), hour, minute));
-		if(!Dates[i].dst())
-			Dates[i].setHours(Dates[i].getHours() + 1);
-		Games[i].kickoff = Dates[i];
-		
-		// add date strings to the object; both long and short
-		Games[i].dateStringLong = Dates[i].toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }) + " " +
-			Dates[i].toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short'});
-		Games[i].dateStringShort = Dates[i].toLocaleString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' }) + " " +
-			Dates[i].toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric'});
-	}
-	// sort the games by kickoff time
-	Games.sort(function(a,b)
-	{
-		if(a.kickoff.getTime() !== b.kickoff.getTime())
-			return a.kickoff.getTime() - b.kickoff.getTime();
-		else
-			return parseInt(a.getAttribute('eid')) - parseInt(b.getAttribute('eid'));
-	});
-};
-
-/**
- * Loads current week's picks from NFL's database
- * @param xml
- */
-function xmlImport(xml)
-{
-	var xmlDoc = $(xml);
-	var g = xmlDoc.find('g');
-	var home, away, day;
-	
-	kickoffStartTime(g);
-	
-	for(var i=0; i<g.length; i++)
-	{
-		home = g[i].getAttribute('h');
-		away = g[i].getAttribute('v');
-		day = g[i].getAttribute('eid');
-		
-		$("#body").append('<tr id=' + day + '></tr>');
-		//date in the table
-		$("#" + day).append('<td id="date' + i + '" style="text-align: center;">' + g[i].dateStringLong + '</td>');
-		//away at home data in table
-		$("#" + day).append('<td>' + teamLogo(away) + '</td><td>' + '<input name="game' + i + '" type="radio" id="'+ away + '" value="' + away + '" />' +
-				'<label class="black-text" for='+ away +'>'+ teamName(away) +'</label></td>'+
-				'<td>' + teamLogo(home) + '</td><td>' + '<input name="game' + i + '" type="radio" id="'+ home + '" value="' + home + '" />' +
-				'<label class="black-text" for='+ home +'>'+ teamName(home) +'</label></td>');
-		//assigned points data in table
-		$("#" + day).append('<td><select id="dropdown-' + i + '"><option value="" selected></option></select></td>');
-		//reset button
-		$("#" + day).append('<td><a id="reset-' + i + '" class="btn waves-effect waves-light blue-grey lighten-1 col s12 reset-game"><i class="mdi mdi-undo-variant"></i></a></td>');
-		for(var j=1; j<=g.length; j++)
-		{
-			$("#dropdown-" + i).append('<option value=' + j + '>' + j + '</option>');
-		}
-		// update select lists
-		$("select").material_select();
-	}
-};
-
-/**
- * This function will disable all elements of a game that has already started (on user picks page).
- * @param {type} callback - The call back function to be execuded after this one completes.
- * @returns {undefined} - Nothing
- */
-function disableStartedGames(callback)
-{
-	
-	$.ajax({
-		dataType:	'jsonp',	// use JSON w/padding to work around the cross-domain policies 
-		url:		'http://www.timeapi.org/utc/now.json',
-		success:	function(result)
-			{
-				var now = new Date(result.dateString);
-				var gameTime, startedGames = 0, numberOfGames = $('#body tr').length;
-				for(var i=0; i<numberOfGames; i++)
-				{
-					gameTime = Date.parse($("#date" + i).text());
-					if(gameTime < now)
-					{
-						$("input[name=game" + i + "]").prop('disabled', true);
-						$("#dropdown-" + i).prop('disabled', true);
-						$('select').material_select();	// update material select UI
-						$("#reset-" + i).prop('disabled', true);
-						$('#body tr').eq(i).css({ opacity: 0.5 });
-						startedGames++;
-					}
-				}
-				if(startedGames === numberOfGames) $("#submit-picks").hide();	// hide submit button if all games have started
-				callback();
-			}
-	});
-};
-
-function pointAssignments()
-{
-	var Values = [];	// array of values
-	var value, numberOfGames = $('#body tr').length;
-	
-	for(var i=0; i<=numberOfGames; i++)
-	{
-		// fill the array with all possible point values
-		if(i==0)
-			Values.push("");
-		else
-			Values.push(i);
-	}
-	
-	for(var i=0; i<numberOfGames; i++)
-	{
-		value = $('#dropdown-' + i).val();									// get current selected value
-		if(value != "")														// do not remove empty selection from array. This is always a valid selection in all elements.
-			Values.splice(Values.indexOf(parseInt(value)), 1);				// remove selected value for array 
-		$('#dropdown-' + i + ' option[value!="' + value + '"]').remove();	// remove all values EXCEPT selected
-		if(value == "")
-			$('#dropdown-' + i + ' option[value="' + value + '"]').remove();// remove empty selection from element (to be added back later). 
-																			// if we don't remove the empty selection there will be a duplicate added in later.
-	}
-	for(var i=0; i<Values.length; i++)
-	{
-		for(var j=0; j<numberOfGames; j++)
-		{
-			value = $('#dropdown-' + j).val();
-			//next two conditions insert selection options in order based on their value
-			if(parseInt(value) > Values[i])
-				$('<option value=' + Values[i] + '>' + Values[i] + '</option>').insertBefore($('#dropdown-' + j + ' option[value="' + value + '"]'));	// add smaller values before
-			else
-				$('#dropdown-' + j).append('<option value=' + Values[i] + '>' + Values[i] + '</option>');	// add larger values after
-		}
-	}
-	$('select').material_select();	// update material select UI
-};
-
 function isValidEmailAddress(emailAddress) {
     var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
     return pattern.test(emailAddress);
-};
+}
 
 /**
  * Submits all user's picks of current week to database.
@@ -287,12 +43,12 @@ function submitPicks(database, path, user)
 		}
 		eid = $('#body tr').eq(i).attr('id');
 		// don't submit picks with not team selected or points assigned
-		if(typeof team != 'undefined' && points != '')
+		if(typeof team !== 'undefined' && points !== '')
 		{			
 			database.ref(path + '/' + eid + '/' + user).update({
 				game:	i,
 				pick:	team,
-				points:	(points=='' ? 0 : parseInt(points))
+				points:	(points==='' ? 0 : parseInt(points))
 			}).catch(function(error)
 			{
 				Materialize.toast('Submission failed ' + error.message, 6000, "red darken-1"); // 6000 is the duration of the toast in milliseconds
@@ -308,34 +64,6 @@ function submitPicks(database, path, user)
 		}
 	}
 	return noErrors;
-};
-
-/**
- * Import all user's picks for the current week from database. Used on 'Your picks' page.
- * @param database
- * @param path
- * @param user
- */
-function databaseImport(database, path, user)
-{
-	database.ref(path).once('value').then(function(snapshot)
-	{
-		var data = snapshot.val();
-		for(var i in data)
-		{
-			for(var j in data[i])
-			{
-				if(j === UID)
-				{
-					$("input[value=" + data[i][j].pick + "]").prop('checked', true); // set the game picked
-					if(data[i][j].points !== "0")
-						$("#dropdown-" + data[i][j].game).val(data[i][j].points);	// set the number of points assigned to that game
-				}
-			}
-		}
-		pointAssignments();
-		
-	});
 };
 
 /**
@@ -377,92 +105,6 @@ function escapeRegExp(str) {
 function replaceAll(str, find, replace) {
   return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }
-
-/**
- * A function used to determine winner's of a given team. This function is meant only to work on the league picks' page
- * @param Games the to be processed
- * @returns
- */
-function determineWinners(Games)
-{
-	var visitorScore, homeScore, quarter;
-	var Winners = [];
-	for(var i=0; i<Games.length; i++)
-	{
-		visitorScore = parseInt(Games[i].getAttribute('vs'));
-		homeScore = parseInt(Games[i].getAttribute('hs'));
-		quarter = Games[i].getAttribute('q');
-		
-		if(quarter === "F" || quarter === "FO")
-		{
-			// determine winners and place them in the array; update the html if the current page is league picks
-			if(visitorScore > homeScore)
-			{
-				Winners.push(Games[i].getAttribute('v'));
-			} else if(visitorScore < homeScore)
-			{
-				Winners.push(Games[i].getAttribute('h'));
-			} else
-			{
-				Winners.push("TIE");
-			}
-		} else
-			Winners.push("-");
-	}
-	
-	return Winners;
-};
-
-/**
- * 
- * @param {Object} Games imported from NFL.com
- * @returns {Array} Array of strings of all teams on bye week
- */
-function byeTeams(Games)
-{
-	// Start the list with all NFL teams
-	var ByeTeams = {
-		ARI:	undefined,
-		ATL:	undefined,
-		BAL:	undefined,
-		BUF:	undefined,
-		CAR:	undefined,
-		CHI:	undefined,
-		CIN:	undefined,
-		CLE:	undefined,
-		DAL:	undefined,
-		DEN:	undefined,
-		DET:	undefined,
-		GB:		undefined,
-		HOU:	undefined,
-		IND:	undefined,
-		JAX:	undefined,
-		KC:		undefined,
-		LA:		undefined,
-		MIA:	undefined,
-		MIN:	undefined,
-		NE:		undefined,
-		NO:		undefined,
-		NYG:	undefined,
-		NYJ:	undefined,
-		OAK:	undefined,
-		PHI:	undefined,
-		PIT:	undefined,
-		SD:		undefined,
-		SF:		undefined,
-		SEA:	undefined,
-		TB:		undefined,
-		TEN:	undefined,
-		WAS:	undefined
-	};
-	// remove teams that are playing a game
-	for(var i=0; i<Games.length; i++)
-	{
-		delete ByeTeams[Games[i].getAttribute('v')];
-		delete ByeTeams[Games[i].getAttribute('h')];
-	}
-	return Object.keys(ByeTeams);
-};
 
 function nonUserCheck(user)
 {
