@@ -240,9 +240,9 @@ function updateNFLScores(picks)
 				//update scores
 				for(var i=0; i<weekData.games.length; i++)
 				{
-					$("#away-score").find('td:gt(0)').eq(i).text(weekData.games[i].awayTeamScore);									// away score
-					$("#quarter").find('td:gt(0)').eq(i).text(weekData.games[i].quarter + ' ' + weekData.games[i].timeInQuarter);	// quarter & time
-					$("#home-score").find('td:gt(0)').eq(i).text(weekData.games[i].awayTeamScore);									// home score
+					$("#away-score").find('td:gt(0)').eq(i).text(weekData.games[i].awayTeamScore);										// away score
+					$("#quarter").find('td:gt(0)').eq(i).text('Q' + weekData.games[i].quarter + ' ' + weekData.games[i].timeInQuarter);	// quarter & time
+					$("#home-score").find('td:gt(0)').eq(i).text(weekData.games[i].homeTeamScore);										// home score
 				}
 				
 				userPicks(picks, weekData);	// update user picks (reveal/mark correct or incorrect)
