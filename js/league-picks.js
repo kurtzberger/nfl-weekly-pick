@@ -96,19 +96,16 @@ function loadPage()
 						// only do this the first time through the outer loop
 						if(i===0)
 						{
+							var quarter = Number.isInteger(parseInt(weekData.games[j].quarter)) ? 'Q' + weekData.games[j].quarter : weekData.games[j].quarter;
 							//place the game start time as a header of the game
 							$("#nfl-games-headers").append('<th colspan="2" style="font-size: 14px; font-weight: 400; max-width:72px; min-width:72px; text-align: center;" id="date-' + j +'">' + 
 									weekData.games[j].dateStringShort + '</th>');
 							$("#away-teams").append('<td style="text-align: center;" colspan="2" id="visitor-' + j + '">' + weekData.games[j].awayTeam.logo + '</td>');
 							$("#away-score").append('<td style="text-align: center;" colspan="2">' + weekData.games[j].awayTeamScore + '</td>');
-							if(weekData.games[j].quarter === "Suspended" && j < weekData.games.length - 1)
-								$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">' + weekData.games[j].quarter + '</td>');
-							else if(weekData.games[j].timeInQuarter !== null && weekData.games[j].timeInQuarter !== "")
-								$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">Q' + weekData.games[j].quarter + ' ' + weekData.games[j].timeInQuarter + '</td>');
-							else if(j < weekData.games.length-1)
-								$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">' + weekData.games[j].quarter + '</td>');
+							if(j < weekData.games.length-1)
+								$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">' + quarter + ' ' + weekData.games[j].timeInQuarter + '</td>');
 							else
-								$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder">' + weekData.games[j].quarter + '</td>');
+								$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder">' + quarter + ' ' + weekData.games[i].timeInQuarter + '</td>');
 							$("#home-score").append('<td style="text-align: center;" colspan="2">' + weekData.games[j].homeTeamScore + '</td>');
 							$("#home-teams").append('<td style="text-align: center; border-bottom: thin solid #d0d0d0;" colspan="2" id="home-' + j + '">' + weekData.games[j].homeTeam.logo + '</td>');
 						}

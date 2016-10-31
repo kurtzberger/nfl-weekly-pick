@@ -46,12 +46,12 @@ function WeekGames(xml, callback)
 function getTimeNow(weekGames, callback)
 {
 	$.ajax({
-		dataType:	'jsonp',	// use JSON w/padding to work around the cross-domain policies 
-		url:		'http://www.timeapi.org/utc/now.json',
+		dataType:	'json',	
+		url:		'http://time.jsontest.com/',
 		timeout:	5000,		// timeout in milliseconds
 		success:	function(result)
 		{
-			weekGames.timeNow = new Date(result.dateString);
+			weekGames.timeNow = new Date(result.milliseconds_since_epoch);
 			getStartedGames(weekGames, callback);
 		},
 		error:		function(xhr)
@@ -115,7 +115,7 @@ function GameStats(id, day, time, quarter, timeInQuarter, homeTeam, homeTeamScor
 	this.id = id;
 	this.date = getDate(time, day, id);
 	this.dateStringLong = this.date.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }) + " " + this.date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short'});
-	this.dateStringShort = this.date.toLocaleString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' }) + " " + this.date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric'});
+	this.dateStringShort = this.date.toLocaleString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' }) + '\n' + this.date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric'});
 	this.isGameStarted = false;	// Initialize at false, update within getStartedGames()
 	this.quarter = getQuarter(quarter);
 	this.timeInQuarter = (timeInQuarter !== null && time !== '' ? timeInQuarter : '');
