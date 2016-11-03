@@ -23,7 +23,7 @@ h3 {
 	width:		auto;
 	height:		500px;
 	position:	absolute;
-	top:		0;
+	top:		50%;
 	bottom:		0;
 	left:		0;
 	right:		0;
@@ -31,10 +31,9 @@ h3 {
 }
 
 .spacer {
-	min-width: 150px;
-	max-width: 150px;
+	width: 125px;
 	text-align: right;
-	padding-right: 10px;
+	padding-right: 1%;
 }
 
 .cellHeader {

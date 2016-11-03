@@ -71,14 +71,20 @@ function loadPage()
 				if(weekData.byesTeams.length > 0)
 				{
 					for(var i=0; i<weekData.byesTeams.length; i++)
-						$("#byes").append('<td colspan="' + (weekData.games.length*2)/(weekData.byesTeams.length) + '" style="text-align: center;">' + weekData.byesTeams[i].logo + '</td>');
+					{
+						var spacer = weekData.games.length / weekData.byesTeams.length - 1;
+						$('#byes').append('<td colspan="'+ spacer +'"></td>')	// add a spacer between bye team logos
+								  .append('<td class="nfl" id="bye-' + i + '"></td>');	// the logo must only span 1 column or it will be oversized
+						$("#bye-" + i).css({'background-image': 'url('+ Team.getTeamUrl(weekData.byesTeams[i].abbrName) +')'});
+
+					}
 				} else
 				{
-					$("#byes").append('<td colspan="' + weekData.games.length*2 + '" style="text-align: center;">None</td>');
+					$("#byes").append('<td colspan="' + weekData.games.length + '" style="text-align: center;">None</td>');
 				}
 
 				// span the length of number of games for the picks header
-				$("#headers").append('<th colspan="' + weekData.games.length*2 + '" data-field="picks" class="cellHeader" style="text-align: center;">Picks</th>');
+				$("#headers").append('<th colspan="' + weekData.games.length + '" data-field="picks" class="cellHeader" style="text-align: center;">Picks</th>');
 				$("#headers").append('<th data-field="total-points" class="cellHeader" style="max-width:72px; min-width:72px; text-align: center;">Points</th>');
 				$("#headers").append('<th data-field="win-pct" class="cellHeader" style="max-width:72px; min-width:72px; text-align: center;">Win %</th>');
 
@@ -89,7 +95,7 @@ function loadPage()
 					var tag = replaceAll(replaceAll(users[i], '@', ''), '_', '');	// remove illegal characters
 					$("#league-picks-table").append('<tr id=' + tag + '></tr>');
 					//player's name in the table
-					$("#" + tag).append('<td>'+name+'</td>');
+					$("#" + tag).append('<td class="cell">'+name+'</td>');
 
 					for(var j=0; j<weekData.games.length; j++)
 					{				
@@ -98,21 +104,26 @@ function loadPage()
 						{
 							var quarter = Number.isInteger(parseInt(weekData.games[j].quarter)) ? 'Q' + weekData.games[j].quarter : weekData.games[j].quarter;
 							//place the game start time as a header of the game
-							$("#nfl-games-headers").append('<th colspan="2" style="font-size: 14px; font-weight: 400; max-width:72px; min-width:72px; text-align: center;" id="date-' + j +'">' + 
-									weekData.games[j].dateStringShort + '</th>');
-							$("#away-teams").append('<td style="text-align: center;" colspan="2" id="visitor-' + j + '">' + weekData.games[j].awayTeam.logo + '</td>');
-							$("#away-score").append('<td style="text-align: center;" colspan="2">' + weekData.games[j].awayTeamScore + '</td>');
+							$("#nfl-games-headers").append('<th class="cell" id="date-' + j +'">' + weekData.games[j].dateStringShort + '</th>');
+							$("#away-teams").append('<td class="nfl" id="visitor-' + j + '"></td>');
+							$("#visitor-" + j).css({'background-image': 'url(../team-logos/trans'+ weekData.games[j].awayTeam.abbrName +'.png)',
+													'vertical-align': 'bottom'})
+									.text(weekData.games[j].awayTeamScore);
+							//$("#away-score").append('<td class="cell">' + weekData.games[j].awayTeamScore + '</td>');
 							if(j < weekData.games.length-1)
-								$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder verticalLine">' + quarter + ' ' + weekData.games[j].timeInQuarter + '</td>');
+								$("#quarter").append('<td class="cell quarterBorder verticalLine">' + quarter + ' ' + weekData.games[j].timeInQuarter + '</td>');
 							else
-								$("#quarter").append('<td style="text-align: center;" colspan="2" class="quarterBorder">' + quarter + ' ' + weekData.games[i].timeInQuarter + '</td>');
-							$("#home-score").append('<td style="text-align: center;" colspan="2">' + weekData.games[j].homeTeamScore + '</td>');
-							$("#home-teams").append('<td style="text-align: center; border-bottom: thin solid #d0d0d0;" colspan="2" id="home-' + j + '">' + weekData.games[j].homeTeam.logo + '</td>');
+								$("#quarter").append('<td class="cell quarterBorder">' + quarter + ' ' + weekData.games[i].timeInQuarter + '</td>');
+							//$("#home-score").append('<td class="cell">' + weekData.games[j].homeTeamScore + '</td>');
+							$("#home-teams").append('<td class="nfl" style="border-bottom: thin solid #d0d0d0;"  id="home-' + j + '"></td>');
+							$("#home-" + j).css({'background-image': 'url(../team-logos/trans'+ weekData.games[j].homeTeam.abbrName +'.png)',
+												 'vertical-align': 'top'})
+									.text(weekData.games[j].homeTeamScore);
 						}
 
 						// mark each users' pick cell for easier access upon next database query
-						$("#" + tag).append('<td style="max-width:47px; min-width:47px;" id="' + tag + '-' + j + '"></td>');
-						$("#" + tag).append('<td style="text-align: center; max-width:25px; min-width:25px;" id="' + tag + '-' + j + '-points"></td>');
+						$("#" + tag).append('<td id="' + tag + '-' + j + '"></td>');
+						//$("#" + tag).append('<td style="text-align: center; max-width:25px; min-width:25px;" id="' + tag + '-' + j + '-points"></td>');
 					}
 					$("#" + tag).append('<td id="' + tag + '-total-points" class="points"></td>');
 					$("#" + tag).append('<td id="' + tag + '-win-pct" class="win-pct"></td>');
@@ -123,9 +134,9 @@ function loadPage()
 				{
 					// put all users' picks into the table, and hide other users' picks of games that haven't started
 					// mark the users games correct (green) or wrong (red) as well if the games are complete.
-					userPicks(snapshot.val(), weekData);
 					$(".remove-me").remove();	// remove loading animation
 					$(".show-me").toggle();		// toggle hidden content
+					userPicks(snapshot.val(), weekData);
 				});
 			});
 		});
@@ -143,6 +154,8 @@ function loadPage()
  */
 function userPicks(picks, weekData)
 {
+	var green = '#00d05e';			// correct pick color
+	var red = '#da9694';			// incorrect pick color
 	$(".points").text("0");			// clear points
 	$(".win-pct").text("0.00%");	// clear win %
 
@@ -154,20 +167,22 @@ function userPicks(picks, weekData)
 			if((weekData.timeNow < weekData.games[picks[i][j].game].date && j !== UID) && !nonUserCheck(j))	// game has not started and this pick isn't from current user
 			{
 				$('#' + tag).text("HIDDEN");
-				$("#" + tag + '-points').text("");
+				$('#' + tag).attr('class', 'cell');
+				//$("#" + tag + '-points').text("");
 				continue;
 			}
-			$("#" + tag).html(Team.getTeamLogo(picks[i][j].pick));
-			$("#" + tag + "-points").html(picks[i][j].points);
+			// add pick and points to cell
+			$("#" + tag).css({'background-image': 'url(../team-logos/trans'+ picks[i][j].pick +'.png)'})
+						.text(picks[i][j].points).attr('class', 'pick-cell');
 			if(weekData.games[picks[i][j].game].winner !== null)	// game is a final
 			{
 				if(picks[i][j].pick === weekData.games[picks[i][j].game].winner.abbrName)	// pick was correct
 				{
-					$("#" + tag + ", #" + tag + "-points").css("background-color", "#00d05e");
+					$("#" + tag).css("background-color", green);
 				}
 				else																		// pick was incorrect
 				{
-					$("#" + tag + ", #" + tag + "-points").css("background-color", "#da9694");
+					$("#" + tag).css("background-color", red);
 				}
 			}
 		}
@@ -176,12 +191,11 @@ function userPicks(picks, weekData)
 	// take care of empty picks
 	$("#league-picks-table td:empty").each(function ()
 	{
-		var index = Math.floor(((this.cellIndex % 2 === 0) ? this.cellIndex - 1 : this.cellIndex) / 2);
-		if(weekData.games[index].winner !== null)	// game is a final
+		if(weekData.games[this.cellIndex-1].winner !== null)	// game is a final
 		{
 			$(this).css("background-color", "#da9694");
 		}
-		else if(weekData.games[index].winner === null && $(this).css("background-color") !== "rgba(0, 0, 0, 0)")
+		else if(weekData.games[this.cellIndex-1].winner === null && $(this).css("background-color") !== "rgba(0, 0, 0, 0)")
 		{
 			$(this).css("background-color", "rgba(0, 0, 0, 0)");
 		}
@@ -191,21 +205,21 @@ function userPicks(picks, weekData)
 	// update scores and win percentages
 	$("#league-picks-table").find('tr:not(#headers)').each(function()
 	{
-		var Cells = $(this).find('td');	// get all cells in this row
+		var cells = $(this).find('td');	// get all cells in this row
 		var wins = 0;					// reset number of wins for this row
-		for(var i=2; i<Cells.length-2; i+=2)
+		for(var i=1; i<cells.length-2; i++)
 		{
-			if(Cells.eq(i).css("background-color") === 'rgb(0, 208, 94)')	// pick was correct
+			if(cells.eq(i).css("background-color") === 'rgb(0, 208, 94)')	// pick was correct
 			{
 				wins++;
-				Cells.eq(Cells.length-2).text(filterFloat(Cells.eq(Cells.length-2).text()) + filterFloat(Cells.eq(i).text()));
+				cells.eq(cells.length-2).text(filterFloat(cells.eq(cells.length-2).text()) + filterFloat(cells.eq(i).text()));
 			}
-			else if(Cells.eq(i).css("background-color") === 'rgb(218, 150, 148)')	// pick was incorrect
+			else if(cells.eq(i).css("background-color") === 'rgb(218, 150, 148)')	// pick was incorrect
 			{
-				Cells.eq(Cells.length-2).text(filterFloat(Cells.eq(Cells.length-2).text()) - filterFloat(Cells.eq(i).text()));
+				cells.eq(cells.length-2).text(filterFloat(cells.eq(cells.length-2).text()) - filterFloat(cells.eq(i).text()));
 			}
 		}
-		Cells.eq(Cells.length-1).text((weekData.completedGames === 0 ? '0.00' : (wins / weekData.completedGames * 100).toFixed(2)) + "%");	// calculate win percent
+		cells.eq(cells.length-1).text((weekData.completedGames === 0 ? '0.00' : (wins / weekData.completedGames * 100).toFixed(2)) + "%");	// calculate win percent
 	});
 
 	//regularly update nfl scores if it's the current week and not all games are complete

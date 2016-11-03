@@ -240,6 +240,52 @@ Team.getTeamName = function(name)
 };
 
 /**
+ * Returns the logo url of an NFL team given a valid three letter abbreviation
+ * @param {String} name Team abbreviation
+ * @returns {String} logo url of an NFL team ("Unknown logo" otherwise)
+ * @static
+ */
+Team.getTeamUrl = function(name)
+{
+	switch(name)
+	{
+		case "ARI":	return 'http://content.sportslogos.net/logos/7/177/full/kwth8f1cfa2sch5xhjjfaof90.gif';
+		case "ATL":	return 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c5/Atlanta_Falcons_logo.svg/1088px-Atlanta_Falcons_logo.svg.png';
+		case "BAL":	return 'https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Baltimore_Ravens_logo.svg/415px-Baltimore_Ravens_logo.svg.png';
+		case "BUF":	return 'http://upload.wikimedia.org/wikipedia/en/thumb/7/77/Buffalo_Bills_logo.svg/279px-Buffalo_Bills_logo.svg.png';
+		case "CAR":	return 'http://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Carolina_Panthers_logo_2012.svg/100px-Carolina_Panthers_logo_2012.svg.png';
+		case "CHI":	return 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Chicago_Bears_logo.svg/400px-Chicago_Bears_logo.svg.png';
+		case "CIN":	return 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Cincinnati_Bengals.svg/250px-Cincinnati_Bengals.svg.png';
+		case "CLE":	return 'https://upload.wikimedia.org/wikipedia/en/5/5a/Cleveland_Browns_Logo.svg';
+		case "DAL":	return 'http://content.sportslogos.net/logos/7/165/full/406.gif';
+		case "DEN":	return 'http://upload.wikimedia.org/wikipedia/en/thumb/4/44/Denver_Broncos_logo.svg/100px-Denver_Broncos_logo.svg.png';
+		case "DET":	return 'http://content.sportslogos.net/logos/7/170/full/cwuyv0w15ruuk34j9qnfuoif9.gif';
+		case "GB":	return 'http://content.sportslogos.net/logos/7/171/full/dcy03myfhffbki5d7il3.gif';
+		case "HOU":	return 'http://upload.wikimedia.org/wikipedia/en/thumb/2/28/Houston_Texans_logo.svg/100px-Houston_Texans_logo.svg.png';
+		case "IND":	return 'http://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Indianapolis_Colts_logo.svg/100px-Indianapolis_Colts_logo.svg.png';
+		case "JAX":	return 'https://upload.wikimedia.org/wikipedia/en/thumb/7/74/Jacksonville_Jaguars_logo.svg/100px-Jacksonville_Jaguars_logo.svg.png';
+		case "KC":	return 'http://content.sportslogos.net/logos/7/162/full/857.gif';
+		case "LA":	return 'https://upload.wikimedia.org/wikipedia/en/thumb/8/8b/NFL_Rams_logo.svg/281px-NFL_Rams_logo.svg.png';
+		case "MIA":	return 'http://upload.wikimedia.org/wikipedia/en/thumb/8/81/Miami_Dolphins_2013_Logo.svg/100px-Miami_Dolphins_2013_Logo.svg.png';
+		case "MIN":	return 'https://upload.wikimedia.org/wikipedia/en/thumb/4/48/Minnesota_Vikings_logo.svg/95px-Minnesota_Vikings_logo.svg.png';
+		case "NE":	return 'http://upload.wikimedia.org/wikipedia/en/thumb/b/b9/New_England_Patriots_logo.svg/100px-New_England_Patriots_logo.svg.png';
+		case "NO":	return 'http://content.sportslogos.net/logos/7/175/full/907.gif';
+		case "NYG":	return 'http://content.sportslogos.net/logos/7/166/full/919.gif';
+		case "NYJ":	return 'http://upload.wikimedia.org/wikipedia/en/thumb/6/6b/New_York_Jets_logo.svg/100px-New_York_Jets_logo.svg.png';
+		case "OAK":	return 'http://upload.wikimedia.org/wikipedia/en/thumb/9/9d/Oakland_Raiders.svg/100px-Oakland_Raiders.svg.png';
+		case "PHI":	return 'http://upload.wikimedia.org/wikipedia/en/thumb/7/7f/Philadelphia_Eagles_primary_logo.svg/100px-Philadelphia_Eagles_primary_logo.svg.png';
+		case "PIT":	return 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Pittsburgh_Steelers_logo.svg/135px-Pittsburgh_Steelers_logo.svg.png';
+		case "SD":	return 'http://upload.wikimedia.org/wikipedia/en/thumb/0/06/San_Diego_Chargers_logo.svg/100px-San_Diego_Chargers_logo.svg.png';
+		case "SF":	return 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/49ers_Logo.svg/460px-49ers_Logo.svg.png';
+		case "SEA":	return 'http://upload.wikimedia.org/wikipedia/it/0/01/Seattle_Seahawks_Logo_2012.png';
+		case "TB":	return 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Tampa_Bay_Buccaneers_logo.svg/191px-Tampa_Bay_Buccaneers_logo.svg.png';
+		case "TEN":	return 'http://upload.wikimedia.org/wikipedia/en/thumb/c/c1/Tennessee_Titans_logo.svg/100px-Tennessee_Titans_logo.svg.png';
+		case "WAS":	return 'http://content.sportslogos.net/logos/7/168/full/im5xz2q9bjbg44xep08bf5czq.gif';
+		default:	return 'Unknown Logo';
+	}
+};
+
+/**
  * Returns an HTML image of an NFL team given a valid three letter abbreviation
  * @param {type} name Team abbreviation
  * @returns {String}
@@ -280,7 +326,7 @@ Team.getTeamLogo = function(name)
 		case "SEA":	return '<img alt="Seattle Seahawks" src="http://upload.wikimedia.org/wikipedia/it/0/01/Seattle_Seahawks_Logo_2012.png" >';
 		case "TB":	return '<img alt="Tampa Bay Buccaneers" src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Tampa_Bay_Buccaneers_logo.svg/191px-Tampa_Bay_Buccaneers_logo.svg.png" >';
 		case "TEN":	return '<img alt="Tennessee Titans" src="http://upload.wikimedia.org/wikipedia/en/thumb/c/c1/Tennessee_Titans_logo.svg/100px-Tennessee_Titans_logo.svg.png" >';
-		case "WAS":	return '<img alt="Washington Redskins" src="http://content.sportslogos.net/logos/7/168/full/im5xz2q9bjbg44xep08bf5czq.gif" >';
+		case "WAS":	return '<img alt="Washington Redskins" src="../team-logos/WAS.png" >';
 		default:	return 'Unknown Logo';
 	}
 };

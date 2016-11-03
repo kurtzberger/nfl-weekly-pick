@@ -13,16 +13,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
 	<link rel="stylesheet" type="text/css" href="../css/main.css">
 	<style>
-		td img {
-			width: 37px; 
-			height: auto;
-			display: block;
-			margin-left: auto;
-			margin-right: auto;
-		}
-		td {
-			font-size: 14px;
+		.cell {
+			font-size: 80%;
+			font-weight: normal;
 			border-radius: 0px;
+			text-align: center;
+			white-space:pre-wrap;
+		}
+		.nfl {
+			background-repeat: no-repeat;
+			background-size: 80%;
+			background-position: 50% 50%;
+			text-align: center;
+			font-size: 150%;
+			font-weight: bold;
+			padding: 0;
+			margin: 0;
+		}
+		.points, .win-pct, .score {
+			font-size: 90%;
+			font-weight: bold;
 			text-align: center;
 		}
 		.verticalLine {
@@ -36,8 +46,25 @@
 		tbody[id="league-picks-table"] td {
 			border-bottom: thin solid #d0d0d0;
 		}
-		tbody[id="league-picks-table"] tr:not([id="headers"]) {
+		tbody[id="league-picks-table"] tr:not([id="headers"]),
+		tr[id="away-teams"], tr[id="home-teams"], tr[id="byes"] {
 			height: 77px;
+		}
+		.pick-cell {
+			text-align: right;
+			font-size: 150%;
+			vertical-align: top;
+			font-weight: bold;
+			padding: 0;
+			margin: 0;
+			background-repeat: no-repeat;
+			background-size: 80%;
+			background-position: 50% 50%;
+		}
+		
+		.wrapper {
+			max-width: 1500px;
+			margin: 0 auto;
 		}
 	</style>
 </head>
@@ -56,8 +83,8 @@
 	<script type="text/javascript" src="../js/league-picks.js"></script>
 	<script type="text/javascript" src="../js/WeekGames.js"></script>
 	
-	<div id="main-content" class="container" style="width:auto;">
-		<div class="row center show-me" style="display: none">
+	<div id="main-content" class="wrapper">
+		<div class="row show-me" style="display: none">
 			<table id="nfl-games">
 				<tbody id="byes-body">
 					<tr id="byes">
@@ -71,14 +98,8 @@
 					<tr id="away-teams">
 						<td class="spacer verticalLine cellHeader">Visiting Team</td>
 					</tr>
-					<tr id="away-score">
-						<td class="spacer verticalLine cellHeader">Score</td>
-					</tr>
 					<tr id="quarter">
 						<td class="spacer verticalLine quarterBorder cellHeader">Quarter</td>
-					</tr>
-					<tr id="home-score">
-						<td class="spacer verticalLine cellHeader">Score</td>
 					</tr>
 					<tr id="home-teams">
 						<td class="spacer verticalLine cellHeader" style="border-bottom: thin solid #d0d0d0;">Home Team</td>
@@ -91,25 +112,27 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="vertical-align remove-me">
-			<div class="loader s12 m4 center">
-				<div class="preloader-wrapper big active">
-					<div class="spinner-layer spinner-blue-only">
-						<div class="circle-clipper left">
-							<div class="circle"></div>
-						</div>
-						<div class="gap-patch">
-							<div class="circle"></div>
-						</div>
-						<div class="circle-clipper right">
-							<div class="circle"></div>
-						</div>
+	</div>
+	
+	<div class="vertical-align remove-me container">
+		<div class="loader s12 m4 center">
+			<div class="preloader-wrapper big active">
+				<div class="spinner-layer spinner-blue-only">
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div>
+					<div class="gap-patch">
+						<div class="circle"></div>
+					</div>
+					<div class="circle-clipper right">
+						<div class="circle"></div>
 					</div>
 				</div>
 			</div>
-			<div class="show-me col s12">
-				<p class="flow-text center-align">Loading league picks and checking the time... Sometimes this takes awhile. If this takes too long, feel free to reload the page.</p>
-			</div>
+		</div>
+		<div class="show-me col s12">
+			<p class="flow-text center-align">Loading league picks and checking the time... Sometimes this takes awhile.<br>
+				If this takes too long, feel free to reload the page.</p>
 		</div>
 	</div>
 </body>
