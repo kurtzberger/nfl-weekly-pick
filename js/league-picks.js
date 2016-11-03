@@ -134,9 +134,9 @@ function loadPage()
 				{
 					// put all users' picks into the table, and hide other users' picks of games that haven't started
 					// mark the users games correct (green) or wrong (red) as well if the games are complete.
+					userPicks(snapshot.val(), weekData);
 					$(".remove-me").remove();	// remove loading animation
 					$(".show-me").toggle();		// toggle hidden content
-					userPicks(snapshot.val(), weekData);
 				});
 			});
 		});
