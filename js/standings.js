@@ -7,7 +7,7 @@ $(document).ready(function()
 {
 	$("#header").load("../header.html", function()
 	{
-		wait();		// wait for global variables to be set
+		wait(); 	// wait for global variables to be set
 	});
 });
 

@@ -326,7 +326,7 @@ Team.getTeamLogo = function(name)
 		case "SEA":	return '<img alt="Seattle Seahawks" src="http://upload.wikimedia.org/wikipedia/it/0/01/Seattle_Seahawks_Logo_2012.png" >';
 		case "TB":	return '<img alt="Tampa Bay Buccaneers" src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Tampa_Bay_Buccaneers_logo.svg/191px-Tampa_Bay_Buccaneers_logo.svg.png" >';
 		case "TEN":	return '<img alt="Tennessee Titans" src="http://upload.wikimedia.org/wikipedia/en/thumb/c/c1/Tennessee_Titans_logo.svg/100px-Tennessee_Titans_logo.svg.png" >';
-		case "WAS":	return '<img alt="Washington Redskins" src="../team-logos/WAS.png" >';
+		case "WAS":	return '<img alt="Washington Redskins" src="http://content.sportslogos.net/logos/7/168/full/im5xz2q9bjbg44xep08bf5czq.gif" >';
 		default:	return 'Unknown Logo';
 	}
 };
