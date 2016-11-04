@@ -163,7 +163,7 @@ function loadPage()
 		if(desktop)
 			$('#submit-picks').html('<i class="mdi mdi-send right"></i>Submit');
 		else
-			$('#submit-picks').html('<i class="mdi mdi-send"></i>');
+			$('#submit-picks').html('<i class="mdi mdi-send mdi-12px"></i>');
 	});
 }
 

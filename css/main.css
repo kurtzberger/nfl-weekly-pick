@@ -42,14 +42,24 @@ h3 {
 }
 
 #headerTitle {
-	font-size: 3.5vmax;
+	font-size: 100%;
 }
 
 ul.tabs {
-	font-size: 2.25vmin;
+	font-size: 44%;
 }
 
 .wrapper {
 	max-width: 1500px;
 	margin: 0 auto;
+}
+
+@media only screen and (min-width: 801px) {
+	#headerTitle {
+		font-size: 250%;
+	}
+
+	ul.tabs {
+		font-size: 120%;
+	}
 }

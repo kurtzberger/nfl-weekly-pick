@@ -15,7 +15,7 @@
 	<style>
 		/* For mobile phones */
 		td img {
-			width: 7vw;
+			width: 30px;
 			height: auto;
 			display: block;
 			margin-left: auto;
@@ -23,7 +23,7 @@
 		}
 		th {
 			text-align: center;
-			font-size: 4vmin;
+			font-size: 70%;
 		}
 		tr[id="byeNames"] {
 			border-bottom: thin solid #d0d0d0;
@@ -34,7 +34,7 @@
 		td, label, select, option {
 			text-align: center;
 			white-space: pre-wrap;
-			font-size: 2.35vmin;
+			font-size: 60%;
 		}
 		label {
 			font-weight: bold;
@@ -44,6 +44,9 @@
 			background-size: 45%;
 			background-position: 50% 50%;
 			text-align: left;
+		}
+		#date-header {
+			min-width: 75px;
 		}
 		@media only screen and (min-width: 801px) {
 			/* For desktop */
@@ -73,7 +76,6 @@
 				text-align: left;
 			}
 		}
-		
 	</style>
 </head>
 
@@ -121,10 +123,8 @@
 			</table>
 		</div>
 		<div class="row show-me" style="display: none;">
-			<div class="col s10">
-				<p class="col s12 ">*Points are uniquely assigned (i.e., no duplicates). Highest point value is dependent upon number of games to be played. See rules for more details.</p>
-			</div>
-			<div id="submit-div" class="col s2">
+			<div class="col s6" style="color: #e8e8e8;"><p>Hidden text!</p></div>
+			<div id="submit-div" class="col s6">
 				<a id="submit-picks" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s12"></a>
 			</div>
 		</div>
