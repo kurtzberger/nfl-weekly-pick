@@ -109,12 +109,10 @@ function loadPage()
 							$("#visitor-" + j).css({'background-image': 'url(../team-logos/trans'+ weekData.games[j].awayTeam.abbrName +'.png)',
 													'vertical-align': 'bottom'})
 									.text(weekData.games[j].awayTeamScore);
-							//$("#away-score").append('<td class="cell">' + weekData.games[j].awayTeamScore + '</td>');
 							if(j < weekData.games.length-1)
 								$("#quarter").append('<td class="cell quarterBorder verticalLine">' + quarter + ' ' + weekData.games[j].timeInQuarter + '</td>');
 							else
-								$("#quarter").append('<td class="cell quarterBorder">' + quarter + ' ' + weekData.games[i].timeInQuarter + '</td>');
-							//$("#home-score").append('<td class="cell">' + weekData.games[j].homeTeamScore + '</td>');
+								$("#quarter").append('<td class="cell quarterBorder">' + quarter + ' ' + weekData.games[j].timeInQuarter + '</td>');
 							$("#home-teams").append('<td class="nfl" style="border-bottom: thin solid #d0d0d0;"  id="home-' + j + '"></td>');
 							$("#home-" + j).css({'background-image': 'url(../team-logos/trans'+ weekData.games[j].homeTeam.abbrName +'.png)',
 												 'vertical-align': 'top'})
@@ -123,7 +121,6 @@ function loadPage()
 
 						// mark each users' pick cell for easier access upon next database query
 						$("#" + tag).append('<td id="' + tag + '-' + j + '"></td>');
-						//$("#" + tag).append('<td style="text-align: center; max-width:25px; min-width:25px;" id="' + tag + '-' + j + '-points"></td>');
 					}
 					$("#" + tag).append('<td id="' + tag + '-total-points" class="points"></td>');
 					$("#" + tag).append('<td id="' + tag + '-win-pct" class="win-pct"></td>');
