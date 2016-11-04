@@ -31,6 +31,13 @@ function loadPage()
 	// Get a reference to the database service
 	var database = firebase.database();
 	var weekData, url, path;
+	var SIZE = 800;
+	var desktop = $(window).width() > SIZE;
+	
+	if(desktop)
+		$('#submit-picks').html('<i class="mdi mdi-send right"></i>Submit');
+	else
+		$('#submit-picks').html('<i class="mdi mdi-send"></i>');
 
 	url = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + location.search.substring(1).split("&")[0].split("=")[1];
 	$('.your-picks').addClass("deep-orange lighten-3");
@@ -66,18 +73,23 @@ function loadPage()
 				var homeFull = weekData.games[i].homeTeam.fullName;
 				var homeLogo = weekData.games[i].homeTeam.logo;
 				var id = weekData.games[i].id;
+				var date = desktop ? weekData.games[i].dateStringLong : weekData.games[i].dateStringShort;
+				var iconSize = desktop ? '' : 'mdi-12px';
 
 				$("#body").append('<tr id=' + weekData.games[i].id + '></tr>');
-				$("#" + id).append('<td id="date' + i + '" style="text-align: center;">' + weekData.games[i].dateStringLong + '</td>');	//date in the table
-				$("#" + id).append('<td>' + awayLogo + '</td>')															// away team logo
-					.append('<td><input name="game' + i + '" type="radio" id="'+ away + '" value="' + away + '" />' +	// away team radio button
-							'<label class="black-text" for='+ away +'>'+ awayFull +'</label></td>')						// away team radio button label
-					.append('<td>' + homeLogo + '</td>')																// home team logo
-					.append('<td><input name="game' + i + '" type="radio" id="'+ home + '" value="' + home + '" />' +	// home team radio button
-							'<label class="black-text" for='+ home +'>'+ homeFull +'</label></td>')						// home team radio button label
+				$("#" + id).append('<td id="date'+ i +'">' + date + '</td>');				//date in the table
+				$("#" + id)//.append('<td>' + awayLogo + '</td>')															// away team logo
+					.append('<td class="pick-cell" id="away'+ i +'"><input name="game' + i + '" type="radio" value="' + away + '" />' +	// away team radio button
+							'<label id="'+ away + '" class="black-text" for='+ away +'>'+ (desktop ? awayFull : away) +'</label></td>')						// away team radio button label
+					//.append('<td>' + homeLogo + '</td>')															// home team logo
+					.append('<td class="pick-cell" id="home'+ i +'"><input name="game' + i + '" type="radio" value="' + home + '" />' +	// home team radio button
+							'<label id="'+ home + '" class="black-text" for='+ home +'>'+ (desktop ? homeFull : home) +'</label></td>')						// home team radio button label
 					.append('<td><select id="dropdown-' + i + '"><option value="" selected></option></select></td>')	// point assignment dropdown
 					.append('<td><a id="reset-' + i + '" class="btn waves-effect waves-light blue-grey lighten-1 col' +	// reset button
-							' s12 reset-game"><i class="mdi mdi-undo-variant"></i></a></td>');
+							' s12 reset-game"><i class="mdi mdi-undo-variant '+ iconSize +'"></i></a></td>');
+				$('#' + 'away' + i).css({'background-image': 'url(../team-logos/trans'+ away +'.png)'});
+				$('#' + 'home' + i).css({'background-image': 'url(../team-logos/trans'+ home +'.png)'});
+				//$("#" + tag).css({'background-image': 'url(../team-logos/trans'+ picks[i][j].pick +'.png)'})
 				for(var j=1; j<=weekData.games.length; j++)
 					$("#dropdown-" + i).append('<option value=' + j + '>' + j + '</option>');							// add point options to dropdown
 
@@ -129,6 +141,29 @@ function loadPage()
 		$('#dropdown-' + temp).val('');	// clear point value
 		pointAssignments();	// update point values
 
+	});
+	
+	$(window).resize(function()
+	{
+		desktop = $(window).width() > SIZE;
+		
+		for(var i=0; i<weekData.games.length; i++)
+		{
+			var away = weekData.games[i].awayTeam.abbrName;
+			var awayFull = weekData.games[i].awayTeam.fullName;
+			var home = weekData.games[i].homeTeam.abbrName;
+			var homeFull = weekData.games[i].homeTeam.fullName;
+			var date = desktop ? weekData.games[i].dateStringLong : weekData.games[i].dateStringShort;
+			
+			$('#date' + i).text(date);
+			$('#' + away).text(desktop ? awayFull : away);
+			$('#' + home).text(desktop ? homeFull : home);
+		}
+		
+		if(desktop)
+			$('#submit-picks').html('<i class="mdi mdi-send right"></i>Submit');
+		else
+			$('#submit-picks').html('<i class="mdi mdi-send"></i>');
 	});
 }
 

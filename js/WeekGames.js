@@ -114,7 +114,7 @@ function GameStats(id, day, time, quarter, timeInQuarter, homeTeam, homeTeamScor
 {
 	this.id = id;
 	this.date = getDate(time, day, id);
-	this.dateStringLong = this.date.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }) + " " + this.date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short'});
+	this.dateStringLong = this.date.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }) + '\n' + this.date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short'});
 	this.dateStringShort = this.date.toLocaleString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' }) + '\n' + this.date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric'});
 	this.isGameStarted = false;	// Initialize at false, update within getStartedGames()
 	this.quarter = getQuarter(quarter);

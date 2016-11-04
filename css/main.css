@@ -40,3 +40,16 @@ h3 {
 	font-size: 17px;
 	font-weight: bold;
 }
+
+#headerTitle {
+	font-size: 3.5vmax;
+}
+
+ul.tabs {
+	font-size: 2.25vmin;
+}
+
+.wrapper {
+	max-width: 1500px;
+	margin: 0 auto;
+}

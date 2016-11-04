@@ -12,6 +12,11 @@
     <!--Import materialize.css-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
 	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<style>
+		td, th {
+			font-size: 92%;
+		}
+	</style>
 </head>
 <body>
 	<div id="header"></div>
@@ -28,12 +33,12 @@
 	<script type="text/javascript" src="../js/standings.js"></script>
 	<script type="text/javascript" src="../js/WeekGames.js"></script>
 	
-	<div id="main-content" class="container" style="width:auto;">
+	<div id="main-content" class="container">
 		<div class="row show-me" style="display: none;">
 			<img alt="logo" src="NFLLogo.png" style="float: left; width: auto; max-height: 200px;">
 		</div>
 		<div class="row show-me" style="display: none;">
-			<table id="standings-table" class="striped responsive-table centered">
+			<table id="standings-table" class="striped centered">
 				<thead>
 					<tr id="headers">
 						<th data-field="position" style="width: 10px;"></th>

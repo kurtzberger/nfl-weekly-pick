@@ -13,8 +13,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
 	<link rel="stylesheet" type="text/css" href="../css/main.css">
 	<style>
+		/* For mobile phones */
 		td img {
-			width: 57px; 
+			width: 7vw;
 			height: auto;
 			display: block;
 			margin-left: auto;
@@ -22,12 +23,55 @@
 		}
 		th {
 			text-align: center;
+			font-size: 4vmin;
 		}
 		tr[id="byeNames"] {
 			border-bottom: thin solid #d0d0d0;
 		}
 		tbody[id="body"] td {
 			height:		100px;
+		}
+		td, label, select, option {
+			text-align: center;
+			white-space: pre-wrap;
+			font-size: 2.35vmin;
+		}
+		label {
+			font-weight: bold;
+		}
+		.pick-cell {
+			background-repeat: no-repeat;
+			background-size: 45%;
+			background-position: 50% 50%;
+			text-align: left;
+		}
+		@media only screen and (min-width: 801px) {
+			/* For desktop */
+			td img {
+				width: 57px;
+				height: auto;
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			th {
+				text-align: center;
+				font-size: 18px;
+			}
+			td {
+				text-align: center;
+				white-space: pre-wrap;
+				font-size: 14px;
+			}
+			#date-header {
+				min-width: 150px;
+			}
+			.pick-cell {
+				background-repeat: no-repeat;
+				background-size: 25%;
+				background-position: 75% 50%;
+				text-align: left;
+			}
 		}
 		
 	</style>
@@ -48,7 +92,7 @@
 	<script type="text/javascript" src="../js/user-picks.js"></script>
 	<script type="text/javascript" src="../js/WeekGames.js"></script>
 	
-	<div id="main-content" class="container" style="width:auto;">
+	<div id="main-content" class="wrapper">
 		<div class="row show-me" style="display: none;">
 			<table>
 				<thead>
@@ -63,14 +107,14 @@
 			</table>
 		</div>
 		<div class="row">
-			<table id="picks" class="striped responsive-table show-me" style="display: none;">
+			<table id="picks" class="striped show-me" style="display: none;">
 				<thead>
 					<tr>
-						<th data-field="date">Date</th>
-						<th data-field="away" colspan="2">Away</th>
-						<th data-field="home" colspan="2">Home</th>
-						<th data-field="points">Assigned Points*</th>
-						<th data-field="reset">Reset</th>
+						<th id="date-header">Date</th>
+						<th id="away-header">Away</th>
+						<th id="home-header">Home</th>
+						<th id="points-header">Assigned Points*</th>
+						<th id="reset-header">Reset</th>
 					</tr>
 				</thead>
 				<tbody id="body"></tbody>
@@ -81,11 +125,11 @@
 				<p class="col s12 ">*Points are uniquely assigned (i.e., no duplicates). Highest point value is dependent upon number of games to be played. See rules for more details.</p>
 			</div>
 			<div id="submit-div" class="col s2">
-				<a id="submit-picks" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s12"><i class="mdi mdi-send right"></i>Submit</a>
+				<a id="submit-picks" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s12"></a>
 			</div>
 		</div>
 		
-		<div class="vertical-align remove-me">
+		<div class="vertical-align remove-me container">
 			<div class="loader s12 m4 center">
 				<div class="preloader-wrapper big active">
 					<div class="spinner-layer spinner-blue-only">

@@ -7,6 +7,7 @@ $(document).ready(function()
 		
 		// initialize tabs
 		$('ul.tabs').tabs();
+		
 	});
 });
 
