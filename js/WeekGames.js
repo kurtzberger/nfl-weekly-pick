@@ -21,7 +21,7 @@ function WeekGames(xml, callback)
 	this.startedGames = 0;	// defining this property.  this will be set after the successful AJAX call for timeNow
 	this.completedGames = xmlDoc.find('g[q="F"], g[q="FO"]').length;
 	this.games = getGames(xmlDoc);
-	this.byesTeams = getByeTeams(xmlDoc);
+	this.byesTeams = getByeTeams(this.games);
 	
 	// sort the games by date. if dates are equal, sort by game id... just in case
 	this.games.sort(function(a,b)
@@ -119,11 +119,8 @@ function GameStats(id, day, time, quarter, timeInQuarter, homeTeam, homeTeamScor
 	this.isGameStarted = false;	// Initialize at false, update within getStartedGames()
 	this.quarter = getQuarter(quarter);
 	this.timeInQuarter = (timeInQuarter !== null && time !== '' ? timeInQuarter : '');
-	this.homeTeam = new Team(homeTeam);
-	this.homeTeamScore = isNaN(parseInt(homeTeamScore)) ? 0 : parseInt(homeTeamScore);
-	this.awayTeam = new Team(awayTeam);
-	this.awayTeamScore = isNaN(parseInt(awayTeamScore)) ? 0 : parseInt(awayTeamScore);
-	this.teamWithPossession = new Team(teamWithPossession);
+	this.homeTeam = new Team(homeTeam, teamWithPossession, homeTeamScore);
+	this.awayTeam = new Team(awayTeam, teamWithPossession, awayTeamScore);
 	this.isInRedZone = isInRedZone;
 	this.gameAlert = gameAlert;
 	this.gameType = gameType;
@@ -184,13 +181,17 @@ function getQuarter(quarter)
 /**
  * Object Team constructor containing team abbrevation, full name, and logo (HTML string).
  * @param {string} name Team abbreviation
+ * @param {string} teamWithPossession the team with possession 
+ * @param {string} score for this team 
  * @returns {Team}
  */
-function Team(name)
+function Team(name, teamWithPossession, score)
 {
 	this.abbrName = name;
 	this.fullName = Team.getTeamName(name);
 	this.logo = Team.getTeamLogo(name);
+        this.hasPossession = teamWithPossession === this.abbrName;
+        this.score = isNaN(parseInt(score)) ? 0 : parseInt(score);
 }
 
 /**
@@ -333,13 +334,13 @@ Team.getTeamLogo = function(name)
 
 /**
  * 
- * @param {type} xmlDoc
+ * @param {Array} games Array of GameStats containing all this weeks games
  * @returns {Array|getByeTeams.byeTeams}
  */
-function getByeTeams(xmlDoc)
+function getByeTeams(games)
 {
 	var byeTeams = [];
-	var games = xmlDoc.find('g');
+	//var games = xmlDoc.find('g');
 	// Start the list with all NFL teams
 	var byeTeamsObj = {
 		ARI:	undefined,
@@ -378,8 +379,8 @@ function getByeTeams(xmlDoc)
 	// remove teams that are playing a game
 	for(var i=0; i<games.length; i++)
 	{
-		delete byeTeamsObj[games[i].getAttribute('v')];
-		delete byeTeamsObj[games[i].getAttribute('h')];
+		delete byeTeamsObj[games[i].homeTeam.abbrName];
+		delete byeTeamsObj[games[i].awayTeam.abbrName];
 	}
 	// create Team object for remaining teams
 	for(var i in byeTeamsObj)
@@ -397,13 +398,13 @@ function getByeTeams(xmlDoc)
  */
 function getWinner(game)
 {
-	if(game.quarter === 'Final' || game.quarter === 'Final OT')
+	if(game.quarter.includes('Final'))
 	{
 		// determine winners and place them in the array; update the html if the current page is league picks
-		if(game.awayTeamScore > game.homeTeamScore)
+		if(game.awayTeam.score > game.homeTeam.score)
 		{
 			return game.awayTeam;
-		} else if(game.awayTeamScore < game.homeTeamScore)
+		} else if(game.awayTeam.score < game.homeTeam.score)
 		{
 			return game.homeTeam;
 		} else

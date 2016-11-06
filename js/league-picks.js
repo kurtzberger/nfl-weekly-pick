@@ -108,7 +108,7 @@ function loadPage()
 							$("#away-teams").append('<td class="nfl" id="visitor-' + j + '"></td>');
 							$("#visitor-" + j).css({'background-image': 'url(../team-logos/trans'+ weekData.games[j].awayTeam.abbrName +'.png)',
 													'vertical-align': 'bottom'})
-									.text(weekData.games[j].awayTeamScore);
+									.text(weekData.games[j].awayTeam.score);
 							if(j < weekData.games.length-1)
 								$("#quarter").append('<td class="cell quarterBorder verticalLine">' + quarter + ' ' + weekData.games[j].timeInQuarter + '</td>');
 							else
@@ -116,7 +116,7 @@ function loadPage()
 							$("#home-teams").append('<td class="nfl" style="border-bottom: thin solid #d0d0d0;"  id="home-' + j + '"></td>');
 							$("#home-" + j).css({'background-image': 'url(../team-logos/trans'+ weekData.games[j].homeTeam.abbrName +'.png)',
 												 'vertical-align': 'top'})
-									.text(weekData.games[j].homeTeamScore);
+									.text(weekData.games[j].homeTeam.score);
 						}
 
 						// mark each users' pick cell for easier access upon next database query
@@ -249,9 +249,9 @@ function updateNFLScores(picks)
 				for(var i=0; i<weekData.games.length; i++)
 				{
 					var quarter = Number.isInteger(parseInt(weekData.games[i].quarter)) ? 'Q' + weekData.games[i].quarter : weekData.games[i].quarter;
-					$("#away-score").find('td:gt(0)').eq(i).text(weekData.games[i].awayTeamScore);				// away score
-					$("#quarter").find('td:gt(0)').eq(i).text(quarter + ' ' + weekData.games[i].timeInQuarter);	// quarter & time
-					$("#home-score").find('td:gt(0)').eq(i).text(weekData.games[i].homeTeamScore);				// home score
+					$('#visitor-' + i).text(weekData.games[i].awayTeam.score);                               	// away score
+					$('#quarter').find('td:gt(0)').eq(i).text(quarter + ' ' + weekData.games[i].timeInQuarter);	// quarter & time
+					$('#home-' + i).text(weekData.games[i].homeTeam.score);                                         // home score
 				}
 				
 				userPicks(picks, weekData);	// update user picks (reveal/mark correct or incorrect)
