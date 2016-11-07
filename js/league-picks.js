@@ -74,7 +74,7 @@ function loadPage()
 					{
 						var spacer = weekData.games.length / weekData.byesTeams.length - 1;
 						$('#byes').append('<td colspan="'+ spacer +'"></td>')	// add a spacer between bye team logos
-								  .append('<td class="nfl" id="bye-' + i + '"></td>');	// the logo must only span 1 column or it will be oversized
+								  .append('<td class="pick-cell" id="bye-' + i + '"></td>');	// the logo must only span 1 column or it will be oversized
 						$("#bye-" + i).css({'background-image': 'url('+ Team.getTeamUrl(weekData.byesTeams[i].abbrName) +')'});
 
 					}
@@ -105,18 +105,20 @@ function loadPage()
 							var quarter = Number.isInteger(parseInt(weekData.games[j].quarter)) ? 'Q' + weekData.games[j].quarter : weekData.games[j].quarter;
 							//place the game start time as a header of the game
 							$("#nfl-games-headers").append('<th class="cell" id="date-' + j +'">' + weekData.games[j].dateStringShort + '</th>');
-							$("#away-teams").append('<td class="nfl" id="visitor-' + j + '"></td>');
-							$("#visitor-" + j).css({'background-image': 'url(../team-logos/trans'+ weekData.games[j].awayTeam.abbrName +'.png)',
-													'vertical-align': 'bottom'})
+							$("#away-teams").append('<td class="pick-cell" id="visitor-' + j + '"></td>');
+							$("#visitor-" + j).css({'background-image': 'url(../team-logos/trans'+ weekData.games[j].awayTeam.abbrName +'.png)'})
 									.text(weekData.games[j].awayTeam.score);
 							if(j < weekData.games.length-1)
 								$("#quarter").append('<td class="cell quarterBorder verticalLine">' + quarter + ' ' + weekData.games[j].timeInQuarter + '</td>');
 							else
 								$("#quarter").append('<td class="cell quarterBorder">' + quarter + ' ' + weekData.games[j].timeInQuarter + '</td>');
-							$("#home-teams").append('<td class="nfl" style="border-bottom: thin solid #d0d0d0;"  id="home-' + j + '"></td>');
-							$("#home-" + j).css({'background-image': 'url(../team-logos/trans'+ weekData.games[j].homeTeam.abbrName +'.png)',
-												 'vertical-align': 'top'})
+							$("#home-teams").append('<td class="pick-cell" style="border-bottom: thin solid #d0d0d0;"  id="home-' + j + '"></td>');
+							$("#home-" + j).css({'background-image': 'url(../team-logos/trans'+ weekData.games[j].homeTeam.abbrName +'.png)'})
 									.text(weekData.games[j].homeTeam.score);
+							if(weekData.games[j].awayTeam.hasPossession)
+								$('#visitor-' + j).css('background-color', (weekData.games[j].awayTeam.isInRedZone ? '#da9694' : '#ffff66'));
+							else if(weekData.games[j].homeTeam.hasPossession)
+								$('#home-' + j).css('background-color', (weekData.games[j].homeTeam.isInRedZone ? '#da9694' : '#ffff66'));
 						}
 
 						// mark each users' pick cell for easier access upon next database query
@@ -251,7 +253,17 @@ function updateNFLScores(picks)
 					var quarter = Number.isInteger(parseInt(weekData.games[i].quarter)) ? 'Q' + weekData.games[i].quarter : weekData.games[i].quarter;
 					$('#visitor-' + i).text(weekData.games[i].awayTeam.score);                               	// away score
 					$('#quarter').find('td:gt(0)').eq(i).text(quarter + ' ' + weekData.games[i].timeInQuarter);	// quarter & time
-					$('#home-' + i).text(weekData.games[i].homeTeam.score);                                         // home score
+					$('#home-' + i).text(weekData.games[i].homeTeam.score);                                     // home score
+					if(weekData.games[i].awayTeam.hasPossession)
+					{
+						$('#visitor-' + i).css('background-color', (weekData.games[i].awayTeam.isInRedZone ? '#da9694' : '#ffff66'));
+						$('#home-' + i).css('background-color', '');
+					}
+					else if(weekData.games[i].homeTeam.hasPossession)
+					{
+						$('#visitor-' + i).css('background-color', '');
+						$('#home-' + i).css('background-color', (weekData.games[i].homeTeam.isInRedZone ? '#da9694' : '#ffff66'));
+					}
 				}
 				
 				userPicks(picks, weekData);	// update user picks (reveal/mark correct or incorrect)

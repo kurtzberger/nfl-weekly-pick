@@ -119,9 +119,8 @@ function GameStats(id, day, time, quarter, timeInQuarter, homeTeam, homeTeamScor
 	this.isGameStarted = false;	// Initialize at false, update within getStartedGames()
 	this.quarter = getQuarter(quarter);
 	this.timeInQuarter = (timeInQuarter !== null && time !== '' ? timeInQuarter : '');
-	this.homeTeam = new Team(homeTeam, teamWithPossession, homeTeamScore);
-	this.awayTeam = new Team(awayTeam, teamWithPossession, awayTeamScore);
-	this.isInRedZone = isInRedZone;
+	this.homeTeam = new Team(homeTeam, teamWithPossession, homeTeamScore, isInRedZone);
+	this.awayTeam = new Team(awayTeam, teamWithPossession, awayTeamScore, isInRedZone);
 	this.gameAlert = gameAlert;
 	this.gameType = gameType;
 	this.winner = getWinner(this);
@@ -182,16 +181,18 @@ function getQuarter(quarter)
  * Object Team constructor containing team abbrevation, full name, and logo (HTML string).
  * @param {string} name Team abbreviation
  * @param {string} teamWithPossession the team with possession 
- * @param {string} score for this team 
+ * @param {string} score the score for this team 
+ * @param {string} isInRedZone is this team in the red zone (string '1' or '0')
  * @returns {Team}
  */
-function Team(name, teamWithPossession, score)
+function Team(name, teamWithPossession, score, isInRedZone)
 {
 	this.abbrName = name;
 	this.fullName = Team.getTeamName(name);
 	this.logo = Team.getTeamLogo(name);
-        this.hasPossession = teamWithPossession === this.abbrName;
-        this.score = isNaN(parseInt(score)) ? 0 : parseInt(score);
+    this.hasPossession = teamWithPossession === this.abbrName;
+    this.score = isNaN(parseInt(score)) ? 0 : parseInt(score);
+	this.isInRedZone = isInRedZone === '1';
 }
 
 /**
