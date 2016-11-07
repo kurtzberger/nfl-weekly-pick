@@ -258,11 +258,14 @@ function updateNFLScores(picks)
 					{
 						$('#visitor-' + i).css('background-color', (weekData.games[i].awayTeam.isInRedZone ? '#da9694' : '#ffff66'));
 						$('#home-' + i).css('background-color', '');
-					}
-					else if(weekData.games[i].homeTeam.hasPossession)
+					} else if(weekData.games[i].homeTeam.hasPossession)
 					{
 						$('#visitor-' + i).css('background-color', '');
 						$('#home-' + i).css('background-color', (weekData.games[i].homeTeam.isInRedZone ? '#da9694' : '#ffff66'));
+					} else
+					{
+						$('#home-' + i).css('background-color', '');
+						$('#visitor-' + i).css('background-color', '');
 					}
 				}
 				
