@@ -12,6 +12,30 @@
     <!--Import materialize.css-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
 	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<style>
+		/* For mobile phones */
+		.center-div {
+			margin: 25% auto;
+			max-width: 100%;
+		}
+		.right-inner {
+			margin-left: auto;
+			margin-right: 0;
+			width: 150px;
+		}
+		.pad-me {
+			margin-top: 10%;
+		}
+		@media only screen and (min-width: 801px) {
+			.center-div {
+				margin: 15% auto;
+				max-width: 75%;
+			}
+			.pad-me {
+				margin-top: 2%;
+			}
+		}
+	</style>
 </head>
 
 <body>
@@ -96,26 +120,23 @@
 	</script>
 	
 	<div id="main-content" class="container">
-		<div id="login" style="padding-top:50px;">
-			<div class="row">
-				<div class="input-field col s6 push-s3"> 
-					<i class="mdi mdi-account-circle prefix"></i>
-					<input id="email" type="email"> 
-					<label for="email">Email</label>
-				</div>
+		<div id="login" class="center-div">
+			<div class="input-field"> 
+				<i class="mdi mdi-account-circle prefix"></i>
+				<input id="email" type="email"> 
+				<label for="email">Email</label>
 			</div>
-			<div class="row">
-				<div class="input-field col s6 push-s3"> 
-					<i class="mdi mdi-dots-horizontal prefix"></i>
-					<input id="password" type="password"> 
-					<label for="password">Password</label>
-				</div>
+
+			<div class="input-field"> 
+				<i class="mdi mdi-dots-horizontal prefix"></i>
+				<input id="password" type="password"> 
+				<label for="password">Password</label>
 			</div>
-			<div class="row">
-				<a href="forgot-password.html" class="col s6 push-s3 right-align">Forgot Password?</a>
+			<div class="right-inner">
+				<a href="forgot-password.html">Forgot Password?</a>
 			</div>
-			<div class="row" id="login-div">
-				<a id="login-button" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s4 push-s4">Login</a>
+			<div class="row pad-me" id="login-div">
+				<a id="login-button" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s6 push-s3">Login</a>
 			</div>
 		</div>
 	</div>
