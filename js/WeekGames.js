@@ -206,7 +206,7 @@ Team.getTeamName = function(name)
 	switch(name)
 	{
 		case "ARI":	return "Arizona Cardinals";
-		case "ATL":	return "Atlanta Falctions";
+		case "ATL":	return "Atlanta Falcons";
 		case "BAL":	return "Baltimore Ravens";
 		case "BUF":	return "Buffalo Bills";
 		case "CAR":	return "Carolina Panthers";

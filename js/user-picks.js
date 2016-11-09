@@ -79,17 +79,15 @@ function loadPage()
 				$("#body").append('<tr id=' + weekData.games[i].id + '></tr>');
 				$("#" + id).append('<td id="date'+ i +'">' + date + '</td>');				//date in the table
 				$("#" + id)//.append('<td>' + awayLogo + '</td>')															// away team logo
-					.append('<td class="pick-cell" id="away'+ i +'"><input name="game' + i + '" type="radio" value="' + away + '" />' +	// away team radio button
-							'<label id="'+ away + '" class="black-text" for='+ away +'>'+ (desktop ? awayFull : away) +'</label></td>')						// away team radio button label
-					//.append('<td>' + homeLogo + '</td>')															// home team logo
-					.append('<td class="pick-cell" id="home'+ i +'"><input name="game' + i + '" type="radio" value="' + home + '" />' +	// home team radio button
-							'<label id="'+ home + '" class="black-text" for='+ home +'>'+ (desktop ? homeFull : home) +'</label></td>')						// home team radio button label
+					.append('<td class="pick-cell" id="away'+ i +'"><input id="'+ away + '" name="game' + i + '" type="radio" value="' + away + '" />' +	// away team radio button
+							'<label class="black-text" for='+ away +'>'+ (desktop ? awayFull : away) +'</label></td>')						// away team radio button label														// home team logo
+					.append('<td class="pick-cell" id="home'+ i +'"><input id="'+ home + '" name="game' + i + '" type="radio" value="' + home + '" />' +	// home team radio button
+							'<label class="black-text" for='+ home +'>'+ (desktop ? homeFull : home) +'</label></td>')						// home team radio button label
 					.append('<td><select id="dropdown-' + i + '"><option value="" selected></option></select></td>')	// point assignment dropdown
 					.append('<td><a id="reset-' + i + '" class="btn waves-effect waves-light blue-grey lighten-1 col' +	// reset button
 							' s12 reset-game"><i class="mdi mdi-undo-variant '+ iconSize +'"></i></a></td>');
 				$('#' + 'away' + i).css({'background-image': 'url(../team-logos/trans'+ away +'.png)'});
 				$('#' + 'home' + i).css({'background-image': 'url(../team-logos/trans'+ home +'.png)'});
-				//$("#" + tag).css({'background-image': 'url(../team-logos/trans'+ picks[i][j].pick +'.png)'})
 				for(var j=1; j<=weekData.games.length; j++)
 					$("#dropdown-" + i).append('<option value=' + j + '>' + j + '</option>');							// add point options to dropdown
 
@@ -97,7 +95,7 @@ function loadPage()
 			}
 
 			databaseImport(database, path, UID);		// fill in any pick user has already submitted to the database.
-			disableStartedGames(weekData);				// disable any games that have started			
+			disableStartedGames(weekData);				// disable any games that have started	
 		});
 
 	});
