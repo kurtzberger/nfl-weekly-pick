@@ -154,8 +154,8 @@ function loadPage()
 			var date = desktop ? weekData.games[i].dateStringLong : weekData.games[i].dateStringShort;
 			
 			$('#date' + i).text(date);
-			$('#' + away).text(desktop ? awayFull : away);
-			$('#' + home).text(desktop ? homeFull : home);
+			$('label[for=' + away +']').text(desktop ? awayFull : away);
+			$('label[for=' + home +']').text(desktop ? homeFull : home);
 		}
 		
 		if(desktop)
