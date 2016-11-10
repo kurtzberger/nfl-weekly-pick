@@ -68,10 +68,8 @@ function loadPage()
 			{
 				var away = weekData.games[i].awayTeam.abbrName;
 				var awayFull = weekData.games[i].awayTeam.fullName;
-				var awayLogo = weekData.games[i].awayTeam.logo;
 				var home = weekData.games[i].homeTeam.abbrName;
 				var homeFull = weekData.games[i].homeTeam.fullName;
-				var homeLogo = weekData.games[i].homeTeam.logo;
 				var id = weekData.games[i].id;
 				var date = desktop ? weekData.games[i].dateStringLong : weekData.games[i].dateStringShort;
 				var iconSize = desktop ? '' : 'mdi-12px';
