@@ -241,11 +241,54 @@ Team.getTeamUrl = function (name) {
 };
 
 /**
+ * Returns the primary team color for an NFL team given a valid three letter abbreviation
+ * @param {String} name Team abbreviation
+ * @returns {String} primary team color of an NFL team in the format 'rgb(255, 255, 255)' 
+ */
+Team.getTeamColor = function (name) {
+	switch (name) {
+	case 'ARI': return '#97233F';
+	case 'ATL':	return '#A71930';
+	case 'BAL':	return '#241773';
+	case 'BUF':	return '#00338D';
+	case 'CAR':	return '#0085CA';
+	case 'CHI':	return '#0B162A';
+	case 'CIN':	return '#FB4F14';
+	case 'CLE':	return '#FB4F14';
+	case 'DAL':	return '#002244';
+	case 'DEN':	return '#FB4F14';
+	case 'DET':	return '#005A8B';
+	case 'GB' :	return '#203731';
+	case 'HOU':	return '#A71930';
+	case 'IND':	return '#002C5F';
+	case 'JAX':	return '#000000';
+	case 'KC' :	return '#E31837';
+	case 'LA' :	return '#002244';
+	case 'MIA':	return '#008E97';
+	case 'MIN':	return '#4F2683';
+	case 'NE' :	return '#002244';
+	case 'NO' :	return '#9F8958';
+	case 'NYG':	return '#0B2265';
+	case 'NYJ':	return '#203731';
+	case 'OAK':	return '#000000';
+	case 'PHI':	return '#004953';
+	case 'PIT':	return '#000000';
+	case 'SD' :	return '#0073CF';
+	case 'SF' :	return '#AA0000';
+	case 'SEA':	return '#69BE28';
+	case 'TB' :	return '#D50A0A';
+	case 'TEN':	return '#002244';
+	case 'WAS':	return '#773141';
+	default	:	return 'Unknown';
+	}
+};
+
+/**
  * Object Team constructor containing team abbrevation, full name, and logo (HTML string).
  * @param {string} name Team abbreviation
  * @param {string} teamWithPossession the team with possession 
  * @param {string} score the score for this team 
- * @param {string} isInRedZone is this team in the red zone (string '1' or '0')
+ * @param {string} isInRedZone is this team in the red zone (true or false)
  * @returns {Team}
  */
 function Team(name, teamWithPossession, score, isInRedZone) {

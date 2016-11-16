@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<title>NFL Bootstrap Test</title>
+		<!-- Latest compiled and minified CSS -->
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/css-toggle-switch/latest/toggle-switch.css" />
+		<!-- Material Icons -->
+		<link rel="stylesheet" type="text/css" href="http://cdn.materialdesignicons.com/1.7.22/css/materialdesignicons.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+		<style>
+			body {
+				background-color: #e8e8e8;
+			}
+			.center {
+				width: 100%;
+				height: auto;
+				position: absolute;
+				left: 0;
+				right: 0;
+				margin: 2% auto;
+			}
+			.switch-toggle {
+				max-width: 40%;
+				margin: auto;
+				height: 50px;
+				background-color: rgb(170, 170, 170);
+			}
+			label {
+				height: 100%;
+				position: relative;
+				cursor: pointer;
+				color: white;
+				font-weight: normal;
+			}
+			input:checked + label {
+				cursor: pointer;
+				color: white;
+				font-weight: bold;
+			}
+			.inner-left {
+				display: inline-block;
+				position: absolute;
+				top: 28%;
+				left: 0;
+				height: 50%;
+				width: auto;
+				margin:	0 0 0 0;
+				
+			}
+			.inner-right {
+				display: inline-block;
+				position: absolute;
+				top: 28%;
+				right: 0;
+				height: 50%;
+				width: auto;
+				margin:	0 0 0 0;				
+			}
+			.inner-center {
+				text-align: center;
+				display: inline-block;
+				position: absolute;
+				top: 21%;
+				left: 25%;
+				height: 50%;
+				width: 50%;
+				margin: 0 0 0 0;
+			}
+			.ui-sortable-helper tr {
+				display:table;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="main-content">
+			<table class="table table-hover">
+				<tbody id="games" class="ui-sortable"></tbody> 
+			</table>
+		</div>
+		
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+		<!-- jQuery UI -->
+		<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="../js/WeekGames.js"></script>
+		<script>
+			// document ready handler
+			$(function () {
+				var url = 'http://www.nfl.com/ajax/scorestrip?season=2016&seasonType=REG&week=12';
+				// read from nfl.com all the games
+				$.get(url, function(data) {
+					// create weekly data object from XML file imported
+					var weekData = new WeekGames(data, function () {
+						for (var i=0; i<weekData.games.length; i++) {
+							var away = weekData.games[i].awayTeam.abbrName;
+							var home = weekData.games[i].homeTeam.abbrName;
+							var id = weekData.games[i].id;
+							$('<tr data-gameid="' + id + '"></tr>').appendTo('#games');
+							$('<td><div class="switch-toggle well"></div></td>').appendTo('tr[data-gameid="' + id + '"]');
+							$('<input type="radio" name="' + id + '" id="' + away + '" value="' + away + '">').appendTo($('div.well').eq(i));
+							$('<label for="' + away + '"><div class="inner-center">' + away + '</div></label>').appendTo($('div.well').eq(i));
+							$('<input class="pick" type="radio" name="' + id + '" id="pick' + i + '" value="-" checked="checked">').appendTo($('div.well').eq(i));
+							$('<label class="pick" for="pick' + i + '">\n\
+								<div class="inner-left"><i class="mdi mdi-arrow-left-bold" aria-hidden="true"></i></div>\n\
+								<div class="inner-right"><i class="mdi mdi-arrow-right-bold" aria-hidden="true"></i></div>\n\
+								<div class="inner-center">PICK</div></label>').appendTo($('div.well').eq(i));
+							$('<input type="radio" name="' + id + '" id="' + home + '" value="' + home + '">').appendTo($('div.well').eq(i));
+							$('<label for="' + home + '"><div class="inner-center">' + home + '</div></label>').appendTo($('div.well').eq(i));
+							$('<a class="btn" id="btn-' + id + '"></a>').appendTo($('div.well').eq(i));
+						}
+						$('input:checked').each(function () {
+							if($(this).val() === '-') {
+								$('#btn-' + $(this).attr('name')).css('background-color', 'rgb(57, 85, 107)');
+							}
+						});
+					});
+				});
+				
+				//Helper function to keep table row from collapsing when being sorted
+			var fixHelperModified = function (e, ui) {
+				ui.children().each(function() {
+					$(this).width($(this).width());
+				});
+				return ui;
+			};
+				
+				//Make table sortable
+				$('table tbody').sortable({
+					start:	function (event, ui) {
+						ui.placeholder.height(50);
+					},
+					helper:	fixHelperModified
+				}).disableSelection();
+			});
+			
+			$('#games').on('click', '.well', function () {
+				$(this).find('.pick').remove();
+				$(this).find('.btn').css('background-color', Team.getTeamColor($(this).find('input:checked').val()));
+			});
+		</script>
+
+	</body>
+</html>
