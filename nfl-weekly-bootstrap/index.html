@@ -11,24 +11,24 @@
 		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/css-toggle-switch/latest/toggle-switch.css" />
 		<!-- Material Icons -->
 		<link rel="stylesheet" type="text/css" href="http://cdn.materialdesignicons.com/1.7.22/css/materialdesignicons.min.css" />
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<style>
 			body {
 				background-color: #e8e8e8;
-			}
-			.center {
-				width: 100%;
-				height: auto;
-				position: absolute;
-				left: 0;
-				right: 0;
-				margin: 2% auto;
 			}
 			.switch-toggle {
 				max-width: 40%;
 				margin: auto;
 				height: 50px;
 				background-color: rgb(170, 170, 170);
+			}
+			.rank {
+				width: 10%;
+				text-align: center;
+				vertical-align: middle;
+				font-size: 150%;
+				font-weight: bold;
 			}
 			label {
 				height: 100%;
@@ -42,7 +42,7 @@
 				color: white;
 				font-weight: bold;
 			}
-			.inner-left {
+			label > .inner-left {
 				display: inline-block;
 				position: absolute;
 				top: 28%;
@@ -50,9 +50,8 @@
 				height: 50%;
 				width: auto;
 				margin:	0 0 0 0;
-				
 			}
-			.inner-right {
+			label > .inner-right {
 				display: inline-block;
 				position: absolute;
 				top: 28%;
@@ -61,7 +60,7 @@
 				width: auto;
 				margin:	0 0 0 0;				
 			}
-			.inner-center {
+			label > .inner-center {
 				text-align: center;
 				display: inline-block;
 				position: absolute;
@@ -84,14 +83,15 @@
 		</div>
 		
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-		<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<!-- jQuery UI -->
-		<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<script type="text/javascript" src="../js/WeekGames.js"></script>
 		<script>
 			// document ready handler
+			var dummy = 0;
 			$(function () {
 				var url = 'http://www.nfl.com/ajax/scorestrip?season=2016&seasonType=REG&week=12';
 				// read from nfl.com all the games
@@ -103,6 +103,7 @@
 							var home = weekData.games[i].homeTeam.abbrName;
 							var id = weekData.games[i].id;
 							$('<tr data-gameid="' + id + '"></tr>').appendTo('#games');
+							$('<td class="rank">' + (weekData.games.length - i) + '</td>').appendTo('tr[data-gameid="' + id + '"]')
 							$('<td><div class="switch-toggle well"></div></td>').appendTo('tr[data-gameid="' + id + '"]');
 							$('<input type="radio" name="' + id + '" id="' + away + '" value="' + away + '">').appendTo($('div.well').eq(i));
 							$('<label for="' + away + '"><div class="inner-center">' + away + '</div></label>').appendTo($('div.well').eq(i));
@@ -124,20 +125,50 @@
 				});
 				
 				//Helper function to keep table row from collapsing when being sorted
-			var fixHelperModified = function (e, ui) {
-				ui.children().each(function() {
-					$(this).width($(this).width());
-				});
-				return ui;
-			};
+				var fixHelperModified = function (e, ui) {
+					ui.children().each(function() {
+						$(this).width($(this).width());
+					});
+					return ui;
+				};
 				
 				//Make table sortable
 				$('table tbody').sortable({
 					start:	function (event, ui) {
-						ui.placeholder.height(50);
+						ui.placeholder.height(ui.item.outerHeight());
+						var startPos = ui.item.index();
+                        ui.item.data('startPos', startPos);
 					},
-					helper:	fixHelperModified
-				}).disableSelection();
+					helper:	fixHelperModified,
+					change:	function (event, ui) {
+						var games = $('#games tr').length - 1;
+						var startPos = ui.item.data('startPos');
+						var index = ui.placeholder.index();
+						var cIndex = (startPos < index)
+							? index-2
+							: index-1;
+						ui.placeholder.prevAll('tr').each(function () {
+							if ($(this).is(ui.item)) {
+								return;
+							}
+							$(this).find('.rank').text(games - cIndex);
+							cIndex--;
+						});
+                        
+						cIndex = (startPos < index) ? index : index+1;
+						ui.placeholder.nextAll('tr').each(function () {
+							if ($(this).is(ui.item)) {
+								return;
+							}
+							$(this).find('.rank').text(games - cIndex);
+							cIndex++;
+						});
+						ui.item.find('.rank').text(games - ((startPos < index)
+							? index-1
+							: index));
+                    },
+					axis:	'y'
+				});
 			});
 			
 			$('#games').on('click', '.well', function () {
