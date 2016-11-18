@@ -13,71 +13,20 @@
 		<link rel="stylesheet" type="text/css" href="http://cdn.materialdesignicons.com/1.7.22/css/materialdesignicons.min.css" />
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 		<link rel="stylesheet" type="text/css" href="css/main.css">
-		<style>
-			body {
-				background-color: #e8e8e8;
-			}
-			.switch-toggle {
-				max-width: 40%;
-				margin: auto;
-				height: 50px;
-				background-color: rgb(170, 170, 170);
-			}
-			.rank {
-				width: 10%;
-				text-align: center;
-				vertical-align: middle;
-				font-size: 150%;
-				font-weight: bold;
-			}
-			label {
-				height: 100%;
-				position: relative;
-				cursor: pointer;
-				color: white;
-				font-weight: normal;
-			}
-			input:checked + label {
-				cursor: pointer;
-				color: white;
-				font-weight: bold;
-			}
-			label > .inner-left {
-				display: inline-block;
-				position: absolute;
-				top: 28%;
-				left: 0;
-				height: 50%;
-				width: auto;
-				margin:	0 0 0 0;
-			}
-			label > .inner-right {
-				display: inline-block;
-				position: absolute;
-				top: 28%;
-				right: 0;
-				height: 50%;
-				width: auto;
-				margin:	0 0 0 0;				
-			}
-			label > .inner-center {
-				text-align: center;
-				display: inline-block;
-				position: absolute;
-				top: 21%;
-				left: 25%;
-				height: 50%;
-				width: 50%;
-				margin: 0 0 0 0;
-			}
-			.ui-sortable-helper tr {
-				display:table;
-			}
-		</style>
-	</head>
+		<link rel="stylesheet" type="text/css" href="css/picks.css">
 	<body>
 		<div id="main-content">
 			<table class="table table-hover">
+				<thead>
+					<tr id="table-headers">
+						<th data-field="rank">Rank</th>
+						<th data-field="away">Away</th>
+						<th data-field="pick">Pick</th>
+						<th data-field="home">Home</th>
+						<th data-field="date">Kickoff</th>
+						<!-- <th data-field="reset">Reset Pick</th> -->
+					</tr>
+				</thead>
 				<tbody id="games" class="ui-sortable"></tbody> 
 			</table>
 		</div>
@@ -91,7 +40,6 @@
 		<script type="text/javascript" src="../js/WeekGames.js"></script>
 		<script>
 			// document ready handler
-			var dummy = 0;
 			$(function () {
 				var url = 'http://www.nfl.com/ajax/scorestrip?season=2016&seasonType=REG&week=12';
 				// read from nfl.com all the games
@@ -103,8 +51,9 @@
 							var home = weekData.games[i].homeTeam.abbrName;
 							var id = weekData.games[i].id;
 							$('<tr data-gameid="' + id + '"></tr>').appendTo('#games');
-							$('<td class="rank">' + (weekData.games.length - i) + '</td>').appendTo('tr[data-gameid="' + id + '"]')
-							$('<td><div class="switch-toggle well"></div></td>').appendTo('tr[data-gameid="' + id + '"]');
+							$('<td class="rank">' + (weekData.games.length - i) + '</td>').appendTo('tr[data-gameid="' + id + '"]');
+							$('<td class="away" id="away'+ i +'">' + weekData.games[i].awayTeam.fullName + '</td>').appendTo('tr[data-gameid="' + id + '"]');
+							$('<td class="pick"><div class="switch-toggle well"></div></td>').appendTo('tr[data-gameid="' + id + '"]');
 							$('<input type="radio" name="' + id + '" id="' + away + '" value="' + away + '">').appendTo($('div.well').eq(i));
 							$('<label for="' + away + '"><div class="inner-center">' + away + '</div></label>').appendTo($('div.well').eq(i));
 							$('<input class="pick" type="radio" name="' + id + '" id="pick' + i + '" value="-" checked="checked">').appendTo($('div.well').eq(i));
@@ -115,6 +64,12 @@
 							$('<input type="radio" name="' + id + '" id="' + home + '" value="' + home + '">').appendTo($('div.well').eq(i));
 							$('<label for="' + home + '"><div class="inner-center">' + home + '</div></label>').appendTo($('div.well').eq(i));
 							$('<a class="btn" id="btn-' + id + '"></a>').appendTo($('div.well').eq(i));
+							$('<td class="home" id="home'+ i +'">' + weekData.games[i].homeTeam.fullName + '</td>').appendTo('tr[data-gameid="' + id + '"]');
+							$('<td class="date">' + weekData.games[i].dateStringLong + '</td>').appendTo('tr[data-gameid="' + id + '"]');
+							//$('<td class="reset"><i class="mdi mdi-close-circle"></i></td>').appendTo('tr[data-gameid="' + id + '"]');
+							$('td').css('vertical-align', 'middle');
+							$('#away' + i).css({'background-image': 'url(../team-logos/trans'+ away +'.png)'});
+							$('#home' + i).css({'background-image': 'url(../team-logos/trans'+ home +'.png)'});
 						}
 						$('input:checked').each(function () {
 							if($(this).val() === '-') {
@@ -127,7 +82,8 @@
 				//Helper function to keep table row from collapsing when being sorted
 				var fixHelperModified = function (e, ui) {
 					ui.children().each(function() {
-						$(this).width($(this).width());
+						$(this).width($(this).width())
+							.height($(this).height());
 					});
 					return ui;
 				};
@@ -139,6 +95,7 @@
 						var startPos = ui.item.index();
                         ui.item.data('startPos', startPos);
 					},
+					placeholder:	'placeholder',
 					helper:	fixHelperModified,
 					change:	function (event, ui) {
 						var games = $('#games tr').length - 1;
@@ -167,13 +124,31 @@
 							? index-1
 							: index));
                     },
-					axis:	'y'
+					axis:		'y',
+					opacity:	0.75
 				});
 			});
 			
 			$('#games').on('click', '.well', function () {
 				$(this).find('.pick').remove();
 				$(this).find('.btn').css('background-color', Team.getTeamColor($(this).find('input:checked').val()));
+			});
+			
+			$('tbody').on('dblclick', 'tr', function () {
+				var well = $(this).find('div.well');
+				var id = well.find('input').attr('name');
+				var i = $(this).parent().index($(this).parent());
+				var html = well.html();
+				var num = html.indexOf('</label>') + 8;
+				var newHTML = '<input class="pick" type="radio" name="' + id + '" id="pick' + i + '" value="-" checked="checked">';
+				newHTML += '<label class="pick" for="pick' + i + '">\n\
+								<div class="inner-left"><i class="mdi mdi-arrow-left-bold" aria-hidden="true"></i></div>\n\
+								<div class="inner-right"><i class="mdi mdi-arrow-right-bold" aria-hidden="true"></i></div>\n\
+								<div class="inner-center">PICK</div></label>';
+				html = html.slice(0, num) + newHTML + html.slice(num);
+				well.html(html);
+				well.find('.btn').css('background-color', 'rgb(57, 85, 107)');
+				//well.find('label[class="pick"]').click();
 			});
 		</script>
 

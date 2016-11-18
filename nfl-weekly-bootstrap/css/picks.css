@@ -1,0 +1,99 @@
+.switch-toggle {
+	margin: auto;
+	height: 50px;
+	background-color: rgb(170, 170, 170);
+	border: 1px solid #b6b8b4;
+}
+.rank {
+	width: 10%;
+	text-align: center;
+	font-size: 150%;
+	font-weight: bold;
+}
+label {
+	height: 100%;
+	position: relative;
+	cursor: pointer;
+	color: white;
+	font-weight: normal;
+}
+input:checked + label {
+	cursor: pointer;
+	color: white;
+	font-weight: bold;
+}
+label > .inner-left {
+	display: inline-block;
+	position: absolute;
+	top: 28%;
+	left: 0;
+	height: 50%;
+	width: auto;
+	margin:	0 0 0 0;
+}
+label > .inner-right {
+	display: inline-block;
+	position: absolute;
+	top: 28%;
+	right: 0;
+	height: 50%;
+	width: auto;
+	margin:	0 0 0 0;				
+}
+label > .inner-center {
+	text-align: center;
+	display: inline-block;
+	position: absolute;
+	top: 21%;
+	left: 25%;
+	height: 50%;
+	width: 50%;
+	margin: 0 0 0 0;
+}
+.ui-sortable-helper {
+	box-shadow: 0px 10px 10px #afafaf;
+}
+.placeholder {
+	border: 2px dashed #a8a8a8;
+	background: #d9edf7;
+}
+.btn:not([type="button"]) {
+	border: 2px solid #ede5d8; 
+}
+.reset {
+	display: block;
+	margin: auto;
+}
+.date {
+	text-align: center;
+	white-space: pre-wrap;
+	width: 20%;
+}
+.away {
+	text-align: right;
+	font-weight: bold;
+	white-space: pre-wrap;
+	width: 10%;
+	background-repeat: no-repeat;
+	background-size: 25%;
+	background-position: 25% 50%;
+}
+.pick, th[data-field="pick"] {
+	text-align: center;
+	width: 40%;
+}
+.home {
+	text-align: left;
+	font-weight: bold;
+	white-space: pre-wrap;
+	width: 10%;
+	background-repeat: no-repeat;
+	background-size: 25%;
+	background-position: 75% 50%;
+}
+th {
+	text-align: center;
+}
+tr:not(#table-headers) {
+	height: 100px;
+}

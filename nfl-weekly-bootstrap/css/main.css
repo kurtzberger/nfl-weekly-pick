@@ -1,3 +1,6 @@
+body {
+	background-color: #e8e8e8;
+}
 i.mdi::before,
 span.mdi::before,
 button.mdi::before {
