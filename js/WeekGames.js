@@ -75,7 +75,7 @@ function getDate(time, day, id) {
 	var hour = parseInt(splitTime[0]);		// parse the hour part of time into an integer
 	var minute = parseInt(splitTime[1]);	// parse the minute part of time into an integer
 	// check for London game or Thanksgiving game and adjust for UTC accordingly
-	if (day==='Sun' && id.substr(id.length - 2)==='00' && hour > 8 || day==='Thu' && hour===12) {
+	if (day === 'Sun' && id.substr(id.length - 2) === '00' && hour > 8 || day === 'Thu' && hour === 12) {
 		hour += 4;
 	} else {
 		hour += 16;
@@ -116,7 +116,7 @@ function getQuarter(quarter) {
  */
 Team.getTeamName = function (name) {
 	switch (name) {
-	case 'ARI': return 'Arizona\nCardinals';
+	case 'ARI':	return 'Arizona\nCardinals';
 	case 'ATL':	return 'Atlanta\nFalcons';
 	case 'BAL':	return 'Baltimore\nRavens';
 	case 'BUF':	return 'Buffalo\nBills';
