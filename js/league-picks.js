@@ -204,17 +204,19 @@ function loadUserPicks(weekData, users, picks) {
 		$('#' + tag).append('<td style="font-weight: bold;">' + users[i].displayName + '</td>');
 		for (var j=0; j<weekData.games.length; j++) {
 			var game = weekData.games[j];
-			var userPick = getObjects(picks[i], 'id', game.id)[0];
+			var userPick = (picks)
+				?	getObjects(picks[i], 'id', game.id)[0]
+				:	null;
 			var team = (userPick)
-			?	userPick.pick
-			:	'-';
+				?	userPick.pick
+				:	'-';
 			if (team === '-' && !game.winner) {
 				$('#' + tag).append('<td class="pick-cell"></td>');	// no pick was made.
 				continue;
 			}
 			var rank = (userPick)
-			?	userPick.rank
-			:	'';
+				?	userPick.rank
+				:	'';
 			if(game.winner) {
 				if(game.winner.abbrName === team) {
 					bgColor = green;
@@ -352,8 +354,8 @@ function updateUserPicks(weekData, users, picks) {
 			var game = weekData.games[j];
 			var userPick = getObjects(picks[i], 'id', game.id)[0];
 			var team = (userPick)
-			?	userPick.pick
-			:	'-';
+				?	userPick.pick
+				:	'-';
 			var $cell = $('#' + tag).find('td').eq(j+1);
 			if (team === '-' && !game.winner) {
 				$cell.text('');	// no pick was made.
