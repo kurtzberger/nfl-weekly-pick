@@ -1,4 +1,5 @@
 /* global UID, season, firebase, CUR_WEEK, Team, curUser */
+var TIMEOUT; // global timeout variable
 // document ready handler
 $(function() {
 	$("#header").load("../header.html", function() {
@@ -24,6 +25,7 @@ function wait() {
  * Load all page elements for this page
  */
 function loadPage() {
+	var loaded = false;
 	// Get a reference to the database service
 	var database = firebase.database();
 	var weekData, url, path, picks, gameID, users;
@@ -64,28 +66,32 @@ function loadPage() {
 			database.ref('users').once('value').then(function(snapshot) {
 				users = snapshot.val();
 				// attach database listener to this week's data. fires every time new picks are submitted/changed
-				database.ref(path).once('value', function(snapshot) {
+				database.ref(path).on('value', function(snapshot) {
 					picks = snapshot.val();
-					loadUserPicks(weekData, users, picks);	// for desktop
+					if (!loaded) {
+						loadUserPicks(weekData, users, picks);	// for desktop
+						loadNFLGames(weekData);	// load NFL scores
+						loadUsersStats(weekData, users);	// load user stats for this week (mobile and desktop)
+						$(".loader").hide();	// hide loading animation
+						$('.show-me').toggle();
+						if (desktop) {
+							$('#desktop').show();
+						} else {
+							$('#mobile').show();	
+						}
+						loaded = true;
+					} else {
+						clearTimeout(TIMEOUT);
+					}
+					if (weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
+						TIMEOUT = setTimeout(function () {
+						}, 10000);
+					}
 					if (gameID) {
 						$('#modal tbody').html('');
 						modalUserPicks(weekData, gameID, picks, users);
 					}
 				});
-				loadNFLGames(weekData);	// load NFL scores
-				loadUsersStats(weekData, users);	// load user stats for this week (mobile and desktop)
-				if (weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
-					setTimeout(function () {
-						updateNFLScores(weekData, users, picks); // calls updateUserPicks after
-					}, 10000);
-				}
-				$(".loader").hide();	// hide loading animation
-				$('.show-me').toggle();
-				if (desktop) {
-					$('#desktop').show();
-				} else {
-					$('#mobile').show();	
-				}
 			});
 		});
 	});
@@ -195,13 +201,6 @@ function loadUserPicks(weekData, users, picks) {
 		var bgColor = '';
 		$('#league-picks-table').append('<tr id="' + tag + '"></tr>');
 		$('#' + tag).append('<td style="font-weight: bold;">' + users[i].displayName + '</td>');
-		if (!picks[i]) {
-			bgColor = weekData.completedGames === weekData.games.length
-				?	red
-				:	'';
-				$('#' + tag).append('<td colspan="' + weekData.games.length + '" style="background-color: ' + bgColor + ';"></td>');
-			continue;
-		}
 		for (var j=0; j<weekData.games.length; j++) {
 			var game = weekData.games[j];
 			var userPick = getObjects(picks[i], 'id', game.id)[0];
@@ -209,12 +208,14 @@ function loadUserPicks(weekData, users, picks) {
 			?	userPick.pick
 			:	'-';
 			if (team === '-' && !game.winner) {
-				$('#' + tag).append('<td></td>');	// no pick was made.
+				$('#' + tag).append('<td class="pick-cell"></td>');	// no pick was made.
 				continue;
 			}
-			var rank = userPick.rank;
+			var rank = (userPick)
+			?	userPick.rank
+			:	'';
 			if(game.winner) {
-				if(game.winner.abbrName === userPick.pick) {
+				if(game.winner.abbrName === team) {
 					bgColor = green;
 				} else {
 					bgColor = red;
@@ -317,7 +318,7 @@ function updateNFLScores(weekData, users, picks) {
 				updateUserPicks(weekData, users, picks);	// update user picks (reveal/mark correct or incorrect)
 				updateUsersStats(weekData, users);
 				if (weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
-					setTimeout(function () {
+					TIMEOUT = setTimeout(function () {
 						updateNFLScores(weekData, users, picks);
 					}, 10000);
 				}
@@ -326,7 +327,7 @@ function updateNFLScores(weekData, users, picks) {
 		error: function(xhr) {
 			console.log("Error status: " + xhr.status);
 			console.log("Error reading from time server.");
-			setTimeout(function() {
+			TIMEOUT = setTimeout(function() {
 				updateNFLScores(weekData, users, picks);
 			}, 5000); // wait 5 seconds and try again
 		}
