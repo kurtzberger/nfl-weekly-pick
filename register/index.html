@@ -9,83 +9,98 @@
     <title>Weekly Pick 'em Register Page</title>
     <!--Import Google Icon Font and Custom Icons-->
 	<link href="https://rawgit.com/Templarian/MaterialDesign-Webfont/master/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css">
-    <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
+    <!-- Latest compiled and minified CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../css/spinner.css">
 </head>
 
 <body>
 	<div id="header">
-		<nav class="top-nav deep-orange darken-4">
-			<a id="headerTitle" class="brand-logo center"></a>
-			<a href="#!" data-activates="menu-nav" class="button-collapse show-on-large" style="transform: translateX(0px);"><i class="mdi mdi-menu mdi-48px"></i></a>
-			<ul id="menu-nav" class="side-nav orange lighten-5">
-				<li id="register-li" class="remove-me">
-					<a id="register-link" class="waves-effect deep-orange lighten-3"><i class="mdi mdi-pencil left"></i><b>Register</b></a>
-				</li>
-				<li id="login-li">
-					<a id="login-logoff" class="waves-effect"><i class="mdi mdi-account left"></i><b>Login</b></a>
-				</li>
-			</ul>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" id="headerTitle" href="#"></a>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="navbar-collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Navigation Menu <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#" id="register-link"><i class="mdi mdi-account-plus pull-left"></i>&nbsp;Register</a></li>
+								<li><a href="#" id="login-logout"><i class="mdi mdi-login pull-left"></i>&nbsp;Login</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
 		</nav>
 	</div>
 	
-	<!--Import jQuery before materialize.js-->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<!-- Compiled and minified JavaScript -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
-	<!--Firebase import-->
-	<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
-	<script type="text/javascript" src="../js/init.js"></script>
-	<script type="text/javascript" src="../js/links.js"></script>
-	<script type="text/javascript" src="../js/functions.js"></script>
-	<script type="text/javascript" src="../js/register.js"></script>
-	
 	<div id="main-content" class="container">
-		<div id="register" style="padding-top:50px;">
-			<div class="row">
-				<div class="input-field col s6 push-s3">
-					<i class="mdi mdi-account-card-details prefix"></i>
-					<input id="display-name" type="text">
-					<label for="display-name">Display name, e.g., Superman</label>
-				</div>
+		<div id="register" class="center-div" style="padding-top:50px;">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="mdi mdi-account-card-details "></i></span>
+				<input id="display-name" type="text" class="form-control" placeholder="Display name, e.g., Superman">
 			</div>
-			<div class="row">
-				<div class="input-field col s6 push-s3"> 
-					<i class="mdi mdi-account-circle prefix"></i>
-					<input id="email" type="email">
-					<label for="email" data-error="Please enter a valid email address" data-success="Valid email">Email</label>
-				</div>
+			<div class="input-group">
+				<span class="input-group-addon"><i class="mdi mdi-account-circle "></i></span>
+				<input id="email" type="text" class="form-control" placeholder="Email">
 			</div>
-			<div class="row">
-				<div class="input-field col s6 push-s3">
-					<i class="mdi mdi-dots-horizontal prefix"></i>
-					<input id="password" type="password">
-					<label for="password">Password</label>
-				</div>
+			<div class="input-group">
+				<span class="input-group-addon"><i class="mdi mdi-dots-horizontal "></i></span>
+				<input id="password" type="password" class="form-control" placeholder="Password">
 			</div>
-			<div class="row">
-				<div class="input-field col s6 push-s3">
-					<i class="mdi mdi-dots-horizontal prefix"></i>
-					<input id="retype-password" type="password">
-					<label for="retype-password">Retype Password</label>
-				</div>
+			<div class="input-group">
+				<span class="input-group-addon"><i class="mdi mdi-dots-horizontal "></i></span>
+				<input id="retype-password" type="password" class="form-control" placeholder="Retype Password">
 			</div>
-			<div class="row" id="register-div">
-				<a id="register-button" class="btn waves-effect waves-light blue-grey lighten-1 col s2 offset-s5">Register</a>
+			<div id="register-div" class="pad-me">
+				<a id="register-button" class="btn btn-large btn-primary btn-block">Register</a>
 			</div>
 		</div>
 	</div>
 	
 	<!-- Modal Structure -->
-	<div id="confirmation" class="modal">
-		<div class="modal-content" id="modal-text">
-			<h4>Success!</h4>
-		</div>
-		<div class="modal-footer">
-			<a href="#!" id="modal-confirm" class="modal-action modal-close waves-effect waves-green btn-flat ">Back to Login</a>
+	<div class="modal fade" id="confirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Success!</h4>
+				</div>
+				<div class="modal-body" id="modal-text">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Back to Login</button>
+				</div>
+			</div>
 		</div>
 	</div>
+	
+	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<!--Firebase import -->
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-database.js"></script>
+	<!-- bootstrap notify -->
+	<script src="https://cdn.rawgit.com/mouse0270/bootstrap-notify/6a83ec48/bootstrap-notify.min.js"></script>
+	<script type="text/javascript" src="../js/functions.js"></script>
+	<script type="text/javascript" src="../js/init.js"></script>
+	<script type="text/javascript" src="../js/links.js"></script>
+	<script type="text/javascript" src="../js/register.js"></script>
 	
 </body>
 </html>

@@ -1,65 +1,193 @@
 body {
 	background-color: #e8e8e8;
 }
-
-div {
-	font-size: 18px;
-	font-weight: 400;
-}
-
-p {
-	font-weight: 300;
-}
-
-.tabs .indicator {
-	background-color:	#ffffff; 
-}
-
-h3 {
-	padding-top: 40px;
-}
-
-.vertical-align {
-	width:		auto;
-	height:		500px;
-	position:	absolute;
-	top:		50%;
-	bottom:		0;
-	left:		0;
-	right:		0;
-	margin:		auto;
-}
-
-.spacer {
-	width: 125px;
-	text-align: right;
-	padding-right: 1%;
-}
-
-.cellHeader {
-	font-size: 17px;
-	font-weight: bold;
-}
-
-#headerTitle {
-	font-size: 100%;
-}
-
-ul.tabs {
-	font-size: 44%;
-}
-
 .wrapper {
-	max-width: 1500px;
+	max-width: 2000px;
+	margin: 0 auto;
+	padding: 0px 15px;
+}
+td {
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-size: 35%;
+}
+td img {
+	width: 30px;
+	height: auto;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+i.mdi::before,
+span.mdi::before,
+button.mdi::before {
+    font-size: 24px;
+    line-height: 13px;
+}
+.btn.mdi::before,
+.btn .mdi::before {
+    position: relative;
+    top: 4px;
+}
+.btn-xs.mdi::before,
+.btn-xs .mdi::before {
+    font-size: 18px;
+    top: 3px;
+}
+.btn-sm.mdi::before,
+.btn-sm .mdi::before {
+    font-size: 18px;
+    top: 3px;
+}
+.dropdown-menu .mdi {
+    width: 18px;
+}
+.dropdown-menu .mdi::before {
+    position: relative;
+    top: 4px;
+    left: -8px;
+}
+.nav .mdi::before {
+    position: relative;
+    top: 4px;
+}
+.navbar .navbar-toggle .mdi::before {
+    position: relative;
+    top: 4px;
+    color: #FFF;
+}
+.breadcrumb .mdi::before {
+    position: relative;
+    top: 4px;
+}
+.breadcrumb a:hover {
+    text-decoration: none;
+}
+.breadcrumb a:hover span {
+    text-decoration: underline;
+}
+.alert .mdi::before {
+    position: relative;
+    top: 4px;
+    margin-right: 2px;
+}
+.input-group-addon .mdi::before {
+    position: relative;
+    top: 3px;
+}
+.navbar-brand .mdi::before {
+    position: relative;
+    top: 2px;
+    margin-right: 2px;
+}
+.list-group-item .mdi::before {
+    position: relative;
+    top: 3px;
+    left: -3px
+}
+.vertical-align {
+	position: absolute;
 	margin: 0 auto;
 }
+.navbar-default {
+	background-color: #e74c3c;
+	border-color: #c0392b;
+}
+.navbar-default .navbar-brand {
+	color: #ecf0f1;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+	color: #ffbbbc;
+}
+.navbar-default .navbar-text {
+	color: #ecf0f1;
+}
+.navbar-default .navbar-nav > li > a {
+	color: #ecf0f1;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+	color: #ffbbbc;
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+	color: #ffbbbc;
+	background-color: #c0392b;
+}
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+	color: #ffbbbc;
+	background-color: #c0392b;
+}
+.navbar-default .navbar-toggle {
+	border-color: #c0392b;
+}
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+	background-color: #c0392b;
+}
+.navbar-default .navbar-toggle .icon-bar {
+	background-color: #ecf0f1;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+	border-color: #ecf0f1;
+}
+.navbar-default .navbar-link {
+	 color: #ecf0f1;
+}
+.navbar-default .navbar-link:hover {
+	color: #ffbbbc;
+}
 
+@media (max-width: 767px) {
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+		color: #ecf0f1;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+		color: #ffbbbc;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > .active > a,
+	.navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
+	.navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+		color: #ffbbbc;
+		background-color: #c0392b;
+	}
+}
+/* For mobile phones */
+.center-div {
+	margin: 25% auto;
+	width: 100%;
+}
+.right-inner {
+	margin-top: 1%;
+	width: 100%;
+}
+.pad-me {
+	width: 50%;
+	margin: 10% auto;
+}
+.input-group {
+	width: 100%;
+}
 @media only screen and (min-width: 801px) {
-	#headerTitle {
-		font-size: 250%;
+	.center-div {
+		margin: 15% auto;
+		width: 75%;
 	}
-
-	ul.tabs {
-		font-size: 120%;
+	.pad-me {
+		margin-top: 5%;
 	}
+}
+[data-notify="progressbar"] {
+	margin-bottom: 0px;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+	height: 5px;
 }

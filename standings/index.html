@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
-    <meta name="description" content="Weekly Pick 'em">
-    <meta name="author" content="Eric Kurtzberg">
-    <title>League Standings</title>
-    <!--Import Google Icon Font and Custom Icons-->
+	<meta name="description" content="Weekly Pick 'em">
+	<meta name="author" content="Eric Kurtzberg">
+	<title>League Standings</title>
+	<!--Import Google Icon Font and Custom Icons-->
 	<link href="https://rawgit.com/Templarian/MaterialDesign-Webfont/master/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css">
-    <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
+	<!-- Latest compiled and minified CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../css/spinner.css">
 	<style>
 		td, th {
 			font-size: 92%;
@@ -20,56 +21,65 @@
 </head>
 <body>
 	<div id="header"></div>
-	
-	<!--Import jQuery before materialize.js-->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<!-- Compiled and minified JavaScript -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
-	<!--Firebase import-->
-	<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
-	<script type="text/javascript" src="../js/init.js"></script>
-	<script type="text/javascript" src="../js/links.js"></script>
-	<script type="text/javascript" src="../js/functions.js"></script>
-	<script type="text/javascript" src="../js/standings.js"></script>
-	<script type="text/javascript" src="../js/WeekGames.js"></script>
-	
+
 	<div id="main-content" class="container">
-		<div class="row show-me" style="display: none;">
+		<div class="show-me" style="display: none;">
 			<img alt="logo" src="NFLLogo.png" style="float: left; width: auto; max-height: 200px;">
 		</div>
-		<div class="row show-me" style="display: none;">
-			<table id="standings-table" class="striped centered">
+		<div class="show-me" style="display: none;">
+			<table class="table table-striped">
+				<caption style="font-weight: bold; font-size: 100%; color: black;">Ranked Season Standings</caption>
 				<thead>
-					<tr id="headers">
-						<th data-field="position" style="width: 10px;"></th>
+					<tr>
+						<th data-field="position" style="width: 10px;">#</th>
 						<th data-field="name" style="width:100px;">Name</th>
 						<th data-field="points" style="width:100px;">Season Points</th>
 						<th data-field="win-pct" style="width:100px;">Season Win %</th>
 					</tr>
 				</thead>
-				<tbody id="body"></tbody>
+				<tbody id="ranked-body"></tbody>
+			</table>
+			<table class="table table-striped">
+				<caption style="font-weight: bold; font-size: 100%; color: black;">Straight-Up Season Standings</caption>
+				<thead>
+					<tr>
+						<th data-field="position" style="width: 10px;">#</th>
+						<th data-field="name" style="width:100px;">Name</th>
+						<th data-field="wins" style="width:100px;">Season Wins</th>
+						<th data-field="win-pct" style="width:100px;">Season Win %</th>
+					</tr>
+				</thead>
+				<tbody id="straight-body"></tbody>
 			</table>
 		</div>
-		<div class="vertical-align remove-me">
-			<div class="loader s12 m4 center">
-				<div class="preloader-wrapper big active">
-					<div class="spinner-layer spinner-blue-only">
-						<div class="circle-clipper left">
-							<div class="circle"></div>
-						</div>
-						<div class="gap-patch">
-							<div class="circle"></div>
-						</div>
-						<div class="circle-clipper right">
-							<div class="circle"></div>
-						</div>
-					</div>
+		<div class="vertical-align loader remove-me">
+			<div class="showbox">
+				<div class="loader">
+					<svg class="circular" viewBox="25 25 50 50">
+						<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+					</svg>
 				</div>
 			</div>
-			<div class="show-me col s12">
-				<p class="flow-text center-align">Calculating Standings. Please wait...</p>
+			<div style="text-align: center;">
+				<h4>Calculating Standings. Please wait...</h4>
 			</div>
 		</div>
 	</div>
+	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<!--Firebase import -->
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-database.js"></script>
+	<!-- JSON/XML conversion library -->
+	<script type="text/javascript" src="https://cdn.rawgit.com/abdmob/x2js/185e410b/xml2json.min.js"></script>
+	<script type="text/javascript" src="../js/WeekGames.js"></script>
+	<script type="text/javascript" src="../js/init.js"></script>
+	<script type="text/javascript" src="../js/links.js"></script>
+	<script type="text/javascript" src="../js/functions.js"></script>
+	<script type="text/javascript" src="../js/standings.js"></script>
 </body>
 </html>

@@ -7,118 +7,141 @@
     <meta name="description" content="Weekly Pick 'em">
     <meta name="author" content="Eric Kurtzberg">
     <title>League Picks</title>
-    <!--Import Google Icon Font and Custom Icons-->
-	<link href="https://rawgit.com/Templarian/MaterialDesign-Webfont/master/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css">
-    <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
+	<!-- Latest compiled and minified CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<!-- Material Icons -->
+	<link rel="stylesheet" type="text/css" href="http://cdn.materialdesignicons.com/1.7.22/css/materialdesignicons.min.css" />
 	<link rel="stylesheet" type="text/css" href="../css/main.css">
-	<style>
-		.cell {
-			font-size: 80%;
-			font-weight: normal;
-			border-radius: 0px;
-			text-align: center;
-			white-space:pre-wrap;
-		}
-		.points, .win-pct, .score {
-			font-size: 90%;
-			font-weight: bold;
-			text-align: center;
-		}
-		.verticalLine {
-			border-right: thin solid #d0d0d0;
-		}
+	<link rel="stylesheet" type="text/css" href="../css/league-picks.css">
+	<link rel="stylesheet" type="text/css" href="../css/spinner.css">
 
-		.quarterBorder, tr[id="headers"], tr[id="nfl-games-headers"] th {
-			border-bottom: thin solid #d0d0d0;
-			border-top: thin solid #d0d0d0;
-		}
-		tbody[id="league-picks-table"] td {
-			border-bottom: thin solid #d0d0d0;
-		}
-		tbody[id="league-picks-table"] tr:not([id="headers"]),
-		tr[id="away-teams"], tr[id="home-teams"], tr[id="byes"] {
-			height: 77px;
-		}
-		.pick-cell {
-			text-align: right;
-			font-size: 150%;
-			vertical-align: top;
-			font-weight: bold;
-			padding: 0;
-			margin: 0;
-			background-repeat: no-repeat;
-			background-size: 80%;
-			background-position: 50% 50%;
-		}
+	<style>
 	</style>
 </head>
 <body>
 	<div id="header"></div>
 	
-	<!--Import jQuery before materialize.js-->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<!-- Compiled and minified JavaScript -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
-	<!--Firebase import-->
-	<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
-	<script type="text/javascript" src="../js/init.js"></script>
-	<script type="text/javascript" src="../js/links.js"></script>
-	<script type="text/javascript" src="../js/functions.js"></script>
-	<script type="text/javascript" src="../js/league-picks.js"></script>
-	<script type="text/javascript" src="../js/WeekGames.js"></script>
-	
-	<div id="main-content" class="wrapper">
-		<div class="row show-me" style="display: none">
-			<table id="nfl-games">
-				<tbody id="byes-body">
-					<tr id="byes">
-						<td class="cellHeader spacer">Bye Week</td>
-					</tr>
-				</tbody>
-				<tbody id="nfl-games-body">
-					<tr id="nfl-games-headers">
-						<th class="spacer verticalLine cellHeader">Date</th>
+	<div id="main-content" class="wrapper-league">
+		<div class="dropdown pull-right show-me" style="display: none;">
+			<button id="week-dropdown" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="caret"></span></button>
+			<ul class="dropdown-menu" id="weeks-list">
+			</ul>
+		</div>
+		<div id="desktop" style="display: none;">
+			<table class="table" id="nfl-games">
+				<tbody id="desktop-body">
+					<tr id="dates">
+						<th style="vertical-align: middle;">Date</th>
 					</tr>
 					<tr id="away-teams">
-						<td class="spacer verticalLine cellHeader">Visiting Team</td>
+						<th style="vertical-align: middle;">Visiting Team</th>
 					</tr>
 					<tr id="quarter">
-						<td class="spacer verticalLine quarterBorder cellHeader">Quarter</td>
+						<th style="vertical-align: middle;">Quarter</th>
 					</tr>
 					<tr id="home-teams">
-						<td class="spacer verticalLine cellHeader" style="border-bottom: thin solid #d0d0d0;">Home Team</td>
+						<th style="vertical-align: middle;">Home Team</th>
 					</tr>
 				</tbody>
 				<tbody id="league-picks-table">
 					<tr id="headers">
-						<th data-field="name" valign="bottom" style="text-align: center" class="cellHeader">Name</th>
+						<th style="text-align: center; vertical-align: middle;">Name</th>
+						<th id="picks-header" style="text-align: center; vertical-align: middle;">Picks</th>
+						<th style="text-align: center; vertical-align: middle;">Points</th>
+						<th style="text-align: center; vertical-align: middle;">Win %</th>
 					</tr>
 				</tbody>
 			</table>
 		</div>
+		<div id="mobile" style="display: none; margin: 0 auto; padding: 0px 15px;">
+			<div class="pull-left" style="font-weight: bold; font-size: 90%;">
+				<div style="padding-top: 7px;">Click or tap a game to show picks</div>
+			</div>
+			<table class="table table-hover">
+				<thead>
+					<tr class="table-header">
+						<th>Kickoff</th>
+						<th>Away</th>
+						<th>Quarter</th>
+						<th>Home</th>
+					</tr>
+				</thead>
+				<tbody id="scores"></tbody>
+			</table>
+			<div class="pull-left" style="font-weight: bold; font-size: 100%; padding-top: 15px;">
+				<div id="stats-title"></div>
+			</div>
+			<table class="table table-striped">
+				<thead>
+					<tr class="table-header">
+						<th>Name</th>
+						<th>Points</th>
+						<th>Wins</th>
+						<th>Win %</th>
+					</tr>
+				</thead>
+				<tbody id="stats"></tbody>
+			</table>
+		</div>
 	</div>
 	
-	<div class="vertical-align remove-me container">
-		<div class="loader s12 m4 center">
-			<div class="preloader-wrapper big active">
-				<div class="spinner-layer spinner-blue-only">
-					<div class="circle-clipper left">
-						<div class="circle"></div>
+	<div class="show-me">
+		<p class="lead" style="text-align: center;">Loading league picks and checking the time...<br>
+			Sometimes this takes awhile.<br>
+			If this takes too long, feel free to reload the page.</p>
+	</div>
+	<div class="vertical-align loader">
+		<div class="showbox">
+			<div class="loader">
+				<svg class="circular" viewBox="25 25 50 50">
+					<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+				</svg> 
+			</div>
+		</div>
+	</div>
+	
+	<!-- Modal Structure -->
+	<div class="modal fade" id="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" style="font-weight: bold;"></h5>
+				</div>
+				<div class="modal-body" id="modal-text">
+					<div class="wrapper row">
+						<table class="table table-striped">
+							<thead>
+								<tr class="table-header">
+									<th>Name</th>
+									<th>Points</th>
+									<th colspan="2">Pick</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
 					</div>
-					<div class="gap-patch">
-						<div class="circle"></div>
-					</div>
-					<div class="circle-clipper right">
-						<div class="circle"></div>
-					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>
-		<div class="show-me col s12">
-			<p class="flow-text center-align">Loading league picks and checking the time... Sometimes this takes awhile.<br>
-				If this takes too long, feel free to reload the page.</p>
-		</div>
 	</div>
+	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<!--Firebase import -->
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-database.js"></script>
+	<!-- JSON/XML conversion library -->
+		<script type="text/javascript" src="https://cdn.rawgit.com/abdmob/x2js/185e410b/xml2json.min.js"></script>
+	<script type="text/javascript" src="../js/functions.js"></script>
+	<script type="text/javascript" src="../js/init.js"></script>
+	<script type="text/javascript" src="../js/links.js"></script>
+	<script type="text/javascript" src="../js/WeekGames.js"></script>
+	<script type="text/javascript" src="../js/league-picks.js"></script>
 </body>
 </html>

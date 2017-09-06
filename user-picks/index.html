@@ -1,54 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
-    <meta name="description" content="Weekly Pick 'em">
-    <meta name="author" content="Eric Kurtzberg">
-    <title>Your Weekly Picks</title>
-	<!--Import Google Icon Font and Custom Icons-->
-	<link href="https://rawgit.com/Templarian/MaterialDesign-Webfont/master/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css">
-    <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" media="screen,projection">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Your Picks</title>
+	<!-- Latest compiled and minified CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/css-toggle-switch/latest/toggle-switch.css" />
+	<!-- Material Icons -->
+	<link rel="stylesheet" type="text/css" href="http://cdn.materialdesignicons.com/1.7.22/css/materialdesignicons.min.css" />
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../css/picks.css">
+	<link rel="stylesheet" type="text/css" href="../css/spinner.css">
 	<style>
-		/* For mobile phones */
-		td img {
-			width: 30px;
-			height: auto;
-			display: block;
-			margin-left: auto;
-			margin-right: auto;
-		}
 		th {
-			text-align: center;
-			font-size: 70%;
+			font-size: 85%;
 		}
-		tr[id="byeNames"] {
-			border-bottom: thin solid #d0d0d0;
+		.ui-sortable-helper {
+			display: table;
 		}
-		tbody[id="body"] td {
-			height:		100px;
+		.ui-sortable tr:hover {
+			cursor: move;
 		}
-		td:not(td[class="pick-cell"]), label, select, option {
-			text-align: center;
-			white-space: pre-wrap;
-			font-size: 60%;
+		html, body {
+			max-width: 100%;
+			overflow-x: hidden;
+
 		}
-		label {
+		.bye-cell {
 			font-weight: bold;
+			font-size: 110%;
 		}
-		.pick-cell {
-			background-repeat: no-repeat;
-			background-size: 45%;
-			background-position: 50% 50%;
-			text-align: left;
+		.locked {
+			opacity: 0.5;
+			pointer-events: none;
+			background-color: #bbb;
 		}
-		#date-header {
-			min-width: 75px;
-		}
-		@media only screen and (min-width: 801px) {
+
+		@media only screen and (min-width: 768px) {
+			th, .date, .inner-center {
+				font-size: 96%;
+			}
 			/* For desktop */
 			td img {
 				width: 57px;
@@ -57,107 +52,89 @@
 				margin-left: auto;
 				margin-right: auto;
 			}
-			th {
-				text-align: center;
-				font-size: 18px;
-			}
-			td {
-				text-align: center;
-				white-space: pre-wrap;
-				font-size: 14px;
-			}
-			#date-header {
-				min-width: 150px;
-			}
-			.pick-cell {
-				background-repeat: no-repeat;
-				background-size: 25%;
-				background-position: 75% 50%;
-				text-align: left;
-			}
 		}
 	</style>
-</head>
-
 <body>
 	<div id="header"></div>
-	
-	<!--Import jQuery before materialize.js-->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<!-- Compiled and minified JavaScript -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
-	<!--Firebase import-->
-	<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+	<div id="main-content" class="wrapper">
+		<div class="pull-left dropdown show-me" style="width: 50%; display: none;">
+			<button id="week-dropdown" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="caret"></span></button>
+			<ul class="dropdown-menu" id="weeks-list">
+			</ul>
+		</div>
+		<div class="pull-right show-me" style="display: none;">
+			<button id="show-byes" class="btn btn-primary" type="button">Bye Week Teams</button>
+		</div>
+		<div class="show-me" style="display: none;">
+			<table class="table table-hover">
+				<thead>
+					<tr class="table-header">
+						<th data-field="rank">Rank</th>
+						<th data-field="away" colspan="2">Away</th>
+						<th data-field="pick" style="display: none;">Pick</th>
+						<th data-field="home" colspan="2">Home</th>
+						<th data-field="date">Kickoff</th>
+						<th data-field="move">Move Up/Down</th>
+					</tr>
+				</thead>
+				<tbody id="games" class="ui-sortable"></tbody> 
+			</table>
+		</div>
+		<div class="show-me" style="display: none;">
+			<div id="submit-div" class="pull-right" style="width: 50%;">
+				<a id="submit-picks" class="btn btn-success btn-lg btn-block"><i class="mdi mdi-send pull-right"></i>Submit</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="vertical-align loader">
+		<div class="showbox">
+			<div class="loader">
+				<svg class="circular" viewBox="25 25 50 50">
+					<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+				</svg> 
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal Structure -->
+	<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body" id="modal-text">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<!-- jQuery UI -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<!-- jQuery UI sortable animation -->
+	<script src="https://cdn.rawgit.com/egorshar/jquery-ui-sortable-animation/master/jquery.ui.sortable-animation.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<!--Firebase import -->
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-database.js"></script>
+	<!-- JSON/XML conversion library -->
+	<script type="text/javascript" src="https://cdn.rawgit.com/abdmob/x2js/185e410b/xml2json.min.js"></script>
+	<!-- bootstrap notify -->
+	<script src="https://cdn.rawgit.com/mouse0270/bootstrap-notify/6a83ec48/bootstrap-notify.min.js"></script>
 	<script type="text/javascript" src="../js/functions.js"></script>
 	<script type="text/javascript" src="../js/init.js"></script>
 	<script type="text/javascript" src="../js/links.js"></script>
-	<script type="text/javascript" src="../js/user-picks.js"></script>
+	<script type="text/javascript" src="../js/row-pick.js"></script>
 	<script type="text/javascript" src="../js/WeekGames.js"></script>
-	
-	<div id="main-content" class="wrapper">
-		<div class="row show-me" style="display: none;">
-			<table>
-				<thead>
-					<tr>
-						<th id="bye-header" class="cellHeader" style="text-align: center;">Bye Week</th>
-					</tr>
-				</thead>
-				<tbody id="byes-body">
-					<tr id="byeLogos"></tr>
-					<tr id="byeNames"></tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="row">
-			<table id="picks" class="striped show-me" style="display: none;">
-				<thead>
-					<tr>
-						<th id="date-header">Date</th>
-						<th id="away-header">Away</th>
-						<th id="home-header">Home</th>
-						<th id="points-header">Assigned Points*</th>
-						<th id="reset-header">Reset</th>
-					</tr>
-				</thead>
-				<tbody id="body"></tbody>
-			</table>
-		</div>
-		<div class="row show-me" style="display: none;">
-			<div class="col s6" style="color: #e8e8e8;"><p>Hidden text!</p></div>
-			<div id="submit-div" class="col s6">
-				<a id="submit-picks" class="btn waves-effect waves-light blue-grey lighten-1 btn-large col s12"></a>
-			</div>
-		</div>
-		
-		<div class="vertical-align remove-me container">
-			<div class="loader s12 m4 center">
-				<div class="preloader-wrapper big active">
-					<div class="spinner-layer spinner-blue-only">
-						<div class="circle-clipper left">
-							<div class="circle"></div>
-						</div>
-						<div class="gap-patch">
-							<div class="circle"></div>
-						</div>
-						<div class="circle-clipper right">
-							<div class="circle"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="show-me col s12">
-				<p class="flow-text center-align">Loading your picks and checking the time... Sometimes this takes awhile. If this takes too long, feel free to reload the page.</p>
-			</div>
-		</div>
-	</div>
-	
-	<!-- Modal Structure -->
-	<div id="notification" class="modal">
-		<div class="modal-content" id="modal-text">
-		</div>
-		<div class="modal-footer">
-			<a id="modal-confirm" class="modal-action modal-close waves-effect waves-green btn-flat "></a>
-		</div>
-	</div>
+	<script type="text/javascript" src="../js/user-picks.js"></script>
+
 </body>
 </html>
