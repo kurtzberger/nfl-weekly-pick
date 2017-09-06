@@ -85,6 +85,7 @@ function loadPage() {
 					}
 					if (weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
 						TIMEOUT = setTimeout(function () {
+							updateNFLScores(weekData, users, picks); // calls updateUserPicks & updateUsersStats after
 						}, 10000);
 					}
 					if (gameID) {
