@@ -375,7 +375,7 @@ function updateUserPicks(weekData, users, picks) {
 					.removeClass('hidden-pick')
 					.text(rank);
 			} else {
-				$cell.text('Hidden');
+				$cell.addClass('hidden-pick').text('Hidden');
 			}
 		}
 	}
