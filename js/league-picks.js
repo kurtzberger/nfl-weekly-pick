@@ -211,7 +211,7 @@ function loadUserPicks(weekData, users, picks) {
 				?	userPick.pick
 				:	'-';
 			if (team === '-' && !game.winner) {
-				$('#' + tag).append('<td class="pick-cell"></td>');	// no pick was made.
+				$('#' + tag).append('<td></td>');	// no pick was made.
 				continue;
 			}
 			var rank = (userPick)
@@ -375,7 +375,7 @@ function updateUserPicks(weekData, users, picks) {
 					.addClass('pick-cell')
 					.text(rank);
 			} else {
-				$cell.addClass('hidden-pick').text('Hidden');
+				$cell.text('Hidden');
 			}
 		}
 	}
