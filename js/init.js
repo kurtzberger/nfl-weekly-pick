@@ -39,15 +39,6 @@ if (sPage !== "register") {
 	firebase.auth().onAuthStateChanged(function (user) {	// on log in or log out
 		if (user) {
 			curUser = user;
-//			if (UID === SUPERUSER) {
-//				if ($('#non-user-link').length === 0) {
-//					//$("#menu-nav").append('<li id="non-user-li">\n\
-//					//	<a id="non-user-link" class="waves-effect"><i class="mdi mdi-account-alert left"></i><b>Non-Users\' Picks</b></a></li>');
-//				}
-//				if (sPage === "non-user-picks") {
-//					$('.show-me').toggle();
-//				}
-//			}
 
 			// get current week
 			$.get('http://www.nfl.com/liveupdate/scorestrip/ss.xml', function (data) {
@@ -61,13 +52,19 @@ if (sPage !== "register") {
 				}
 				// set UID here after CUR_WEEK is set since the call to $.get() is asynchronous
 				UID = createUID(user.email);
-			});
-			
-			if (sPage === "index.html" || sPage === "" || (sPage === "non-user-picks" && UID !== SUPERUSER)) {
-				window.location.href = "standings";
-			} else if (sPage === "change-password") {
-				$("#current-user").html("Current user: <b>" + user.email + "</b>");
-			}	
+				if (UID === SUPERUSER) {
+					$('.superuser').show();
+					if (sPage === "non-user-picks") {
+						$('.show-me').toggle();
+					}
+				}
+				
+				if (sPage === "index.html" || sPage === "" || (sPage === "non-user-picks" && UID !== SUPERUSER)) {
+					window.location.href = "standings";
+				} else if (sPage === "change-password") {
+					$("#current-user").html("Current user: <b>" + user.email + "</b>");
+				}
+			});	
 		}
 		else if (user === null) {
 			if (sPage === "login/forgot-password.htm"); // do nothing

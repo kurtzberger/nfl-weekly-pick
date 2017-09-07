@@ -147,7 +147,7 @@ function modalUserPicks(weekData, gameID, picks, users) {
 				}
 			}
 			
-			if (game.isGameStarted || UID === i) {
+			if (game.isGameStarted || UID === i || nonUserCheck(i)) {
 				$('<tr class="modal-row" style="background-color: ' + bgColor + '"><td>'+ name +'</td>' +
 					'<td>'+ rank +'</td>' +
 					'<td>' + Team.getTeamLogo(team) + '</td>' +
@@ -224,12 +224,12 @@ function loadUserPicks(weekData, users, picks) {
 					bgColor = red;
 				}
 			}
-			if (game.isGameStarted || UID === i) {
+			if (game.isGameStarted || UID === i || nonUserCheck(i)) {
 				$('<td class="pick-cell" style="background-color: ' + bgColor + ';' + 
 					' background-image: url(../team-logos/trans' + team + '.png);">' + rank + '</td>')
 					.appendTo('#' + tag);
 			} else {
-				$('<td>Hidden</td>').appendTo('#' + tag);
+				$('<td class="pick-cell hidden-pick">Hidden</td>').appendTo('#' + tag);
 			}
 		}
 	}
@@ -369,8 +369,11 @@ function updateUserPicks(weekData, users, picks) {
 					bgColor = red;
 				}
 			}
-			if (game.isGameStarted || UID === i) {
-				$cell.css('background-color', bgColor).css('background-image', 'url(../team-logos/trans' + team + '.png)').text(rank);
+			if (game.isGameStarted || UID === i || nonUserCheck(i)) {
+				$cell.css('background-color', bgColor)
+					.css('background-image', 'url(../team-logos/trans' + team + '.png)')
+					.removeClass('hidden-pick')
+					.text(rank);
 			} else {
 				$cell.text('Hidden');
 			}

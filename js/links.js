@@ -98,7 +98,7 @@ $(function () {
 	 * link for choosing picks for non-users
 	 */
     $("#header").on('click', '#non-user-link', function () {
-        if (sPage !== "rules") {
+        if (sPage !== "non-user-picks") {
 			window.location.href = "../non-user-picks";
         }
     });

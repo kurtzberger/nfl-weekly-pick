@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+    <meta name="description" content="Weekly Pick 'em">
+    <meta name="author" content="Eric Kurtzberg">
+    <title>Non-Users' Picks</title>
+	<!-- Latest compiled and minified CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<!-- Material Icons -->
+	<link rel="stylesheet" type="text/css" href="http://cdn.materialdesignicons.com/1.7.22/css/materialdesignicons.min.css" />
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../css/league-picks.css">
+	<link rel="stylesheet" type="text/css" href="../css/spinner.css">
+</head>
+<body>
+	<div id="header"></div>
+	
+	<div id="main-content" class="wrapper">
+		<div class="show-me" style="display: none">
+			<div class="row" style="margin: 2% auto; width: 100px;">
+				<h3 id="current-week"></h3>
+			</div>
+			<div class="row" style="margin: 2% auto; width: 100%">
+				<button id="random-button" type="button" class="btn btn-primary btn-lg">Make Random Picks</button>
+				<button id="home-button" type="button" class="btn btn-primary btn-lg">Make Home Picks</button>
+				<button id="away-button" type="button" class="btn btn-primary btn-lg">Make Away Picks</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<!--Firebase import -->
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-database.js"></script>
+	<!-- JSON/XML conversion library -->
+	<script type="text/javascript" src="https://cdn.rawgit.com/abdmob/x2js/185e410b/xml2json.min.js"></script>
+	<!-- bootstrap notify -->
+	<script src="https://cdn.rawgit.com/mouse0270/bootstrap-notify/6a83ec48/bootstrap-notify.min.js"></script>
+	<script type="text/javascript" src="../js/init.js"></script>
+	<script type="text/javascript" src="../js/links.js"></script>
+	<script type="text/javascript" src="../js/functions.js"></script>
+	<script type="text/javascript" src="../js/WeekGames.js"></script>
+	<script>
+		
+
+		$(function () {
+			var weekData = null;
+			var url = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
+			$.get(url, function (xml) {
+				// create weekly data object from XML file imported
+				weekData = new WeekGames(xml, function () {
+					$("#header").load("../header.html", function () {
+						$('#non-user-link').css({'font-weight': 'bold', 'background': '#b4b4b4'});
+						$("#headerTitle").text("Non-Users' Picks");
+						$('#current-week').text('Week ' + weekData.week);
+					});
+				});
+			});
+			
+			$("#main-content").on('click', '#random-button', function () {
+				var Points, Picks;
+				var user = 'placeholder@1_com';	// random teams email
+				var path = weekData.season + '/picks/week' + weekData.week + '/' + user;
+
+				// get the api key from the database
+				database.ref('api-keys/random').once('value').then(function (snapshot) {
+					// json structure to request random array of points from Random.org
+					var requestPoints = {
+						jsonrpc: "2.0",
+						method: "generateIntegers",
+						params: {
+							apiKey: snapshot.val(),
+							n: weekData.games.length,
+							min: 1,
+							max: weekData.games.length,
+							replacement: false	// unique values only
+						},
+						id: 1
+					};
+					// json structure to request random array of picks (0=home 1=away) from Random.org
+					var requestPicks = {
+						jsonrpc: "2.0",
+						method: "generateIntegers",
+						params: {
+							apiKey: snapshot.val(),
+							n: weekData.games.length,
+							min: 0,
+							max: 1
+						},
+						id: 1
+					};
+
+					// request points from random.org
+					$.post('https://api.random.org/json-rpc/1/invoke', JSON.stringify(requestPoints), function (pointsResult) {
+						Points = pointsResult.result.random.data;
+						$.post('https://api.random.org/json-rpc/1/invoke', JSON.stringify(requestPicks), function (picksResult) {
+							Picks = picksResult.result.random.data;
+							for (var i=0; i<weekData.games.length; i++) {
+								database.ref(path + '/' + i).set({
+									id:		weekData.games[i].id,
+									pick:	(Picks[i]===0)
+										? weekData.games[i].homeTeam.abbrName
+										: weekData.games[i].awayTeam.abbrName,
+									rank:	Points[i]
+								}).catch(function (error) {
+									$.notify({
+										// options
+										icon: 'mdi mdi-alert',
+										message: error.message
+									},{
+										// settings
+										type: "danger",
+										allow_dismiss: true,
+										showProgressbar: true
+									});
+									return;
+								});
+							}
+							$.notify({
+								 // options
+								 icon: 'mdi mdi-check',
+								 message: 'Random Pick: Week ' + weekData.week + ' picks submitted!'
+							 },{
+								 // settings
+								 type: "success",
+								 allow_dismiss: true,
+								 showProgressbar: true
+							 });
+						}, "json");
+					}, "json");	
+				});
+			});
+			
+			$("#main-content").on('click', '#home-button', function () {
+				var points = (weekData.games.length * (weekData.games.length + 1)) / (2 * weekData.games.length);
+				var user = 'placeholder@2_com';	// home teams email
+				var path = weekData.season + '/picks/week' + weekData.week + '/' + user;
+				for (var i=0; i<weekData.games.length; i++) {
+					database.ref(path + '/' + i).set({
+						id:		weekData.games[i].id,
+						pick:	weekData.games[i].homeTeam.abbrName,
+						rank:	points
+					}).catch(function (error) {
+						$.notify({
+							// options
+							icon: 'mdi mdi-alert',
+							message: error.message
+						},{
+							// settings
+							type: "danger",
+							allow_dismiss: true,
+							showProgressbar: true
+						});
+						return;
+					});
+				}
+				$.notify({
+					// options
+					icon: 'mdi mdi-check',
+					message: 'Home Teams: Week ' + weekData.week + ' picks submitted!'
+				},{
+					// settings
+					type: "success",
+					allow_dismiss: true,
+					showProgressbar: true
+				});
+			});
+			
+			$("#main-content").on('click', '#away-button', function () {
+				var points = (weekData.games.length * (weekData.games.length + 1)) / (2 * weekData.games.length);
+				var user = 'placeholder@3_com';	// away teams email
+				var path = weekData.season + '/picks/week' + weekData.week + '/' + user;
+				for (var i=0; i<weekData.games.length; i++) {
+					database.ref(path + '/' + i).set({
+						id:		weekData.games[i].id,
+						pick:	weekData.games[i].awayTeam.abbrName,
+						rank:	points
+					}).catch(function (error) {
+						$.notify({
+							// options
+							icon: 'mdi mdi-alert',
+							message: error.message
+						},{
+							// settings
+							type: "danger",
+							allow_dismiss: true,
+							showProgressbar: true
+						});
+						return;
+					});
+				}
+				$.notify({
+					// options
+					icon: 'mdi mdi-check',
+					message: 'Away Teams: Week ' + weekData.week + ' picks submitted!'
+				},{
+					// settings
+					type: "success",
+					allow_dismiss: true,
+					showProgressbar: true
+				});
+			});
+		});
+	</script>
+</body>
+</html>
