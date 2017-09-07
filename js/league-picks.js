@@ -229,7 +229,7 @@ function loadUserPicks(weekData, users, picks) {
 					' background-image: url(../team-logos/trans' + team + '.png);">' + rank + '</td>')
 					.appendTo('#' + tag);
 			} else {
-				$('<td class="pick-cell hidden-pick">Hidden</td>').appendTo('#' + tag);
+				$('<td>Hidden</td>').appendTo('#' + tag);
 			}
 		}
 	}
@@ -372,7 +372,7 @@ function updateUserPicks(weekData, users, picks) {
 			if (game.isGameStarted || UID === i || nonUserCheck(i)) {
 				$cell.css('background-color', bgColor)
 					.css('background-image', 'url(../team-logos/trans' + team + '.png)')
-					.removeClass('hidden-pick')
+					.addClass('pick-cell')
 					.text(rank);
 			} else {
 				$cell.addClass('hidden-pick').text('Hidden');

@@ -29,7 +29,7 @@ tbody[id="league-picks-table"] tr:not([id="headers"]),
 tr[id="away-teams"], tr[id="home-teams"], tr[id="byes"] {
 	height: 77px;
 }
-.pick-cell:not(.hidden-pick) {
+.pick-cell {
 	text-align: right;
 	font-size: 150%;
 	vertical-align: top;
