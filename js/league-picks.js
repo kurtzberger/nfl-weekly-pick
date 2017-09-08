@@ -168,9 +168,9 @@ function loadNFLGames(weekData) {
 		var date = weekData.games[i].dateStringShort;
 		var away = weekData.games[i].awayTeam;
 		var home = weekData.games[i].homeTeam;
-		var quarterTime = ((weekData.games[i].quarter !== 'Pregame')
+		var quarterTime = (($.isNumeric(weekData.games[i].quarter))
 			?	'Q' + weekData.games[i].quarter
-			:	'Pregame') + ' ' + weekData.games[i].timeInQuarter;
+			:	weekData.games[i].quarter) + ' ' + weekData.games[i].timeInQuarter;
 		//desktop
 		$('#dates').append('<td>' + date + '</td>');	// date
 		$('#away-teams').append('<td data-gameid="' + id + '" class="pick-cell away">' + away.score + '</td>');	// away score
@@ -301,9 +301,9 @@ function updateNFLScores(weekData, users, picks) {
 					var id = weekData.games[i].id;
 					var away = weekData.games[i].awayTeam;
 					var home = weekData.games[i].homeTeam;
-					var quarterTime = ((weekData.games[i].quarter !== 'Pregame')
+					var quarterTime = (($.isNumeric(weekData.games[i].quarter))
 						?	'Q' + weekData.games[i].quarter
-						:	'Pregame') + ' ' + weekData.games[i].timeInQuarter;
+						:	weekData.games[i].quarter) + ' ' + weekData.games[i].timeInQuarter;
 					// jQuery selectors for this iteration
 					var $away = $('td[data-gameid="' + id + '"].away');
 					var $home = $('td[data-gameid="' + id + '"].home');
