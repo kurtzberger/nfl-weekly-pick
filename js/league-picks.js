@@ -29,9 +29,9 @@ function loadPage() {
 	// Get a reference to the database service
 	var database = firebase.database();
 	var weekData, url, path, picks, gameID, users;
-	var week = location.search.substring(1) === '' 
+	var week = parseInt(location.search.substring(1) === '' 
 		?	CUR_WEEK	// current week
-		:	location.search.substring(1);
+		:	location.search.substring(1));
 	var SIZE = 1348;
 	var desktop = $(window).width() > SIZE;
 	var mobile = !desktop;	// one shot trigger
@@ -168,7 +168,9 @@ function loadNFLGames(weekData) {
 		var date = weekData.games[i].dateStringShort;
 		var away = weekData.games[i].awayTeam;
 		var home = weekData.games[i].homeTeam;
-		var quarterTime = 'Q' + weekData.games[i].quarter + ' ' + weekData.games[i].timeInQuarter;
+		var quarterTime = ((weekData.games[i].quarter !== 'Pregame')
+			?	'Q' + weekData.games[i].quarter
+			:	'Pregame') + ' ' + weekData.games[i].timeInQuarter;
 		//desktop
 		$('#dates').append('<td>' + date + '</td>');	// date
 		$('#away-teams').append('<td data-gameid="' + id + '" class="pick-cell away">' + away.score + '</td>');	// away score
@@ -299,7 +301,9 @@ function updateNFLScores(weekData, users, picks) {
 					var id = weekData.games[i].id;
 					var away = weekData.games[i].awayTeam;
 					var home = weekData.games[i].homeTeam;
-					var quarterTime = 'Q' + weekData.games[i].quarter + ' ' + weekData.games[i].timeInQuarter;
+					var quarterTime = ((weekData.games[i].quarter !== 'Pregame')
+						?	'Q' + weekData.games[i].quarter
+						:	'Pregame') + ' ' + weekData.games[i].timeInQuarter;
 					// jQuery selectors for this iteration
 					var $away = $('td[data-gameid="' + id + '"].away');
 					var $home = $('td[data-gameid="' + id + '"].home');
