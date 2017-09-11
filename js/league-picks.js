@@ -85,12 +85,8 @@ function loadPage() {
 					}
 					if (weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
 						TIMEOUT = setTimeout(function () {
-							updateNFLScores(weekData, users, picks); // calls updateUserPicks & updateUsersStats after
+							updateNFLScores(users, picks); // calls updateUserPicks & updateUsersStats after
 						}, 10000);
-					}
-					if (gameID) {
-						$('#modal tbody').html('');
-						modalUserPicks(weekData, gameID, picks, users);
 					}
 				});
 			});
@@ -99,6 +95,7 @@ function loadPage() {
 	
 	$('#mobile').find('#scores').on('click', 'tr', function () {
 		gameID = $(this).attr('id');
+		$('#modal').find('table').attr('data-gameid', gameID);
 		modalUserPicks(weekData, gameID, picks, users);
 		$('#modal').modal('show');
 	});
@@ -106,6 +103,7 @@ function loadPage() {
 	$('#modal').on('hidden.bs.modal', function (e) {
 		$('#modal tbody').html('');
 		gameID = '';
+		$('#modal').find('table').attr('data-gameid', gameID);
 	});
 	
 	$(window).resize(function (event) {
@@ -126,6 +124,7 @@ function modalUserPicks(weekData, gameID, picks, users) {
 	var home = game.homeTeam;
 	var green = '#00d05e'; // correct pick color
 	var red = '#da9694'; // incorrect pick color
+	var html = '';
 	$('.modal-title').text(away.fullName.split('\n')[0] + ' at ' + home.fullName.split('\n')[0]); // just put the city name in modal title
 	if (!$.isEmptyObject(picks)) {
 		for (var i in picks) {
@@ -148,16 +147,17 @@ function modalUserPicks(weekData, gameID, picks, users) {
 			}
 			
 			if (game.isGameStarted || UID === i || nonUserCheck(i)) {
-				$('<tr class="modal-row" style="background-color: ' + bgColor + '"><td>'+ name +'</td>' +
+				html += '<tr class="modal-row" style="background-color: ' + bgColor + '"><td>'+ name +'</td>' +
 					'<td>'+ rank +'</td>' +
 					'<td>' + Team.getTeamLogo(team) + '</td>' +
-					'<td class="pick">' + Team.getTeamName(team) + '</td></tr>').appendTo('#modal tbody');
+					'<td class="pick">' + Team.getTeamName(team) + '</td></tr>';
 			} else {
-				$('<tr class="modal-row"><td>'+ name +'</td>' +
-					'<td colspan="3">Hidden until kickoff</td>').appendTo('#modal tbody');
+				html += '<tr class="modal-row"><td>'+ name +'</td>' +
+					'<td colspan="3">Hidden until kickoff</td>';
 			}
 		}
 	}
+	$('#modal tbody').html(html);
 	// apply various styling. CSS file won't apply to dynamic elements
 	$('td').not('.pick-cell').css('vertical-align', 'middle');
 }
@@ -201,10 +201,10 @@ function loadUserPicks(weekData, users, picks) {
 	$('#league-picks-table').html('<tr id="headers">' + headers + '</tr>');
 	for (var i in users) {
 		var tag = replaceAll(replaceAll(i, '@', ''), '_', ''); // remove illegal characters
-		var bgColor = '';
 		$('#league-picks-table').append('<tr id="' + tag + '"></tr>');
 		$('#' + tag).append('<td style="font-weight: bold;">' + users[i].displayName + '</td>');
 		for (var j=0; j<weekData.games.length; j++) {
+			var bgColor = '';
 			var game = weekData.games[j];
 			var userPick = (picks)
 				?	getObjects(picks[i], 'id', game.id)[0]
@@ -284,18 +284,17 @@ function loadUsersStats(weekData, users) {
 
 /**
  * Function that will update the NFL scores on the webpage
- * @param {WeekGames} weekData this week's NFL data 
  * @param {JSON Object} users
- * @param {JSON Object} picks imported from Firebase database
+ * @param {JSON Object} picks imported from Firebase 
  * @returns {undefined} None
  */
-function updateNFLScores(weekData, users, picks) {
+function updateNFLScores(users, picks) {
 	$.ajax({
 		url: 'http://www.nfl.com/liveupdate/scorestrip/ss.xml',
 		timeout: 5000, // timeout in milliseconds
 		success: function(xml) {
 			// create weekly data object from XML file imported (with updated scores)
-			weekData = new WeekGames(xml, function() {
+			var weekData = new WeekGames(xml, function() {
 				//update scores
 				for (var i = 0; i < weekData.games.length; i++) {
 					var id = weekData.games[i].id;
@@ -326,7 +325,7 @@ function updateNFLScores(weekData, users, picks) {
 				updateUsersStats(weekData, users);
 				if (weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
 					TIMEOUT = setTimeout(function () {
-						updateNFLScores(weekData, users, picks);
+						updateNFLScores(users, picks);
 					}, 10000);
 				}
 			});
@@ -335,7 +334,7 @@ function updateNFLScores(weekData, users, picks) {
 			console.log("Error status: " + xhr.status);
 			console.log("Error reading from time server.");
 			TIMEOUT = setTimeout(function() {
-				updateNFLScores(weekData, users, picks);
+				updateNFLScores(users, picks);
 			}, 5000); // wait 5 seconds and try again
 		}
 	});
@@ -346,15 +345,15 @@ function updateUserPicks(weekData, users, picks) {
 	var red = '#da9694'; // incorrect pick color
 	for (var i in users) {
 		var tag = replaceAll(replaceAll(i, '@', ''), '_', ''); // remove illegal characters
-		var bgColor = '';
 		if (!picks[i]) {
 			bgColor = weekData.completedGames === weekData.games.length
 				?	red
 				:	'';
-				$('#' + tag).find('td[colspan]').css('background-color', bgColor);
+				$('#' + tag).find('td').css('background-color', bgColor);
 			continue;
 		}
 		for (var j=0; j<weekData.games.length; j++) {
+			var bgColor = '';
 			var game = weekData.games[j];
 			var userPick = getObjects(picks[i], 'id', game.id)[0];
 			var team = (userPick)
@@ -382,6 +381,11 @@ function updateUserPicks(weekData, users, picks) {
 				$cell.text('Hidden');
 			}
 		}
+	}
+	// call modalUserPicks if user has a modal dialog box open to update those picks as well
+	if (($("#modal").data('bs.modal') || {}).isShown) {
+		var gameID = $('#modal').find('table').attr('data-gameID');
+		modalUserPicks(weekData, gameID, picks, users);
 	}
 }
 
