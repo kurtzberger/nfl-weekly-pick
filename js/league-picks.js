@@ -71,15 +71,17 @@ function loadPage() {
 					if (!loaded) {
 						loadUserPicks(weekData, users, picks);	// for desktop
 						loadNFLGames(weekData);	// load NFL scores
-						loadUsersStats(weekData, users);	// load user stats for this week (mobile and desktop)
-						$(".loader").hide();	// hide loading animation
-						$('.show-me').toggle();
-						if (desktop) {
-							$('#desktop').show();
-						} else {
-							$('#mobile').show();	
-						}
-						loaded = true;
+						// load user stats for this week (mobile and desktop)
+						loadUsersStats(weekData, users, function () {
+							$(".loader").hide();	// hide loading animation
+							$('.show-me').toggle();
+							if (desktop) {
+								$('#desktop').show();
+							} else {
+								$('#mobile').show();	
+							}
+						});	
+						loaded = true;	// mark this true ASAP
 					} else {
 						clearTimeout(TIMEOUT);
 					}
@@ -237,7 +239,7 @@ function loadUserPicks(weekData, users, picks) {
 	}
 }
 
-function loadUsersStats(weekData, users) {
+function loadUsersStats(weekData, users, callback) {
 	// create a standings object for this week
 	var standings = {
 		completedGames: 0
@@ -259,13 +261,12 @@ function loadUsersStats(weekData, users) {
 			var sorted = sortStandings(standings, true);
 			// mobile stats
 			for (var i = 0; i < sorted.length; i++) {
-				var tagMobile = replaceAll(replaceAll(sorted[i].UID, '@', ''), '_', '') + '-mobile'; // remove illegal characters
 				var winPct = (sorted[i].wins * 100.0 / standings.completedGames).toFixed(2);
-				$('#mobile').find('#stats').append('<tr id="' + tagMobile + '"></tr>');
-				$('<td>' + sorted[i].name + '</td>').appendTo('#' + tagMobile);	// name in mobile stats table
-				$('<td class="points">' + sorted[i].points + '</td>').appendTo('#' + tagMobile);	// points in mobile stats table
-				$('<td class="wins">' + sorted[i].wins + '</td>').appendTo('#' + tagMobile);	// wins in mbile stats table
-				$('<td class="win-pct">' + (isNaN(winPct) ? '0.00' : winPct) + '%</td>').appendTo('#' + tagMobile);	// win % in mobile stats table
+				$('#mobile').find('#stats').append('<tr id="mobile-stats' + i + '"></tr>');
+				$('<td>' + sorted[i].name + '</td>').appendTo('#mobile-stats' + i);	// name in mobile stats table
+				$('<td class="points">' + sorted[i].points + '</td>').appendTo('#mobile-stats' + i);	// points in mobile stats table
+				$('<td class="wins">' + sorted[i].wins + '</td>').appendTo('#mobile-stats' + i);	// wins in mbile stats table
+				$('<td class="win-pct">' + (isNaN(winPct) ? '0.00' : winPct) + '%</td>').appendTo('#mobile-stats' + i);	// win % in mobile stats table
 			}
 			// desktop stats
 			for (var i in standings) {
@@ -277,7 +278,8 @@ function loadUsersStats(weekData, users) {
 				$('<td class="points">' + standings[i].points + '</td>').appendTo('#' + tag);	// points in table
 				$('<td class="win-pct">' + (isNaN(winPct) ? '0.00' : winPct) + '%</td>').appendTo('#' + tag);	// win % in table	
 			}
-			$('td').not('.pick-cell').css('vertical-align', 'middle'); // apply to dynamic elements	
+			$('td').not('.pick-cell').css('vertical-align', 'middle'); // apply to dynamic elements
+			callback();
 		}
 	});
 }
@@ -411,11 +413,11 @@ function updateUsersStats(weekData, users) {
 			var sorted = sortStandings(standings, true);
 			// mobile stats
 			for (var i = 0; i < sorted.length; i++) {
-				var tagMobile = replaceAll(replaceAll(sorted[i].UID, '@', ''), '_', '') + '-mobile'; // remove illegal characters
 				var winPct = (sorted[i].wins * 100.0 / standings.completedGames).toFixed(2);
-				var $cell = $('#' + tagMobile).find('td');
+				var $cell = $('#mobile-stats' + i).find('td');
+				$cell.eq(0).text(sorted[i].name);	// name in the mobile stats table
 				$cell.eq(1).text(sorted[i].points);	// points in mobile stats table
-				$cell.eq(2).text(sorted[i].wins);	// wins in mbile stats table
+				$cell.eq(2).text(sorted[i].wins);	// wins in mobile stats table
 				$cell.eq(3).text((isNaN(winPct) ? '0.00' : winPct) + '%');	// win % in mobile stats table
 			}
 			// desktop stats

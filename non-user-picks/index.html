@@ -12,18 +12,17 @@
 	<!-- Material Icons -->
 	<link rel="stylesheet" type="text/css" href="http://cdn.materialdesignicons.com/1.7.22/css/materialdesignicons.min.css" />
 	<link rel="stylesheet" type="text/css" href="../css/main.css">
-	<link rel="stylesheet" type="text/css" href="../css/league-picks.css">
 	<link rel="stylesheet" type="text/css" href="../css/spinner.css">
 </head>
 <body>
 	<div id="header"></div>
 	
 	<div id="main-content" class="wrapper">
-		<div class="show-me" style="display: none">
-			<div class="row" style="margin: 2% auto; width: 100px;">
+		<div class="show-me" style="display: none;">
+			<div class="row" style="margin: 2% auto; width: 100px; text-align: center;">
 				<h3 id="current-week"></h3>
 			</div>
-			<div class="row" style="margin: 2% auto; width: 100%">
+			<div style=" width: 100%; margin: 2% auto; text-align: center;">
 				<button id="random-button" type="button" class="btn btn-primary btn-lg">Make Random Picks</button>
 				<button id="home-button" type="button" class="btn btn-primary btn-lg">Make Home Picks</button>
 				<button id="away-button" type="button" class="btn btn-primary btn-lg">Make Away Picks</button>
@@ -48,19 +47,35 @@
 	<script type="text/javascript" src="../js/functions.js"></script>
 	<script type="text/javascript" src="../js/WeekGames.js"></script>
 	<script>
-		
-
 		$(function () {
+			$("#header").load("../header.html", function() {
+				wait(); // wait for global variables to be set
+			});
+		});
+		
+		/**
+		* This function will wait for the global variable UID to be set before continuing to load the rest of the page.
+		* When UID is set to a value, this indicates all other global variables have been set. 
+		*/
+		function wait() {
+			if (UID === null) {
+				setTimeout(function() {
+					wait();
+				}, 500);
+			} else {
+				loadPage();
+			}
+		}
+		
+		function loadPage() {
 			var weekData = null;
 			var url = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
 			$.get(url, function (xml) {
 				// create weekly data object from XML file imported
 				weekData = new WeekGames(xml, function () {
-					$("#header").load("../header.html", function () {
-						$('#non-user-link').css({'font-weight': 'bold', 'background': '#b4b4b4'});
-						$("#headerTitle").text("Non-Users' Picks");
-						$('#current-week').text('Week ' + weekData.week);
-					});
+					$('#non-user-link').css({'font-weight': 'bold', 'background': '#b4b4b4'});
+					$("#headerTitle").text("Non-Users' Picks");
+					$('#current-week').text('Week ' + weekData.week);
 				});
 			});
 			
@@ -207,7 +222,7 @@
 					showProgressbar: true
 				});
 			});
-		});
+		}
 	</script>
 </body>
 </html>

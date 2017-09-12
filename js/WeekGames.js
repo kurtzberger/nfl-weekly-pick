@@ -450,7 +450,7 @@ Team.getTeamUrl = function (name) {
 /**
  * Returns the primary team color for an NFL team given a valid three letter abbreviation
  * @param {String} name Team abbreviation
- * @returns {String} primary team color of an NFL team in the format 'rgb(255, 255, 255)' 
+ * @returns {String} primary team color of an NFL team in hexidecimal format 
  */
 Team.getTeamColor = function (name) {
 	switch (name) {

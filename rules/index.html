@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+    <meta name="description" content="Weekly Pick 'em">
+    <meta name="author" content="Eric Kurtzberg">
+    <title>Rules & Information</title>
+	<!-- Latest compiled and minified CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<!--Import Google Icon Font and Custom Icons-->
+	<link href="https://rawgit.com/Templarian/MaterialDesign-Webfont/master/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<style>
+		a {
+			font-size: 8px;
+		}
+		@media (min-width: 321px) {
+			a {
+				font-size: 11px;
+			}
+		}
+		@media (min-width: 376px) {
+			a {
+				font-size: 12px;
+			}
+		}
+		@media (min-width: 426px) {
+			a {
+				font-size: 14px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div id="header"></div>
+	<div role="navigation" class="container">
+		<ul class="nav nav-tabs">
+			<li role="navigation" class="active"><a href="#scoring-rules">Scoring Rules</a></li>
+			<li role="navigation"><a href="#making-picks">Making Your Picks</a></li>
+			<li role="navigation"><a href="#viewing-picks">Viewing Picks</a></li>
+		</ul>
+	</div>
+	<div id="main-content" class="container">
+		<div id="scoring-rules">
+			<div style="border-bottom: thin solid #d0d0d0;">
+				<h2>Scoring</h2>
+				<p>
+					The scoring for this league will follow <u><b>two separate</b></u> scoring systems and will be tracked separately.
+				</p>
+				<p>
+					The first scoring system is the "Straight-Up Weekly Ranked Pick 'em" format. That is, each week, along with picking each team you predict to win,
+					you will also rank each game 1 to the number of games played that week. For example, if there are 16 games to be played for that week, you will rank those games 1 
+					through 16. Please note that "Straight-Up" means the spread is <b>NOT</b> a factor in determining if your pick was correct or not.
+					You only have to worry about picking the winner of each game. Note: if a game ends in a tie, the corresponding pick is marked incorrect.
+				</p>
+				<p>
+					Upon completion of a game*, if your prediction was correct, you will <b>receive</b> points equal to the rank that you assigned for the corresponding game;
+					however, if your prediction was incorrect, you will <b>lose</b> those points. Because of this, it is recommended to rank games you are more confident with a higher
+					point value	and rank games you are either unsure of or attempting to pick an upset with a lower point value. Please note: your season starting score will be 0, 
+					but there is no minimum score, meaning it is possible for your score to drop below zero.
+				</p>
+				<p>
+					The second scoring system is "Straight-up Weekly (Unranked) Pick 'em". That is, all games are weighted equally, and a correct pick will award you 1 win.
+					An incorrect pick awards you nothing and does not affect your score in this scoring system.
+					Note: if a game ends in a tie, the corresponding pick is marked incorrect.
+				</p>
+			</div>
+			<div style="border-bottom: thin solid #d0d0d0;">
+				<h2>Tiebreaker</h2>
+				<p>
+					In the event that two or more players have the same amount of points, the tiebreaker will go to the player who has the higher win percentage.
+					Win percentage is calculated by the player's correctly predicted games divided by the number of completed games.
+				</p>
+				<p>
+					$$ winPercent = {numberOfWins \over numberOfCompleteGames} $$
+				</p>
+			</div>
+			<div style="border-bottom: thin solid #d0d0d0;">
+				<h2>Missed Picks & Unassigned Points</h2>
+				<p class="flow-text">
+					Any pick(s) that were not made prior to game time will be marked as incorrect at completion of that game. The corresponding unassigned point(s)
+					will be subtracted from your point total.
+				</p>
+				<p class="flow-text">
+					For example: In a week with 15 games played, two picks were left unmade. The two unassigned points were 5 and 1 for a total of 6 unassigned points.
+					After calculating the score (using the rules stated above), those 6 points will be subtracted from the total.
+				</p>
+			</div>
+			<small style="padding-bottom: 5%;">
+				*NFL game scores are pulled from a free API by NFL.com. Final scores may be delayed several minutes.
+			</small>
+		</div>
+		<div id="making-picks" style="display: none;">
+			<div style="border-bottom: thin solid #d0d0d0;">
+				<div class="row">
+					<div class="col-md-4">
+						<h2>Making Your Picks</h2>
+						<p>
+							To make your picks, click the menu button (Navigation Menu) in the upper right corner. In the navigation menu, select "Your Picks". The page loaded will be the
+							current NFL week; however, use the "Week" dropdown menu to select a different week.
+						</p>
+						<p>
+							After navigating to the desired week, a table will be loaded containing all NFL games of that week. Any picks that you have already
+							submitted will be loaded into the table as well.
+						</p>
+						<p>
+							If you are a desktop user, you may either drag and drop with your mouse or use the "Move Up/Down" buttons to reorder your picks.
+							If you are a mobile user, you will need to use the "Move Up/Down" buttons to reorder your picks.
+							The "Rank" number on the left represents the number of points you are assigning to that game. Click or tap on the left/right of the toggle switch
+							to choose either the home or away team as your pick.
+						</p>
+						<p>
+							Reference the following animations.
+						</p>
+					</div>
+					<div class="col-md-4">
+						<img style="display: block; margin: 13% auto;" src="loadUserPicks.gif">
+					</div>
+					<div class="col-md-4">
+						<img style="display: block; margin: 13% auto;" src="makeUserPicks.gif">
+					</div>
+				</div>
+			</div>
+			<div style="border-bottom: thin solid #d0d0d0;">
+				<h2>Submitting Your Picks</h2>
+				<p>
+					Use the submit button at the bottom of the page to submit your picks. An error message will be displayed if something went wrong, otherwise "Picks successfully
+					submitted and saved!" will be displayed. When the latter message is displayed, it is safe to navigate away from the web page. If you have made changes to your picks
+					and attempt to navigate away before submitting the picks, the web page will display a warning that changes you made have not been saved. This is your only warning that 
+					changes have not been saved.
+				</p>
+			</div>
+			<div style="border-bottom: thin solid #d0d0d0;">
+				<div class="row">
+					<div class="col-md-6">
+						<h2>Pick Deadlines</h2>
+						<p>
+							Picks may be changed and resubmitted as often as you'd like; however, picks will be locked within 10 seconds after kickoff.
+							The kickoff date and time for each game is listed under the "Kickoff" column. After this time, any picks that have been locked will not be able to be reordered.
+							Any remaining picks that are not locked can still be sorted, but will skip over any locked picks.
+						</p>
+					</div>
+					<div class="col-md-6">
+						<img style="display: block; margin: 2% auto;" src="lockedUserPicks.gif">
+					</div>
+				</div>
+			</div>
+			<div style="border-bottom: thin solid #d0d0d0;">
+				<h2>Viewing Teams On Bye Week</h2>
+				<p style="padding-bottom: 5%;">
+					For your reference, you can click the "Bye Week Teams" button to display a pop-up showing which teams (for the current selected week) are currently on their bye week.
+				</p>
+			</div>
+		</div>
+		<div id="viewing-picks" style="display: none;">
+			<div style="border-bottom: thin solid #d0d0d0;">
+				<div class="row">
+					<div class="col-md-6">
+						<h2>Viewing Picks</h2>
+						<p>
+							To view picks made by the all players, click the menu button (Navigation Menu) in the upper right corner. In the navigation menu, select "League Picks".
+							The page loaded will be the current NFL week; however, use the "Week" dropdown menu to select a different week.
+						</p>
+					</div>
+					<div class="col-md-6">
+						<img style="display: block; margin: 2% auto;" src="loadLeaguePicks.gif">
+					</div>
+				</div>
+			</div>
+			<div style="border-bottom: thin solid #d0d0d0;">
+				<div class="row">
+					<div class="col-md-6">
+						<p>
+							Depending on your device (mobile or desktop), the information displayed will vary. If you are a desktop user, all NFL games and user's picks will be displayed
+							in a single table. If you are a mobile user, all NFL games will be displayed in a table (top), and players' scores for that week will be displayed in another table
+							(bottom). To view others' picks, tap on the row corresponding to the NFL game. This displays a pop-up with all picks corresponding to that game.
+						</p>
+						<p>
+							All picks, other than your own, will be hidden until kickoff. This is to prevent other players from seeing each other's picks before the picks are locked.
+						</p>
+					</div>
+					<div class="col-md-6">
+						<img style="display: block; margin: 2% auto;" src="showLeaguePicks.gif">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<!--Firebase import -->
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-database.js"></script>
+	<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	<!-- JSON/XML conversion library -->
+	<script type="text/javascript" src="https://cdn.rawgit.com/abdmob/x2js/185e410b/xml2json.min.js"></script>
+	<script type="text/javascript" src="../js/functions.js"></script>
+	<script type="text/javascript" src="../js/init.js"></script>
+	<script type="text/javascript" src="../js/links.js"></script>
+	<script type="text/javascript" src="../js/WeekGames.js"></script>
+	<script>
+		$(function () {
+			$("#header").load("../header.html", function() {
+				loadPage();
+				setTimeout(function () {
+					$(window).scrollTop(0,0);	// scroll to top
+				}, 100);
+			});
+		});
+		
+		function loadPage() {
+			$('#rules').css({'font-weight': 'bold', 'background': '#b4b4b4'});
+			$("#headerTitle").text("League Rules & Information");
+			
+			$(window).on('beforeunload', function () {
+				$(window).scrollTop(0);	// scroll to top before unload
+			});
+			
+			// show/hide associated divs when a tab is clicked on
+			$('ul.nav-tabs > li').on('click', function () {
+				var $sibling = $(this).siblings('.active');
+				// if the tab clicked on isn't active then length will evaluate to true
+				if($sibling.length) {
+					var showID = $(this).find('a').attr('href');
+					var hideID = $sibling.find('a').attr('href');
+					$sibling.removeClass('active');	// remove active from current tab
+					$(hideID).hide();	// hide the associated div
+					$(this).addClass('active');	// add active to the clicked tab
+					$(showID).show();
+				}
+				setTimeout(function () {
+					$(window).scrollTop(0,0);	// scroll to top
+				}, 5);
+			});
+		}
+			
+	</script>
+</body>
