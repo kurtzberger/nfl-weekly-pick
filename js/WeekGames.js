@@ -57,6 +57,29 @@ Date.prototype.dst = function () {
 };
 
 /**
+ * Updates all NFL data to most current data returned from NFL.com 
+ * @param {function} callback function to be called upon completion
+ * @returns {undefined}
+ */
+WeekGames.prototype.update = function (callback) {
+	// get reference to WeekGames Object, because 'this' will reference something else inside the $.ajax() call
+	var self = this;
+	$.ajax({
+		url: 'http://www.nfl.com/liveupdate/scorestrip/ss.xml',
+		timeout: 5000, // timeout in milliseconds
+		success: function(xml) {
+			WeekGames.call(self, xml, callback);
+		},
+		error: function(xhr) {
+			console.log("Error status: " + xhr.status);
+			TIMEOUT = setTimeout(function () {
+				self.update(callback);
+			}, 5000);
+		}
+	});
+};
+
+/**
  * Parses through each game element in JSON object and returns an array of objects each with info about the containing game.
  * @param {Object} games Array of JSON objects. Members of the JSON object converted from XML document object as returned by x2js.xml2json(xml).
  */

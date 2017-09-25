@@ -1,5 +1,6 @@
 /* global UID, season, firebase, CUR_WEEK, Team, curUser */
 var TIMEOUT; // global timeout variable
+var WEEK_DATA;	// global week data for modal popups
 // document ready handler
 $(function() {
 	$("#header").load("../header.html", function() {
@@ -28,7 +29,7 @@ function loadPage() {
 	var loaded = false;
 	// Get a reference to the database service
 	var database = firebase.database();
-	var weekData, url, path, picks, gameID, users;
+	var weekData, url, path, picks, users;
 	var week = parseInt(location.search.substring(1) === '' 
 		?	CUR_WEEK	// current week
 		:	location.search.substring(1));
@@ -87,7 +88,10 @@ function loadPage() {
 					}
 					if (weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
 						TIMEOUT = setTimeout(function () {
-							updateNFLScores(users, picks); // calls updateUserPicks & updateUsersStats after
+							// update weekData first
+							weekData.update(function () {
+								updateNFLScores(weekData, users, picks); // calls updateUserPicks & updateUsersStats after
+							});
 						}, 10000);
 					}
 				});
@@ -96,16 +100,18 @@ function loadPage() {
 	});
 	
 	$('#mobile').find('#scores').on('click', 'tr', function () {
-		gameID = $(this).attr('id');
+		var gameID = $(this).attr('id');
 		$('#modal').find('table').attr('data-gameid', gameID);
-		modalUserPicks(weekData, gameID, picks, users);
-		$('#modal').modal('show');
+		weekData.update(function () {
+			var game = weekData.getGame(gameID);
+			modalUserPicks(game, picks, users);
+			$('#modal').modal('show');
+		});
 	});
 	
 	$('#modal').on('hidden.bs.modal', function (e) {
 		$('#modal tbody').html('');
-		gameID = '';
-		$('#modal').find('table').attr('data-gameid', gameID);
+		$('#modal').find('table').attr('data-gameid', '');
 	});
 	
 	$(window).resize(function (event) {
@@ -120,8 +126,7 @@ function loadPage() {
 	});
 }
 
-function modalUserPicks(weekData, gameID, picks, users) {
-	var game = weekData.getGame(gameID);
+function modalUserPicks(game, picks, users) {
 	var away = game.awayTeam;
 	var home = game.homeTeam;
 	var green = '#00d05e'; // correct pick color
@@ -130,7 +135,7 @@ function modalUserPicks(weekData, gameID, picks, users) {
 	$('.modal-title').text(away.fullName.split('\n')[0] + ' at ' + home.fullName.split('\n')[0]); // just put the city name in modal title
 	if (!$.isEmptyObject(picks)) {
 		for (var i in picks) {
-			var userPick = getObjects(picks[i], 'id', gameID)[0];
+			var userPick = getObjects(picks[i], 'id', game.id)[0];
 			var team = (userPick)
 				?	userPick.pick
 				:	'-';
@@ -286,60 +291,47 @@ function loadUsersStats(weekData, users, callback) {
 
 /**
  * Function that will update the NFL scores on the webpage
+ * @param {JSON Object} weekData 
  * @param {JSON Object} users
  * @param {JSON Object} picks imported from Firebase 
  * @returns {undefined} None
  */
-function updateNFLScores(users, picks) {
-	$.ajax({
-		url: 'http://www.nfl.com/liveupdate/scorestrip/ss.xml',
-		timeout: 5000, // timeout in milliseconds
-		success: function(xml) {
-			// create weekly data object from XML file imported (with updated scores)
-			var weekData = new WeekGames(xml, function() {
-				//update scores
-				for (var i = 0; i < weekData.games.length; i++) {
-					var id = weekData.games[i].id;
-					var away = weekData.games[i].awayTeam;
-					var home = weekData.games[i].homeTeam;
-					var quarterTime = (($.isNumeric(weekData.games[i].quarter))
-						?	'Q' + weekData.games[i].quarter
-						:	weekData.games[i].quarter) + ' ' + weekData.games[i].timeInQuarter;
-					// jQuery selectors for this iteration
-					var $away = $('td[data-gameid="' + id + '"].away');
-					var $home = $('td[data-gameid="' + id + '"].home');
-					var $quarter = $('td[data-gameid="' + id + '"].quarter');
-					$away.text(away.score); // mobile away score
-					$quarter.text(quarterTime.trim()); // quarter & time
-					$home.text(home.score); // home score
-					if (away.hasPossession) {
-						$away.css('background-color', (away.isInRedZone ? '#da9694' : '#ffff66'));
-						$home.css('background-color', '');
-					} else if (home.hasPossession) {
-						$away.css('background-color', '');
-						$home.css('background-color', (home.isInRedZone ? '#da9694' : '#ffff66'));
-					} else {
-						$away.css('background-color', '');
-						$home.css('background-color', '');
-					}
-				}
-				updateUserPicks(weekData, users, picks);	// update user picks (reveal/mark correct or incorrect)
-				updateUsersStats(weekData, users);
-				if (weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
-					TIMEOUT = setTimeout(function () {
-						updateNFLScores(users, picks);
-					}, 10000);
-				}
-			});
-		},
-		error: function(xhr) {
-			console.log("Error status: " + xhr.status);
-			console.log("Error reading from time server.");
-			TIMEOUT = setTimeout(function() {
-				updateNFLScores(users, picks);
-			}, 5000); // wait 5 seconds and try again
+function updateNFLScores(weekData, users, picks) {
+	for (var i = 0; i < weekData.games.length; i++) {
+		var id = weekData.games[i].id;
+		var away = weekData.games[i].awayTeam;
+		var home = weekData.games[i].homeTeam;
+		var quarterTime = (($.isNumeric(weekData.games[i].quarter))
+			?	'Q' + weekData.games[i].quarter
+			:	weekData.games[i].quarter) + ' ' + weekData.games[i].timeInQuarter;
+		// jQuery selectors for this iteration
+		var $away = $('td[data-gameid="' + id + '"].away');
+		var $home = $('td[data-gameid="' + id + '"].home');
+		var $quarter = $('td[data-gameid="' + id + '"].quarter');
+		$away.text(away.score); // mobile away score
+		$quarter.text(quarterTime.trim()); // quarter & time
+		$home.text(home.score); // home score
+		if (away.hasPossession) {
+			$away.css('background-color', (away.isInRedZone ? '#da9694' : '#ffff66'));
+			$home.css('background-color', '');
+		} else if (home.hasPossession) {
+			$away.css('background-color', '');
+			$home.css('background-color', (home.isInRedZone ? '#da9694' : '#ffff66'));
+		} else {
+			$away.css('background-color', '');
+			$home.css('background-color', '');
 		}
-	});
+	}
+	updateUserPicks(weekData, users, picks);	// update user picks (reveal/mark correct or incorrect)
+	updateUsersStats(weekData, users);
+	if (weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
+		TIMEOUT = setTimeout(function () {
+			// update weekData first
+			weekData.update(function () {
+				updateNFLScores(weekData, users, picks); // calls updateUserPicks & updateUsersStats after
+			});
+		}, 10000);
+	}
 }
 
 function updateUserPicks(weekData, users, picks) {
@@ -387,7 +379,8 @@ function updateUserPicks(weekData, users, picks) {
 	// call modalUserPicks if user has a modal dialog box open to update those picks as well
 	if (($("#modal").data('bs.modal') || {}).isShown) {
 		var gameID = $('#modal').find('table').attr('data-gameID');
-		modalUserPicks(weekData, gameID, picks, users);
+		var game = weekData.getGame(gameID);
+		modalUserPicks(game, picks, users);
 	}
 }
 
