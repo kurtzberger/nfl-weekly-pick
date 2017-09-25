@@ -1,6 +1,5 @@
 /* global UID, season, firebase, CUR_WEEK, Team, curUser */
 var TIMEOUT; // global timeout variable
-var WEEK_DATA;	// global week data for modal popups
 // document ready handler
 $(function() {
 	$("#header").load("../header.html", function() {
