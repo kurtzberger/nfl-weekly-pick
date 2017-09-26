@@ -100,12 +100,19 @@ function loadPage() {
 	
 	$('#mobile').find('#scores').on('click', 'tr', function () {
 		var gameID = $(this).attr('id');
+		var game;
 		$('#modal').find('table').attr('data-gameid', gameID);
-		weekData.update(function () {
-			var game = weekData.getGame(gameID);
+		if (weekData.week === CUR_WEEK) {
+			weekData.update(function () {
+				game = weekData.getGame(gameID);
+				modalUserPicks(game, picks, users);
+				$('#modal').modal('show');
+			});
+		} else {
+			game = weekData.getGame(gameID);
 			modalUserPicks(game, picks, users);
 			$('#modal').modal('show');
-		});
+		}
 	});
 	
 	$('#modal').on('hidden.bs.modal', function (e) {
