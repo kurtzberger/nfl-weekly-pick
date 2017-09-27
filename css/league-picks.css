@@ -25,8 +25,7 @@ th, td {
 tbody[id="league-picks-table"] td {
 	border-bottom: thin solid #d0d0d0;
 }
-tbody[id="league-picks-table"] tr:not([id="headers"]),
-tr[id="away-teams"], tr[id="home-teams"], tr[id="byes"] {
+table[id="nfl-games"] tr:not([id="headers"]):not([id="quarter"]){
 	height: 77px;
 }
 .pick-cell {

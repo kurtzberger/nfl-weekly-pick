@@ -185,7 +185,7 @@ function loadNFLGames(weekData) {
 			?	'Q' + weekData.games[i].quarter
 			:	weekData.games[i].quarter) + ' ' + weekData.games[i].timeInQuarter;
 		//desktop
-		$('#dates').append('<td>' + date + '</td>');	// date
+		$('#dates').append('<td style="font-size: 95%;">' + date + '</td>');	// date
 		$('#away-teams').append('<td data-gameid="' + id + '" class="pick-cell away">' + away.score + '</td>');	// away score
 		$('#home-teams').append('<td data-gameid="' + id + '" class="pick-cell home">' + home.score + '</td>');	// home score
 		$('#picks-header').attr('colspan', weekData.games.length);
