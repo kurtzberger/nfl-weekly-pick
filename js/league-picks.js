@@ -1,5 +1,6 @@
 /* global UID, season, firebase, CUR_WEEK, Team, curUser */
 var TIMEOUT; // global timeout variable
+var weekData;	// global variable for weekly data
 // document ready handler
 $(function() {
 	$("#header").load("../header.html", function() {
@@ -28,7 +29,7 @@ function loadPage() {
 	var loaded = false;
 	// Get a reference to the database service
 	var database = firebase.database();
-	var weekData, url, path, picks, users;
+	var url, path, picks, users;
 	var week = parseInt(location.search.substring(1) === '' 
 		?	CUR_WEEK	// current week
 		:	location.search.substring(1));
@@ -89,7 +90,7 @@ function loadPage() {
 						TIMEOUT = setTimeout(function () {
 							// update weekData first
 							weekData.update(function () {
-								updateNFLScores(weekData, users, picks); // calls updateUserPicks & updateUsersStats after
+								updateNFLScores(users, picks); // calls updateUserPicks & updateUsersStats after
 							});
 						}, 10000);
 					}
@@ -100,19 +101,10 @@ function loadPage() {
 	
 	$('#mobile').find('#scores').on('click', 'tr', function () {
 		var gameID = $(this).attr('id');
-		var game;
+		var game = weekData.getGame(gameID);
 		$('#modal').find('table').attr('data-gameid', gameID);
-		if (weekData.week === CUR_WEEK) {
-			weekData.update(function () {
-				game = weekData.getGame(gameID);
-				modalUserPicks(game, picks, users);
-				$('#modal').modal('show');
-			});
-		} else {
-			game = weekData.getGame(gameID);
-			modalUserPicks(game, picks, users);
-			$('#modal').modal('show');
-		}
+		modalUserPicks(game, picks, users);
+		$('#modal').modal('show');
 	});
 	
 	$('#modal').on('hidden.bs.modal', function (e) {
@@ -297,12 +289,11 @@ function loadUsersStats(weekData, users, callback) {
 
 /**
  * Function that will update the NFL scores on the webpage
- * @param {JSON Object} weekData 
  * @param {JSON Object} users
  * @param {JSON Object} picks imported from Firebase 
  * @returns {undefined} None
  */
-function updateNFLScores(weekData, users, picks) {
+function updateNFLScores(users, picks) {
 	for (var i = 0; i < weekData.games.length; i++) {
 		var id = weekData.games[i].id;
 		var away = weekData.games[i].awayTeam;
@@ -334,7 +325,7 @@ function updateNFLScores(weekData, users, picks) {
 		TIMEOUT = setTimeout(function () {
 			// update weekData first
 			weekData.update(function () {
-				updateNFLScores(weekData, users, picks); // calls updateUserPicks & updateUsersStats after
+				updateNFLScores(users, picks); // calls updateUserPicks & updateUsersStats after
 			});
 		}, 10000);
 	}
@@ -345,28 +336,26 @@ function updateUserPicks(weekData, users, picks) {
 	var red = '#da9694'; // incorrect pick color
 	for (var i in users) {
 		var tag = replaceAll(replaceAll(i, '@', ''), '_', ''); // remove illegal characters
-		if (!picks[i]) {
-			bgColor = weekData.completedGames === weekData.games.length
-				?	red
-				:	'';
-				$('#' + tag).find('td').css('background-color', bgColor);
-			continue;
-		}
 		for (var j=0; j<weekData.games.length; j++) {
-			var bgColor = '';
+			var $cell = $('#' + tag).find('td').eq(j+1);
+			var bgColor = $cell.css('background-color');
+			if (bgColor !== 'rgba(0, 0, 0, 0)') {
+				continue;	// user pick was updated in a previous call.
+			}
 			var game = weekData.games[j];
 			var userPick = getObjects(picks[i], 'id', game.id)[0];
 			var team = (userPick)
 				?	userPick.pick
 				:	'-';
-			var $cell = $('#' + tag).find('td').eq(j+1);
 			if (team === '-' && !game.winner) {
 				$cell.text('');	// no pick was made.
 				continue;
 			}
-			var rank = userPick.rank;
-			if(game.winner) {
-				if(game.winner.abbrName === userPick.pick) {
+			var rank = (userPick)
+				?	userPick.rank
+				:	'';
+			if (game.winner) {
+				if(game.winner.abbrName === team) {
 					bgColor = green;
 				} else {
 					bgColor = red;
