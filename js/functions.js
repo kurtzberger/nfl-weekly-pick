@@ -144,7 +144,7 @@ function calcStandings(picks, weekData, standings) {
 		for (var j in picks[i]) {
 			var gamePick = picks[i][j];
 			var game = weekData.getGame(gamePick.id);
-			var points = parseInt(gamePick.rank);
+			var points = filterFloat(gamePick.rank);
 			// if user's pick was correct credit them points and if they were wrong discredit them points
 			// skip over if game is incomplete
 			if (game.winner) {
