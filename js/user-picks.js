@@ -269,11 +269,11 @@ function moveDown(item) {
 
 function loadGames(desktop, weekData) {
 	for (var i=0; i<weekData.games.length; i++) {
-		var rank = weekData.games.length - i;
+		var rank = i + 1;
 		var away = weekData.games[i].awayTeam.abbrName;
 		var home = weekData.games[i].homeTeam.abbrName;
 		var id = weekData.games[i].id;
-		$('#games').append(insertRow(id, rank, away, home));
+		$('#games').prepend(insertRow(id, rank, away, home));
 	}
 	buildGames(desktop, weekData);
 }
@@ -331,7 +331,7 @@ function databaseImport(database, path, weekData, desktop) {
 	database.ref(path).once('value').then(function (snapshot) {
 		var picks = snapshot.val();
 		if (picks === null) {
-			// no picks have been made for this week, so load games as is
+			// no picks have been made for this week, so load the games as is
 			loadGames(desktop, weekData);
 		} else {
 			// picks have been submitted to the database load games as saved in database
