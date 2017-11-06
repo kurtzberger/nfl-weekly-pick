@@ -113,11 +113,11 @@ WeekGames.prototype.setTimeNow = function (callback) {
 	// get reference to WeekGames Object, because 'this' will reference something else inside the $.ajax() call
 	var self = this;
 	$.ajax({
-		dataType:	'json',	
-		url:		'http://time.jsontest.com/',
+		dataType:	'text',	
+		url:		'http://currentmillis.com/time/milliseconds-since-unix-epoch.php',
 		timeout:	5000,		// timeout in milliseconds
 		success:	function (result) {
-			self.timeNow = new Date(result.milliseconds_since_epoch);
+			self.timeNow = new Date(parseInt(result));
 			self.setStartedGames(callback);
 		},
 		error:		function (xhr) {
