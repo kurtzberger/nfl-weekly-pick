@@ -104,6 +104,10 @@ function processStandings(standings, parameters) {
 		// create weekly data object from XML file imported
 		var weekData = new WeekGames(xml, function() {
 			database.ref(season + '/picks/week' + weekData.week).once('value').then(function(snapshot) {
+				if (weekData.season !== season) {
+					typeof callback === 'function' && callback();
+					return;	// exit if the season read from NFL's website isn't equal to the global set season.
+				}
 				// get all picks from database
 				var picks = snapshot.val();
 				standings = calcStandings(picks, weekData, standings);
@@ -195,4 +199,20 @@ function sortStandings(standings, ranked = false) {
 		}
 	});
 	return sorted;
+}
+
+/**
+ * Deletes inactive users. Inactive users are hardcoded into this function
+ * @param {Object} users Users Object with all users read from firebase database
+ * @returns {Object}
+ */
+function removeInactiveUsers(users) {
+	debugger;
+	for (var i in users) {
+		if (i === 'jkurtzberg@charter_net' || i === 'kurtzal1@aol_com') {
+			delete users[i];
+		}
+	}
+	
+	return users;
 }

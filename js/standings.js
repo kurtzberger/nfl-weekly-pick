@@ -29,7 +29,7 @@ function loadPage() {
 	
 	// get all users and create a standings object for those users.
 	database.ref('users').once('value').then(function(snapshot) {
-		var users = snapshot.val();
+		var users = removeInactiveUsers(snapshot.val());
 		var standings = {
 			completedGames: 0
 		};
