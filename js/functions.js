@@ -96,7 +96,7 @@ function processStandings(standings, parameters) {
 		typeof callback === 'function' && callback();
 		return;	// exit here if still in preseason
 	} else if (week === CUR_WEEK) {
-		url = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
+		url = 'http://www.nfl.com/ajax/scorestrip?season=2018&seasonType=REG&week=1';
 	} else {
 		url = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
 	}
@@ -207,12 +207,10 @@ function sortStandings(standings, ranked = false) {
  * @returns {Object}
  */
 function removeInactiveUsers(users) {
-	debugger;
 	for (var i in users) {
 		if (i === 'jkurtzberg@charter_net' || i === 'kurtzal1@aol_com') {
 			delete users[i];
 		}
 	}
-	
 	return users;
 }

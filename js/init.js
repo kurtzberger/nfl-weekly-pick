@@ -41,7 +41,7 @@ if (sPage !== "register") {
 			curUser = user;
 
 			// get current week
-			$.get('http://www.nfl.com/liveupdate/scorestrip/ss.xml', function (data) {
+			$.get('http://www.nfl.com/ajax/scorestrip?season=2018&seasonType=REG&week=1', function (data) {
 				var weekData = new WeekGames(data, function () {});
 				if (weekData.seasonType === 'Preseason') {
 					CUR_WEEK = 1;

@@ -48,7 +48,7 @@
 
 	<div id="main-content" class="container">
 		<div id="login" class="center-div">
-			<h1 style="text-align: center;">NFL Weekly Pick 'em 2017 Login</h1>
+			<h1 style="text-align: center;"></h1>
 			<div class="input-group"> 
 				<span class="input-group-addon"><i class="mdi mdi-account-circle pull-left"></i></span>
 				<input id="email" type="text" class="form-control" placeholder="Email">
@@ -99,7 +99,9 @@
 	<script type="text/javascript" src="../js/init.js"></script>
 	<script type="text/javascript" src="../js/links.js"></script>
 	<script>
-		$(function () {	
+		$(function () {
+			$('#login h1:first').text('NFL Weekly Pick \'em ' + season + ' Login');
+			
 			$('#password').bind('keypress', function (e) {
 				if ((e.keyCode || e.which) === 13) {
 					$('#login-button').trigger('click');

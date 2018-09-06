@@ -38,11 +38,11 @@ function loadPage() {
 	var mobile = !desktop;	// one shot trigger
 
 	// this URL is used just for this webpage
-	if (week === CUR_WEEK) {
-		url = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
-	} else {
+	//if (week === CUR_WEEK) {
+	//	url = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
+	//} else {
 		url = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
-	}
+	//}
 
 	$('#league-picks').css({'font-weight': 'bold', 'background': '#b4b4b4'});
 	$("#headerTitle").text(season + " Week " + week + " League Picks");
@@ -65,7 +65,7 @@ function loadPage() {
 			// search database for all users' display name and then finish putting in all data except user's picks
 			// users' picks will be handled in a seperate database query
 			database.ref('users').once('value').then(function(snapshot) {
-				users = snapshot.val();
+				users = removeInactiveUsers(snapshot.val());
 				// attach database listener to this week's data. fires every time new picks are submitted/changed
 				database.ref(path).on('value', function(snapshot) {
 					picks = snapshot.val();

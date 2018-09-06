@@ -2,9 +2,9 @@
  * WeekGames.js
  * 
  * Takes the XML document object from NFL.com and creates a Javascript object containing information about those NFL games.
- * An XML document object is the returned data from a call to $.get(). The URL passed to $.get() is either:
- * 'http://www.nfl.com/liveupdate/scorestrip/ss.xml' (for live updates for current week)	OR
+ * An XML document object is the returned data from a call to $.get(). The URL passed to $.get() is:
  * 'http://http://www.nfl.com/ajax/scorestrip?season=####&seasonType=REG&week=##' (replace #'s with year and week number for specific week)
+ * ('http://www.nfl.com/liveupdate/scorestrip/ss.xml' is depreciated for 2018 season and no longer updating)
  * 
  * WeekGames contains an array of GameStats objects (with length equal to the number of games played that week).
  * Simliar to WeekGames, GameStats contains useful information about a given NFL game (e.g., date/time, home team, away team, etc.)
@@ -65,7 +65,7 @@ WeekGames.prototype.update = function (callback) {
 	// get reference to WeekGames Object, because 'this' will reference something else inside the $.ajax() call
 	var self = this;
 	$.ajax({
-		url: 'http://www.nfl.com/liveupdate/scorestrip/ss.xml',
+		url: 'http://www.nfl.com/ajax/scorestrip?season=2018&seasonType=REG&week=1',
 		timeout: 5000, // timeout in milliseconds
 		success: function(xml) {
 			WeekGames.call(self, xml, callback);

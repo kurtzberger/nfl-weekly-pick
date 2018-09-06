@@ -69,7 +69,7 @@
 		
 		function loadPage() {
 			var weekData = null;
-			var url = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
+			var url = 'http://www.nfl.com/ajax/scorestrip?season=2018&seasonType=REG&week=1';
 			$.get(url, function (xml) {
 				// create weekly data object from XML file imported
 				weekData = new WeekGames(xml, function () {
