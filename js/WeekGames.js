@@ -1,37 +1,35 @@
 /**
  * WeekGames.js
  * 
- * Takes the XML document object from NFL.com and creates a Javascript object containing information about those NFL games.
- * An XML document object is the returned data from a call to $.get(). The URL passed to $.get() is:
- * 'http://http://www.nfl.com/ajax/scorestrip?season=####&seasonType=REG&week=##' (replace #'s with year and week number for specific week)
- * ('http://www.nfl.com/liveupdate/scorestrip/ss.xml' is depreciated for 2018 season and no longer updating)
+ * Takes the JSON from http://api.fantasy.nfl.com and creates a Javascript object containing information about those NFL games.
+ * Data is returned from a call to $.get(). The URL passed to $.get() is:
+ * 'http://api.fantasy.nfl.com/v2/players/weekstats?season=####&week=##' (replace #'s with year and week number for specific week)
  * 
  * WeekGames contains an array of GameStats objects (with length equal to the number of games played that week).
  * Simliar to WeekGames, GameStats contains useful information about a given NFL game (e.g., date/time, home team, away team, etc.)
  * Finally, the homeTeam/awayTeam properties contained in GameStats are objects containing information about that team (e.g., team abbreviation, team full name, score, etc.)
  * @author Eric Kurtzberg
- * @version 1.1
+ * @version 2.0
  */
  
  /**
  * Object constructor containing all the weekly data
- * @param {Object} xml XML document object as returned by jQuery.get() from NFL.com.
+ * @param {Object} data JSON object as returned by $.get() from NFL.com.
  * @param {function} callback Function to call once the constructor is complete
  */
-function WeekGames(xml, callback) {
-	var x2js			= new X2JS();
-	var jsonObj			= x2js.xml2json(xml);	// convert to JSON object
-	var weekData		= jsonObj.ss.gms;
+function WeekGames(data, callback) {	
+	var weekData		= data;
 
-	this.setGames(weekData.g);
+	this.setGames(weekData.nflGames);
 	
-	this.week			= parseInt(weekData._w);
-	this.season			= parseInt(weekData._y);
-	this.setSeasonType(weekData._t);
+	this.currentGameId	= weekData.systemConfig.currentGameId;
+	this.timeNow		= new Date(weekData.games[this.currentGameId].state.serverTime);
+	this.week			= parseInt(weekData.games[this.currentGameId].state.week);
+	this.season			= parseInt(weekData.games[this.currentGameId].season);
+	this.setSeasonType(weekData);
 	this.startedGames;
-	this.regFinals		= getObjects(jsonObj, '_q', 'F').length;
-	this.otFinals		= getObjects(jsonObj, '_q', 'FO').length;
-	this.completedGames	= this.regFinals + this.otFinals;
+	this.completedGames	= getObjects(weekData.nflGames, 'gameClock', 'Final').length;
+	this.isWeekCompleted= weekData.games[this.currentGameId].state.isWeekGamesCompleted;
 	this.setByeTeams();
 	
 	// sort the games by date. if dates are equal, sort by game id... just in case
@@ -43,18 +41,8 @@ function WeekGames(xml, callback) {
 			return parseInt(a.id) - parseInt(b.id);
 		}
 	});
-	this.setTimeNow(callback);
+	this.setStartedGames(callback);
 }
-
-Date.prototype.stdTimezoneOffset = function () {
-	var jan = new Date(this.getFullYear(), 0, 1);
-	var jul = new Date(this.getFullYear(), 6, 1);
-	return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
-};
-
-Date.prototype.dst = function () {
-    return this.getTimezoneOffset() < this.stdTimezoneOffset();
-};
 
 /**
  * Updates all NFL data to most current data returned from NFL.com 
@@ -65,10 +53,10 @@ WeekGames.prototype.update = function (callback) {
 	// get reference to WeekGames Object, because 'this' will reference something else inside the $.ajax() call
 	var self = this;
 	$.ajax({
-		url: 'http://www.nfl.com/ajax/scorestrip?season=2018&seasonType=REG&week=1',
+		url: 'http://api.fantasy.nfl.com/v2/players/weekstats?season=' + self.season + '&week=' + self.week,
 		timeout: 5000, // timeout in milliseconds
-		success: function(xml) {
-			WeekGames.call(self, xml, callback);
+		success: function(data) {
+			WeekGames.call(self, data, callback);
 		},
 		error: function(xhr) {
 			console.log("Error status: " + xhr.status);
@@ -85,22 +73,8 @@ WeekGames.prototype.update = function (callback) {
  */
 WeekGames.prototype.setGames = function (games) {
 	var gameStats = [];
-	for (var i=0; i<games.length; i++) {
-		gameStats.push(new GameStats(
-			games[i]._eid,
-			games[i]._d,
-			games[i]._t,
-			games[i]._q,
-			games[i]._k,
-			games[i]._h,
-			games[i]._hs,
-			games[i]._v,
-			games[i]._vs,
-			games[i]._p,
-			games[i]._rz,
-			games[i]._ga,
-			games[i]._gt
-		));
+	for (var i in games) {
+		gameStats.push(new GameStats(games[i]));
 	}
 	this.games = gameStats;
 };
@@ -131,17 +105,15 @@ WeekGames.prototype.setTimeNow = function (callback) {
 	});
 };
 
-WeekGames.prototype.setSeasonType = function (seasonType) {
-	switch (seasonType) {
-	case 'P':	this.seasonType = 'Preseason'; break;
-	case 'R':
-		if (this.week <= 17) {
+WeekGames.prototype.setSeasonType = function (weekData) {
+	if (weekData.games[this.currentGameId].state.isSeasonStarted) {
+		if (this.week >= 1 || this.week <=17) {
 			this.seasonType = 'Regular';
 		} else {
 			this.seasonType = 'Postseason';
-		}
-		break;
-	default:	this.seasonType = 'Unknown'; break;
+		}			
+	} else {
+		this.seasonType = 'Preseason';
 	}
 };
 
@@ -157,7 +129,7 @@ WeekGames.prototype.setStartedGames = function (callback) {
 			this.games[i].isGameStarted = true;
 		}
 	}
-	callback();
+	typeof callback === 'function' && callback();
 };
 
 /**
@@ -230,24 +202,12 @@ WeekGames.prototype.getGame = function (id) {
 
 /**
  * GameStats object contructor. Constructs an object that contains all information about an NFL game given the following parameters.
- * @param {string} id Game ID number ('eid')
- * @param {string} day Three letter abbreviation for the day the game is being played ('d')
- * @param {string} time Time of day game is being played ('t')
- * @param {string} quarter Current quarter of the game ('q')
- * @param {string} timeInQuarter Time remaining in the current quarter ('k')
- * @param {string} homeTeam Home team three letter NFL team abbreviation ('h')
- * @param {string} homeTeamScore Home team score ('hs')
- * @param {string} awayTeam Away team three letter NFL team abbreviation ('v')
- * @param {string} awayTeamScore Away team score ('vs')
- * @param {string} teamWithPossession Team with possession of the ball ('p')
- * @param {string} isInRedZone Team with possession is in the red zone ('rz')
- * @param {string} gameAlert Game alert ('ga')
- * @param {string} gameType Preseason, Regular, or Postseason ('gt')
+ * @param {Object} game JSON data of a single NFL game returned from the NFL api.
  * @returns {GameStats} Object with information about an NFL game
  */
-function GameStats(id, day, time, quarter, timeInQuarter, homeTeam, homeTeamScore, awayTeam, awayTeamScore, teamWithPossession, isInRedZone, gameAlert, gameType) {
-	this.id = id;
-	this.setDate(time, day, id);
+function GameStats(game) {
+	this.id = game.nflGameId;
+	this.date = new Date(game.gameDateAndTime);
 	this.dateStringLong = (this.date.toLocaleString('en-US', {
 		weekday:	'long',
 		year:		'numeric',
@@ -267,42 +227,13 @@ function GameStats(id, day, time, quarter, timeInQuarter, homeTeam, homeTeamScor
 		minute: 'numeric'
 	}));
 	this.isGameStarted = false;
-	this.setQuarter(quarter);
-	this.timeInQuarter = (timeInQuarter)
-		? timeInQuarter
-		: '';
-	this.homeTeam = new Team(homeTeam, teamWithPossession, homeTeamScore, isInRedZone);
-	this.awayTeam = new Team(awayTeam, teamWithPossession, awayTeamScore, isInRedZone);
-	this.gameAlert = gameAlert;
-	this.gameType = gameType;
+	this.gameClock = (game.gameStatus !== 'pre_game')
+		?	game.gameClock
+		:	'Pregame';
+	this.homeTeam = new Team(game.homeTeam, game.awayTeam.opponentAbbr.replace('@', ''), game.isOffenseInRedZone);
+	this.awayTeam = new Team(game.awayTeam, game.homeTeam.opponentAbbr, game.isOffenseInRedZone);
 	this.setWinner();
 }
-
-/**
- * Calculates the kickoff date/time of an NFL game
- * @param {string} time Time of day in the format of 'hh:mm' or 'h:mm'
- * @param {string} day Day of week in the 3 letter abbreviated form (e.g., 'Mon')
- * @param {string} id Identifier for the NFL game containing the date of the game
- * (e.g., yyyymmdd## where yyyy = Year, mm = Month, dd = Day of month, and ## = game played that week (1st, 2nd, etc.))
- * @returns {getDate.date|Date}
- */
-GameStats.prototype.setDate = function (time, day, id) {
-	var splitTime = time.split(':');		// split the time
-	var hour = parseInt(splitTime[0]);		// parse the hour part of time into an integer
-	var minute = parseInt(splitTime[1]);	// parse the minute part of time into an integer
-	// check for London game or Thanksgiving game and adjust for UTC accordingly
-	if (day === 'Sun' && id.substr(id.length - 2) === '00' && hour > 8 || day === 'Thu' && hour === 12) {
-		hour += 4;
-	} else {
-		hour += 16;
-	}
-	// check for daylight savings
-	var date = new Date(Date.UTC(parseInt(id.substr(0, 4)), parseInt(id.substr(4, 2))-1, parseInt(id.substr(6, 2)), hour, minute));
-	if (!date.dst()) {
-		date.setHours(date.getHours() + 1);
-	}
-	this.date = date;
-};
 
 /**
  * Function to decipher the NFL quarter read in from NFL's XML document
@@ -334,7 +265,7 @@ GameStats.prototype.setQuarter = function (quarter) {
  */
 GameStats.prototype.setWinner = function () {
 	var winner;
-	if (this.quarter.includes('Final')) {
+	if (this.gameClock.includes('Final')) {
 		if (this.awayTeam.score > this.homeTeam.score) {
 			winner = this.awayTeam;
 		} else if (this.awayTeam.score < this.homeTeam.score) {
@@ -349,22 +280,21 @@ GameStats.prototype.setWinner = function () {
 };
 
 /**
- * Object Team constructor containing team abbrevation, full name, and logo (HTML string).
- * @param {string} name Team abbreviation
- * @param {string} teamWithPossession the team with possession 
- * @param {string} score the score for this team 
- * @param {string} isInRedZone is this team in the red zone (true or false)
+ * Object Team constructor containing team abbrevation, full name, and logo (HTML string), score, etc.
+ * @param {Object} nflTeam Team object returned from NFL api.
+ * @param {string} nflTeamAbbr Team abbreviation name 
+ * @param {boolean} isInRedZone is the team with possession in the red zone (true or false)
  * @returns {Team}
  */
-function Team(name, teamWithPossession, score, isInRedZone) {
-	this.abbrName = name;
-	this.fullName = Team.getTeamName(name);
-	this.logo = Team.getTeamLogo(name);
-    this.hasPossession = (teamWithPossession === this.abbrName);
-    this.score = (isNaN(parseInt(score)))
+function Team(nflTeam, nflTeamAbbr, isInRedZone) {
+	this.abbrName = nflTeamAbbr;
+	this.fullName = Team.getTeamName(this.abbrName);
+	this.logo = Team.getTeamLogo(this.abbrName);
+    this.hasPossession = nflTeam.hasPossession;
+    this.score = (isNaN(parseInt(nflTeam.score)))
 		? 0
-		: parseInt(score);
-	this.isInRedZone = (isInRedZone === '1');
+		: parseInt(nflTeam.score);
+	this.isInRedZone = this.hasPossession && isInRedZone;
 }
 
 /**

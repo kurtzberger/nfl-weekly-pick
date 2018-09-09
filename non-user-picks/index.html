@@ -69,14 +69,13 @@
 		
 		function loadPage() {
 			var weekData = null;
-			var url = 'http://www.nfl.com/ajax/scorestrip?season=2018&seasonType=REG&week=1';
-			$.get(url, function (xml) {
+			var url = 'http://api.fantasy.nfl.com/v2/players/weekstats?season=' + season + '&week=1';
+			$.get(url, function (data) {
 				// create weekly data object from XML file imported
-				weekData = new WeekGames(xml, function () {
-					$('#non-user-link').css({'font-weight': 'bold', 'background': '#b4b4b4'});
-					$("#headerTitle").text("Non-Users' Picks");
-					$('#current-week').text('Week ' + weekData.week);
-				});
+				weekData = new WeekGames(data);
+				$('#non-user-link').css({'font-weight': 'bold', 'background': '#b4b4b4'});
+				$("#headerTitle").text("Non-Users' Picks");
+				$('#current-week').text('Week ' + weekData.week);
 			});
 			
 			$("#main-content").on('click', '#random-button', function () {

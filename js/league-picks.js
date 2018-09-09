@@ -37,12 +37,7 @@ function loadPage() {
 	var desktop = $(window).width() > SIZE;
 	var mobile = !desktop;	// one shot trigger
 
-	// this URL is used just for this webpage
-	//if (week === CUR_WEEK) {
-	//	url = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
-	//} else {
-		url = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
-	//}
+	url = 'http://api.fantasy.nfl.com/v2/players/weekstats?season=' + season + '&week=' + week;
 
 	$('#league-picks').css({'font-weight': 'bold', 'background': '#b4b4b4'});
 	$("#headerTitle").text(season + " Week " + week + " League Picks");
@@ -57,36 +52,36 @@ function loadPage() {
 	}
 	$('#' + week).css({'font-weight': 'bold', 'background': '#b4b4b4'});
 
-   // get games from nfl.com
-	$.get(url, function(xml) {
-		weekData = new WeekGames(xml, function() {
-			path = weekData.season + '/picks/week' + weekData.week;
+   // get games from nfl api
+	$.get(url, function(data) {
+		weekData = new WeekGames(data);
+		path = weekData.season + '/picks/week' + weekData.week;
 
-			// search database for all users' display name and then finish putting in all data except user's picks
-			// users' picks will be handled in a seperate database query
-			database.ref('users').once('value').then(function(snapshot) {
-				users = removeInactiveUsers(snapshot.val());
-				// attach database listener to this week's data. fires every time new picks are submitted/changed
-				database.ref(path).on('value', function(snapshot) {
-					picks = snapshot.val();
-					if (!loaded) {
-						loadUserPicks(weekData, users, picks);	// for desktop
-						loadNFLGames(weekData);	// load NFL scores
-						// load user stats for this week (mobile and desktop)
-						loadUsersStats(weekData, users, function () {
-							$(".loader").hide();	// hide loading animation
-							$('.show-me').toggle();
-							if (desktop) {
-								$('#desktop').show();
-							} else {
-								$('#mobile').show();	
-							}
-						});	
-						loaded = true;	// mark this true ASAP
-					} else {
-						clearTimeout(TIMEOUT);
-					}
-					if (weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
+		// search database for all users' display name and then finish putting in all data except user's picks
+		// users' picks will be handled in a seperate database query
+		database.ref('users').once('value').then(function(snapshot) {
+			users = removeInactiveUsers(snapshot.val());
+			// attach database listener to this week's data. fires every time new picks are submitted/changed
+			database.ref(path).on('value', function(snapshot) {
+				picks = snapshot.val();
+				if (!loaded) {
+					loadUserPicks(weekData, users, picks);	// for desktop
+					loadNFLGames(weekData);	// load NFL scores
+					// load user stats for this week (mobile and desktop)
+					loadUsersStats(weekData, users, function () {
+						$(".loader").hide();	// hide loading animation
+						$('.show-me').toggle();
+						if (desktop) {
+							$('#desktop').show();
+						} else {
+							$('#mobile').show();	
+						}
+					});	
+					loaded = true;	// mark this true ASAP
+				} else {
+					clearTimeout(TIMEOUT);
+				}
+					if (weekData.week === CUR_WEEK && !weekData.isWeekCompleted) {
 						TIMEOUT = setTimeout(function () {
 							// update weekData first
 							weekData.update(function () {
@@ -94,7 +89,6 @@ function loadPage() {
 							});
 						}, 10000);
 					}
-				});
 			});
 		});
 	});
@@ -173,9 +167,7 @@ function loadNFLGames(weekData) {
 		var date = weekData.games[i].dateStringShort;
 		var away = weekData.games[i].awayTeam;
 		var home = weekData.games[i].homeTeam;
-		var quarterTime = (($.isNumeric(weekData.games[i].quarter))
-			?	'Q' + weekData.games[i].quarter
-			:	weekData.games[i].quarter) + ' ' + weekData.games[i].timeInQuarter;
+		var quarterTime = weekData.games[i].gameClock;
 		//desktop
 		$('#dates').append('<td style="font-size: 95%;">' + date + '</td>');	// date
 		$('#away-teams').append('<td data-gameid="' + id + '" class="pick-cell away">' + away.score + '</td>');	// away score
@@ -194,7 +186,7 @@ function loadNFLGames(weekData) {
 			$('td[data-gameid="' + id + '"].home').css('background-color', '');
 		} else if (home.hasPossession) {
 			$('td[data-gameid="' + id + '"].away').css('background-color', '');
-			$('td[data-gameid="' + id + '"].home').eq(i).css('background-color', (home.isInRedZone ? '#da9694' : '#ffff66'));
+			$('td[data-gameid="' + id + '"].home').css('background-color', (home.isInRedZone ? '#da9694' : '#ffff66'));
 		}
 	}
 }
@@ -298,9 +290,7 @@ function updateNFLScores(users, picks) {
 		var id = weekData.games[i].id;
 		var away = weekData.games[i].awayTeam;
 		var home = weekData.games[i].homeTeam;
-		var quarterTime = (($.isNumeric(weekData.games[i].quarter))
-			?	'Q' + weekData.games[i].quarter
-			:	weekData.games[i].quarter) + ' ' + weekData.games[i].timeInQuarter;
+		var quarterTime = weekData.games[i].gameClock;
 		// jQuery selectors for this iteration
 		var $away = $('td[data-gameid="' + id + '"].away');
 		var $home = $('td[data-gameid="' + id + '"].home');
@@ -321,7 +311,7 @@ function updateNFLScores(users, picks) {
 	}
 	updateUserPicks(weekData, users, picks);	// update user picks (reveal/mark correct or incorrect)
 	updateUsersStats(weekData, users);
-	if (weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
+	if (weekData.week === CUR_WEEK && !weekData.isWeekCompleted) {
 		TIMEOUT = setTimeout(function () {
 			// update weekData first
 			weekData.update(function () {

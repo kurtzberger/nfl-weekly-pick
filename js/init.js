@@ -41,8 +41,8 @@ if (sPage !== "register") {
 			curUser = user;
 
 			// get current week
-			$.get('http://www.nfl.com/ajax/scorestrip?season=2018&seasonType=REG&week=1', function (data) {
-				var weekData = new WeekGames(data, function () {});
+			$.get('http://api.fantasy.nfl.com/v2/players/weekstats?season=2018&week=1', function (data) {
+				var weekData = new WeekGames(data);
 				if (weekData.seasonType === 'Preseason') {
 					CUR_WEEK = 1;
 				} else if (weekData.seasonType === 'Regular') {

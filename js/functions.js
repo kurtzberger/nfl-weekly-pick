@@ -95,34 +95,31 @@ function processStandings(standings, parameters) {
 	if (week === 'Preseason') {
 		typeof callback === 'function' && callback();
 		return;	// exit here if still in preseason
-	} else if (week === CUR_WEEK) {
-		url = 'http://www.nfl.com/ajax/scorestrip?season=2018&seasonType=REG&week=1';
 	} else {
-		url = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
+		url = 'http://api.fantasy.nfl.com/v2/players/weekstats?season=' + season + '&week=' + week;
 	}
-	$.get(url, function(xml) {
+	$.get(url, function(data) {
 		// create weekly data object from XML file imported
-		var weekData = new WeekGames(xml, function() {
-			database.ref(season + '/picks/week' + weekData.week).once('value').then(function(snapshot) {
-				if (weekData.season !== season) {
-					typeof callback === 'function' && callback();
-					return;	// exit if the season read from NFL's website isn't equal to the global set season.
-				}
-				// get all picks from database
-				var picks = snapshot.val();
-				standings = calcStandings(picks, weekData, standings);
-				standings.completedGames += weekData.completedGames;
-				if (week > endWeek) {
-					// recursively call this function again until endWeek is reached (base case).
-					processStandings(standings, {
-						start:		week - 1,
-						end:		endWeek,
-						callback:	callback
-					});
-				} else {
-					typeof callback === 'function' && callback();
-				}
-			});
+		var weekData = new WeekGames(data);
+		database.ref(season + '/picks/week' + weekData.week).once('value').then(function(snapshot) {
+			if (weekData.season !== season) {
+				typeof callback === 'function' && callback();
+				return;	// exit if the season read from NFL's website isn't equal to the global set season.
+			}
+			// get all picks from database
+			var picks = snapshot.val();
+			standings = calcStandings(picks, weekData, standings);
+			standings.completedGames += weekData.completedGames;
+			if (week > endWeek) {
+				// recursively call this function again until endWeek is reached (base case).
+				processStandings(standings, {
+					start:		week - 1,
+					end:		endWeek,
+					callback:	callback
+				});
+			} else {
+				typeof callback === 'function' && callback();
+			}
 		});
 	});
 }

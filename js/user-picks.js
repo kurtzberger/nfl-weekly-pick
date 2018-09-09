@@ -31,7 +31,7 @@ function loadPage() {
 	var week = location.search.substring(1) === '' 
 		?	CUR_WEEK
 		:	location.search.substring(1);
-	var url = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
+	var url = 'http://api.fantasy.nfl.com/v2/players/weekstats?season=' + season + '&week=' + week;
 	var path;
 	var saved = true;
 	$("#headerTitle").text(curUser.displayName + "'s " + season + " Week " + week + " Picks");
@@ -48,10 +48,9 @@ function loadPage() {
 	// read from nfl.com all the games
 	$.get(url, function(data) {
 		// create weekly data object from XML document object imported
-		weekData = new WeekGames(data, function () {
-			path = weekData.season + '/picks/week' + weekData.week + '/' + UID;
-			databaseImport(database, path, weekData, desktop);
-		});
+		weekData = new WeekGames(data);
+		path = weekData.season + '/picks/week' + weekData.week + '/' + UID;
+		databaseImport(database, path, weekData, desktop);
 	});
 
 	//Helper function to keep table row from collapsing when being sorted
