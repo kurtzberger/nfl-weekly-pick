@@ -81,14 +81,14 @@ function loadPage() {
 				} else {
 					clearTimeout(TIMEOUT);
 				}
-					if (weekData.week === CUR_WEEK && !weekData.isWeekCompleted) {
-						TIMEOUT = setTimeout(function () {
-							// update weekData first
-							weekData.update(function () {
-								updateNFLScores(users, picks); // calls updateUserPicks & updateUsersStats after
-							});
-						}, 10000);
-					}
+				if (weekData.week === CUR_WEEK && !weekData.isWeekCompleted) {
+					TIMEOUT = setTimeout(function () {
+						// update weekData first
+						weekData.update(function () {
+							updateNFLScores(users, picks); // calls updateUserPicks & updateUsersStats after
+						});
+					}, 10000);
+				}
 			});
 		});
 	});

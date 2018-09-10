@@ -1,3 +1,5 @@
+/* global CUR_WEEK */
+
 /**
  * WeekGames.js
  * 
@@ -24,7 +26,9 @@ function WeekGames(data, callback) {
 	
 	this.currentGameId	= weekData.systemConfig.currentGameId;
 	this.timeNow		= new Date(weekData.games[this.currentGameId].state.serverTime);
-	this.week			= parseInt(weekData.games[this.currentGameId].state.week);
+	this.week			= parseInt((location.search.substring(1) === '') 
+							?	parseInt(weekData.games[this.currentGameId].state.week)
+							:	location.search.substring(1));
 	this.season			= parseInt(weekData.games[this.currentGameId].season);
 	this.setSeasonType(weekData);
 	this.startedGames;
@@ -41,6 +45,16 @@ function WeekGames(data, callback) {
 			return parseInt(a.id) - parseInt(b.id);
 		}
 	});
+	if (isNaN(CUR_WEEK)) {
+		if (this.seasonType === 'Preseason') {
+			CUR_WEEK = 1;
+		} else if (this.seasonType === 'Regular') {
+			CUR_WEEK = parseInt(weekData.games[this.currentGameId].state.week);
+		} else {
+			CUR_WEEK = 17;
+		}
+	}
+
 	this.setStartedGames(callback);
 }
 
@@ -179,7 +193,7 @@ WeekGames.prototype.setByeTeams = function () {
 	}
 	// create Team object for remaining teams
 	for (var i in byeTeamsObj) {
-		byeTeams.push(new Team(i));
+		byeTeams.push(new Team({}, i, false));
 	}
 	this.byeTeams = byeTeams;
 };

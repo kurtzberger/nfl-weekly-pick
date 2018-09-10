@@ -47,9 +47,8 @@ function loadPage() {
 
 	// read from nfl.com all the games
 	$.get(url, function(data) {
-		// create weekly data object from XML document object imported
 		weekData = new WeekGames(data);
-		path = weekData.season + '/picks/week' + weekData.week + '/' + UID;
+		path = weekData.season + '/picks/week' + week + '/' + UID;
 		databaseImport(database, path, weekData, desktop);
 	});
 
