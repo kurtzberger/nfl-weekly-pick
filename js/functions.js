@@ -101,7 +101,7 @@ function processStandings(standings, parameters) {
 	$.get(url, function(data) {
 		// create weekly data object from XML file imported
 		var weekData = new WeekGames(data);
-		database.ref(season + '/picks/week' + weekData.week).once('value').then(function(snapshot) {
+		database.ref(season + '/picks/week' + week).once('value').then(function(snapshot) {
 			if (weekData.season !== season) {
 				typeof callback === 'function' && callback();
 				return;	// exit if the season read from NFL's website isn't equal to the global set season.
