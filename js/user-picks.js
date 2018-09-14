@@ -380,7 +380,7 @@ function disableStartedGames(weekData) {
 	if (weekData.startedGames !== weekData.games.length || sorting) {
 		setTimeout(function () {
 		// set timeout for next request, update the time before calling this function again
-			weekData.setTimeNow(function () {
+			weekData.update(function () {
 				disableStartedGames(weekData);
 			});
 		}, 10000);

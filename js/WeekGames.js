@@ -93,32 +93,6 @@ WeekGames.prototype.setGames = function (games) {
 	this.games = gameStats;
 };
 
-/**
- * Get the current time as returned by an api service
- * @param {function} callback function to be called upon completion.
- */
-WeekGames.prototype.setTimeNow = function (callback) {
-	// get reference to WeekGames Object, because 'this' will reference something else inside the $.ajax() call
-	var self = this;
-	$.ajax({
-		dataType:	'text',	
-		url:		'http://currentmillis.com/time/milliseconds-since-unix-epoch.php',
-		timeout:	5000,		// timeout in milliseconds
-		success:	function (result) {
-			self.timeNow = new Date(parseInt(result));
-			self.setStartedGames(callback);
-		},
-		error:		function (xhr) {
-			console.log('Error status: ' + xhr.status);
-			console.log('Error reading from time server.');
-			// wait 5 seconds and try again
-			setTimeout(function () {
-				self.setTimeNow(callback);
-			}, 5000 );
-		}
-	});
-};
-
 WeekGames.prototype.setSeasonType = function (weekData) {
 	if (weekData.games[this.currentGameId].state.isSeasonStarted) {
 		if (this.week >= 1 || this.week <=17) {

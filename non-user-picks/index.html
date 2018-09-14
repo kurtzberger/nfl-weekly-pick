@@ -69,7 +69,7 @@
 		
 		function loadPage() {
 			var weekData = null;
-			var url = 'http://api.fantasy.nfl.com/v2/players/weekstats?season=' + season + '&week=1';
+			var url = 'http://api.fantasy.nfl.com/v2/players/weekstats?season=' + season + '&week=' + CUR_WEEK;
 			$.get(url, function (data) {
 				// create weekly data object from XML file imported
 				weekData = new WeekGames(data);
