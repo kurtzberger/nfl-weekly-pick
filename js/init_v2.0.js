@@ -41,15 +41,8 @@ if (sPage !== "register") {
 			curUser = user;
 
 			// get current week
-			$.get('http://www.nfl.com/liveupdate/scorestrip/ss.xml', function (data) {
-				var weekData = new WeekGames(data, function () {});
-				if (weekData.seasonType === 'Preseason') {
-					CUR_WEEK = 1;
-				} else if (weekData.seasonType === 'Regular') {
-					CUR_WEEK = weekData.week;
-				} else {
-					CUR_WEEK = 17;
-				}
+			$.get('http://api.fantasy.nfl.com/v2/players/weekstats?season=2018&week=1', function (data) {
+				new WeekGames(data);
 				// set UID here after CUR_WEEK is set since the call to $.get() is asynchronous
 				UID = createUID(user.email);
 				if (UID === SUPERUSER) {
