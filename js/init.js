@@ -44,7 +44,7 @@ if (sPage !== "register") {
 			$.get('http://www.nfl.com/liveupdate/scorestrip/ss.xml', function (data) {
 				var weekData = new WeekGames(data, function () {});
 				if (weekData.seasonType === 'Preseason') {
-					CUR_WEEK = 1;
+					CUR_WEEK = 0;
 				} else if (weekData.seasonType === 'Regular') {
 					CUR_WEEK = weekData.week;
 				} else {
