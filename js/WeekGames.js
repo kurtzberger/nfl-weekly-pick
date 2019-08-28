@@ -114,10 +114,10 @@ WeekGames.prototype.setTimeNow = function (callback) {
 	var self = this;
 	$.ajax({
 		dataType:	'json',	
-		url:		'http://date.jsontest.com/',
+		url:		'http://worldclockapi.com/api/json/utc/now',
 		timeout:	10000,		// timeout in milliseconds
 		success:	function (result) {
-			self.timeNow = new Date(parseInt(result.milliseconds_since_epoch));
+			self.timeNow = new Date(result.currentDateTime);
 			self.setStartedGames(callback);
 		},
 		error:		function (xhr) {

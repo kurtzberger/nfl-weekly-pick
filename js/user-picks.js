@@ -385,7 +385,7 @@ function disableStartedGames(weekData) {
 			weekData.setTimeNow(function () {
 				disableStartedGames(weekData);
 			});
-		}, 10000);
+		}, 30000);
 	} else {
 		$("#submit-picks").hide();	// hide submit button if all games have started
 	}

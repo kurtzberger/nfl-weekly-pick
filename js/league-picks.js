@@ -1,4 +1,4 @@
-/* global UID, season, firebase, CUR_WEEK, Team, curUser */
+/* global UID, season, firebase, CUR_WEEK, Team, curUser, PRESEASON */
 var TIMEOUT; // global timeout variable
 var weekData;	// global variable for weekly data
 // document ready handler
@@ -38,7 +38,7 @@ function loadPage() {
 	var mobile = !desktop;	// one shot trigger
 
 	// this URL is used just for this webpage
-	if (week === CUR_WEEK) {
+	if (week === CUR_WEEK && !PRESEASON) {
 		url = 'http://www.nfl.com/liveupdate/scorestrip/ss.xml';
 	} else {
 		url = 'http://www.nfl.com/ajax/scorestrip?season=' + season + '&seasonType=REG&week=' + week;
@@ -86,13 +86,13 @@ function loadPage() {
 					} else {
 						clearTimeout(TIMEOUT);
 					}
-					if (weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
+					if (!PRESEASON && weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
 						TIMEOUT = setTimeout(function () {
 							// update weekData first
 							weekData.update(function () {
 								updateNFLScores(users, picks); // calls updateUserPicks & updateUsersStats after
 							});
-						}, 10000);
+						}, 30000);
 					}
 				});
 			});
@@ -321,13 +321,13 @@ function updateNFLScores(users, picks) {
 	}
 	updateUserPicks(weekData, users, picks);	// update user picks (reveal/mark correct or incorrect)
 	updateUsersStats(weekData, users);
-	if (weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
+	if (!PRESEASON && weekData.week === CUR_WEEK && weekData.completedGames !== weekData.games.length) {
 		TIMEOUT = setTimeout(function () {
 			// update weekData first
 			weekData.update(function () {
 				updateNFLScores(users, picks); // calls updateUserPicks & updateUsersStats after
 			});
-		}, 10000);
+		}, 30000);
 	}
 }
 

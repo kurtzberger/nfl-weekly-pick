@@ -208,7 +208,7 @@ function sortStandings(standings, ranked = false) {
  */
 function removeInactiveUsers(users) {
 	for (var i in users) {
-		if (i === 'jkurtzberg@charter_net' || i === 'kurtzal1@aol_com') {
+		if (i === 'jkurtzberg@charter_net' || i === 'kurtzal1@aol_com' || i === 'jrkberg@gmail_com') {
 			delete users[i];
 		}
 	}

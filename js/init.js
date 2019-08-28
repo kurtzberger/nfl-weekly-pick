@@ -12,6 +12,7 @@ var curUser = null;
 var UID = null;
 var season = 2019;	// update this each season. This is used for the individual week league picks.
 					// it's set static here instead of reading from NFL.com to save overhead.
+var PRESEASON = false;
 var CUR_WEEK;	//	current NFL week
 var KEYS;		
 
@@ -44,7 +45,8 @@ if (sPage !== "register") {
 			$.get('http://www.nfl.com/liveupdate/scorestrip/ss.xml', function (data) {
 				var weekData = new WeekGames(data, function () {});
 				if (weekData.seasonType === 'Preseason') {
-					CUR_WEEK = 0;
+					PRESEASON = true;
+					CUR_WEEK = 1;
 				} else if (weekData.seasonType === 'Regular') {
 					CUR_WEEK = weekData.week;
 				} else {
