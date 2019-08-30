@@ -1,4 +1,4 @@
-/* global Materialize, CUR_WEEK, season, database */
+/* global Materialize, CUR_WEEK, PRESEASON, season, database */
 
 /**
  * 
@@ -92,7 +92,7 @@ function processStandings(standings, parameters) {
 	var endWeek = parameters.end || 1;
 	var callback = parameters.callback;
 	var url;
-	if (week === 'Preseason') {
+	if (PRESEASON) {
 		typeof callback === 'function' && callback();
 		return;	// exit here if still in preseason
 	} else if (week === CUR_WEEK) {
@@ -208,7 +208,8 @@ function sortStandings(standings, ranked = false) {
  */
 function removeInactiveUsers(users) {
 	for (var i in users) {
-		if (i === 'jkurtzberg@charter_net' || i === 'kurtzal1@aol_com' || i === 'jrkberg@gmail_com') {
+		if (i === 'jkurtzberg@charter_net' || i === 'kurtzal1@aol_com' ||
+			i === 'jrkberg@gmail_com' || i === 'carl_r_white_ii@gmail_com') {
 			delete users[i];
 		}
 	}
