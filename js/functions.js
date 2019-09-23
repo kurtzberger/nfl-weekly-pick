@@ -60,7 +60,8 @@ function nonUserCheck(user)
 
 /**
  * A stricter way of parsing floats. Will return an integer where possible, otherwise,
- * if number can be interpreted as a float, then a float will be returned.
+ * if number can be interpreted as a float, then a float will be returned. If not, then a 0 will be returned to ensure no
+ * points are added to the player's score.
  * @param value
  * @returns equivalent number (float or int) depending on if it can be interpreted as a float or int.
  */
@@ -68,7 +69,7 @@ function filterFloat (value) {
     if(/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/
       .test(value))
       return Number(value);
-  return Number.NaN;
+  return 0;
 }
 
 /**
